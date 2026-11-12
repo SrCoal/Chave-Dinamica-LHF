@@ -17,7 +17,6 @@
       --lhf-green-light: #4ade80;
     }
 
-    
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #f0f6fc;
@@ -27,7 +26,7 @@
 
     .mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* Gradiente Institucional LHF (Azul Hidrologia + Toque Verde Florestal) */
+    /* Gradiente Institucional LHF */
     .lhf-header-gradient {
       background: linear-gradient(135deg, #062347 0%, #005b9f 65%, #0d7a5f 100%);
     }
@@ -74,16 +73,14 @@
       transform: scale(0.99);
     }
 
-    /* Animação Suave de Entrada */
     .fade-slide-in {
-      animation: fadeSlide 0.25s ease-out forwards;
+      animation: fadeSlide 0.22s ease-out forwards;
     }
     @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Barra de rolagem limpa */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #e2e8f0; }
     ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9999px; }
@@ -94,12 +91,11 @@
 
   <!-- ==================== CABEÇALHO SUPERIOR (LHF BRANDING) ==================== -->
   <header class="lhf-header-gradient text-white shadow-lg sticky top-0 z-30 border-b border-sky-400/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2">
       
       <!-- Logo LHF + Título -->
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-white p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300">
-          <!-- Tenta carregar a imagem oficial do LHF; se não achar na pasta, exibe o SVG vetorial idêntico -->
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300">
           <img src="image_0df51a.png" alt="Logo LHF" class="w-full h-full object-contain" onerror="this.style.display='none'; document.getElementById('lhf-svg-fallback').style.display='block';">
           <svg id="lhf-svg-fallback" style="display:none;" viewBox="0 0 100 100" class="w-10 h-10">
             <path d="M15,50 A35,35 0 0,1 65,18 C50,35 35,55 25,82 A35,35 0 0,1 15,50 Z" fill="#0066b2"/>
@@ -108,14 +104,15 @@
           </svg>
         </div>
         <div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <span class="text-[10px] font-extrabold uppercase tracking-widest bg-sky-500/30 text-sky-100 px-2 py-0.5 rounded-full border border-sky-300/30">LHF • ESALQ/USP</span>
-            <span id="cloud-status-badge" onclick="openCloudModal()" class="cursor-pointer text-[10px] font-semibold bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded-full flex items-center gap-1 transition">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Modo Local / Nuvem
-            </span>
+            <button onclick="openCloudModal()" id="header-sync-pill" class="cursor-pointer text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 border border-emerald-400/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition">
+              <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="sync-status-text">Nuvem LHF Conectada</span>
+            </button>
           </div>
           <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight mt-0.5">
-            MacroKey <span class="font-normal text-sky-200 text-xs sm:text-sm">| Chave de Macroinvertebrados</span>
+            MacroKey <span class="font-normal text-sky-200 text-xs sm:text-sm hidden sm:inline">| Chave de Macroinvertebrados</span>
           </h1>
         </div>
       </div>
@@ -126,36 +123,32 @@
           <i data-lucide="git-fork" class="w-4 h-4"></i> Chave Interativa
         </button>
         <button onclick="switchMainTab('glossary')" id="tab-btn-glossary" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
-          <i data-lucide="microscope" class="w-4 h-4"></i> Glossário Anatômico
+          <i data-lucide="microscope" class="w-4 h-4"></i> Estruturas (<span id="nav-count-terms">0</span>)
         </button>
         <button onclick="switchMainTab('taxa')" id="tab-btn-taxa" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
-          <i data-lucide="bug" class="w-4 h-4"></i> Grupos (Táxons)
+          <i data-lucide="bug" class="w-4 h-4"></i> Grupos (<span id="nav-count-taxa">0</span>)
         </button>
         <button onclick="switchMainTab('editor')" id="tab-btn-editor" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-amber-300 hover:text-amber-200">
-          <i data-lucide="sliders" class="w-4 h-4"></i> Construir / Editar
+          <i data-lucide="sliders" class="w-4 h-4"></i> Construir Chave
         </button>
       </nav>
 
-      <!-- Botões de Sincronização e Backup -->
-      <div class="flex items-center gap-1.5">
-        <button onclick="openCloudModal()" title="Conectar banco compartilhado para equipe do laboratório" class="flex items-center gap-1.5 bg-sky-500/20 hover:bg-sky-500/30 text-white border border-sky-300/30 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
-          <i data-lucide="cloud" class="w-4 h-4 text-sky-300"></i>
-          <span class="hidden sm:inline">Equipe / Nuvem</span>
+      <!-- Botão de Perfil e Histórico de Versões -->
+      <div class="flex items-center gap-2">
+        <button onclick="openCloudModal()" title="Perfil, Sincronização e Histórico de Versões" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+          <i data-lucide="history" class="w-4 h-4 text-sky-300"></i>
+          <div class="text-left hidden sm:block">
+            <span class="block text-[9px] uppercase tracking-wider text-sky-200 leading-none">Pesquisador(a)</span>
+            <span id="header-author-name" class="text-xs font-extrabold leading-tight">Definir Nome</span>
+          </div>
         </button>
-        <button onclick="exportDatabase()" title="Salvar arquivo JSON" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition">
-          <i data-lucide="download" class="w-4 h-4"></i>
-        </button>
-        <label title="Carregar arquivo JSON" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition cursor-pointer">
-          <i data-lucide="upload" class="w-4 h-4"></i>
-          <input type="file" accept=".json" class="hidden" onchange="importDatabase(event)">
-        </label>
       </div>
     </div>
   </header>
 
-  <!-- ==================== NAVEGAÇÃO INFERIOR PARA CELULAR (MOBILE FIRST) ==================== -->
+  <!-- ==================== NAVEGAÇÃO INFERIOR PARA CELULAR ==================== -->
   <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl z-40 grid grid-cols-4 py-1.5 px-2">
-    <button onclick="switchMainTab('key')" id="mob-tab-key" class="flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 font-bold text-[11px]">
+    <button onclick="switchMainTab('key')" id="mob-tab-key" class="flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 bg-sky-50 font-extrabold text-[11px]">
       <i data-lucide="git-fork" class="w-5 h-5 mb-0.5"></i> Chave
     </button>
     <button onclick="switchMainTab('glossary')" id="mob-tab-glossary" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
@@ -165,7 +158,7 @@
       <i data-lucide="bug" class="w-5 h-5 mb-0.5"></i> Grupos
     </button>
     <button onclick="switchMainTab('editor')" id="mob-tab-editor" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
-      <i data-lucide="sliders" class="w-5 h-5 mb-0.5"></i> Editar
+      <i data-lucide="sliders" class="w-5 h-5 mb-0.5"></i> Construir
     </button>
   </nav>
 
@@ -179,7 +172,7 @@
         <div class="flex items-center gap-1.5 flex-wrap text-xs" id="key-breadcrumb"></div>
         <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
           <button onclick="stepBackKey()" id="btn-key-back" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Passo Anterior
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
           </button>
           <button onclick="resetKey()" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
             <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reiniciar
@@ -193,22 +186,20 @@
 
         <!-- Barra Lateral: Busca Rápida de Estruturas + Histórico -->
         <div class="lg:col-span-4 space-y-5">
-          <!-- Widget de Consulta de Estrutura -->
           <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 mb-2.5 flex items-center gap-1.5">
-              <i data-lucide="search" class="w-4 h-4 text-sky-600"></i> Dúvida em uma estrutura?
+              <i data-lucide="search" class="w-4 h-4 text-sky-600"></i> Consultar Estrutura Rápido
             </h3>
             <div class="relative mb-3">
-              <input type="text" id="quick-term-search" oninput="renderQuickTermSearch()" placeholder="Ex: brânquia, garra, lígula..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500 focus:bg-white transition">
+              <input type="text" id="quick-term-search" oninput="renderQuickTermSearch()" placeholder="Ex: brânquia, garra, máscara..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500 focus:bg-white transition">
               <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
             </div>
             <div id="quick-term-results" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
           </div>
 
-          <!-- Trilha de Decisões Tomadas -->
           <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
             <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 mb-3 flex items-center gap-1.5">
-              <i data-lucide="footprints" class="w-4 h-4 text-emerald-600"></i> Caminho Seguido na Lupa
+              <i data-lucide="footprints" class="w-4 h-4 text-emerald-600"></i> Caminho Percorrido
             </h3>
             <div id="key-history-list" class="space-y-2.5 text-xs text-slate-600"></div>
           </div>
@@ -223,11 +214,11 @@
           <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
             <i data-lucide="microscope" class="w-6 h-6 text-sky-600"></i> Biblioteca de Estruturas Anatômicas
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Qualquer termo cadastrado aqui vira automaticamente um botão de lupa quando escrito nos passos da chave.</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Qualquer termo cadastrado aqui vira automaticamente um botão de lupa nos passos da chave.</p>
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div class="relative flex-1 sm:w-60">
-            <input type="text" id="glossary-search-input" oninput="renderGlossaryView()" placeholder="Buscar termo..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <input type="text" id="glossary-search-input" oninput="renderGlossaryView()" placeholder="Buscar estrutura..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
             <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
           </div>
           <select id="glossary-taxon-filter" onchange="renderGlossaryView()" class="py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
@@ -247,9 +238,9 @@
       <div class="bg-white p-5 rounded-2xl shadow-sm border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
-            <i data-lucide="bug" class="w-6 h-6 text-emerald-600"></i> Grupos de Macroinvertebrados (Táxons)
+            <i data-lucide="bug" class="w-6 h-6 text-emerald-600"></i> Catálogo de Macroinvertebrados (Táxons)
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Ordens, famílias e gêneros vinculados à chave do LHF.</p>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Ordens, famílias e gêneros registrados na chave do LHF.</p>
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div class="relative flex-1 sm:w-64">
@@ -265,25 +256,33 @@
       <div id="taxa-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </section>
 
-    <!-- ==================== ABA 4: CONSTRUTOR SIMPLIFICADO ==================== -->
+    <!-- ==================== ABA 4: CONSTRUTOR INTUITIVO ==================== -->
     <section id="view-editor" class="hidden space-y-5 fade-slide-in">
       
-      <!-- Banner Explicativo Simples -->
-      <div class="bg-gradient-to-r from-sky-900 to-sky-800 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <!-- Barra de Status do Construtor + Botão de Publicar -->
+      <div class="bg-gradient-to-r from-sky-950 via-sky-900 to-teal-900 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div class="flex items-center gap-3.5">
-          <div class="bg-sky-500/20 p-2.5 rounded-xl border border-sky-400/30">
-            <i data-lucide="sparkles" class="w-6 h-6 text-sky-300"></i>
+          <div class="bg-sky-500/20 p-2.5 rounded-xl border border-sky-400/30 shrink-0">
+            <i data-lucide="Hammer" class="w-6 h-6 text-sky-300"></i>
           </div>
           <div>
-            <h2 class="font-extrabold text-base sm:text-lg">Modo Construtor Simplificado</h2>
+            <div class="flex items-center gap-2">
+              <h2 class="font-extrabold text-base sm:text-lg">Estúdio de Edição Colaborativa</h2>
+              <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">ImgBB Ativo</span>
+            </div>
             <p class="text-xs text-sky-200 mt-0.5">
-              <strong>Sem códigos complicados:</strong> Basta escrever normalmente. Qualquer palavra cadastrada em "Estruturas" ganha lupa sozinha no texto!
+              Suas edições salvam na nuvem automaticamente com proteção contra sobrescrita e backup de versões.
             </p>
           </div>
         </div>
-        <button onclick="resetToFactoryData()" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-sky-100 shrink-0 transition">
-          Restaurar Exemplo Inicial
-        </button>
+        <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+          <button onclick="pullFromCloud(true)" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Atualizar da Nuvem
+          </button>
+          <button onclick="openCloudModal()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Ver Versões / Backups
+          </button>
+        </div>
       </div>
 
       <!-- Seletor de Sub-Abas do Construtor -->
@@ -295,22 +294,28 @@
           <i data-lucide="microscope" class="w-4 h-4"></i> <span>2. Estruturas (Lupas)</span>
         </button>
         <button onclick="switchEditorSubTab('taxa')" id="ed-tab-taxa" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
-          <i data-lucide="bug" class="w-4 h-4"></i> <span>3. Grupos (Finais)</span>
+          <i data-lucide="bug" class="w-4 h-4"></i> <span>3. Grupos (Resultados)</span>
         </button>
       </div>
 
       <!-- SUB-ABA 4.1: EDITOR DE PASSOS -->
       <div id="editor-sub-nodes" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[500px] lg:max-h-[720px]">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[520px] lg:max-h-[750px]">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-slate-800 text-sm">Passos Cadastrados</h3>
+            <h3 class="font-extrabold text-slate-800 text-sm">Passos da Chave</h3>
             <button onclick="createNewNode()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Passo
             </button>
           </div>
-          <div class="mb-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-            <label class="text-[10px] font-extrabold uppercase text-slate-400 block mb-1">Qual é o 1º Passo da Chave?</label>
-            <select id="editor-root-node-select" onchange="updateRootNode(this.value)" class="w-full text-xs bg-white border border-slate-300 rounded-lg p-1.5 font-bold text-sky-900"></select>
+
+          <div class="relative mb-2.5">
+            <input type="text" id="editor-node-search" oninput="renderEditorNodesList()" placeholder="Filtrar passo..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
+          </div>
+
+          <div class="mb-3 bg-sky-50/60 p-2.5 rounded-xl border border-sky-100">
+            <label class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">Passo Inicial (Raiz da Chave)</label>
+            <select id="editor-root-node-select" onchange="updateRootNode(this.value)" class="w-full text-xs bg-white border border-sky-200 rounded-lg p-1.5 font-bold text-sky-950"></select>
           </div>
           <div id="editor-nodes-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
@@ -320,12 +325,16 @@
 
       <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (GLOSSÁRIO) -->
       <div id="editor-sub-terms" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[450px] lg:max-h-[680px]">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[700px]">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-extrabold text-slate-800 text-sm">Estruturas & Termos</h3>
             <button onclick="createNewTerm()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Estrutura
             </button>
+          </div>
+          <div class="relative mb-3">
+            <input type="text" id="editor-term-search" oninput="renderEditorTermsList()" placeholder="Filtrar estrutura..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
           </div>
           <div id="editor-terms-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
@@ -334,12 +343,16 @@
 
       <!-- SUB-ABA 4.3: EDITOR DE TÁXONS -->
       <div id="editor-sub-taxa" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[450px] lg:max-h-[680px]">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[700px]">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-extrabold text-slate-800 text-sm">Grupos Taxonômicos</h3>
             <button onclick="createNewTaxon()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Grupo
             </button>
+          </div>
+          <div class="relative mb-3">
+            <input type="text" id="editor-taxon-search" oninput="renderEditorTaxaList()" placeholder="Filtrar grupo..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
           </div>
           <div id="editor-taxa-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
@@ -370,35 +383,73 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL: SINCRONIZAÇÃO EM NUVEM P/ LABORATÓRIO ==================== -->
+  <!-- ==================== MODAL: CENTRAL DA EQUIPE & HISTÓRICO DE VERSÕES (SEM POLUIÇÃO) ==================== -->
   <div id="cloud-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden fade-slide-in">
-      <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+    <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden fade-slide-in">
+      <div class="lhf-header-gradient text-white px-5 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <i data-lucide="cloud" class="w-5 h-5 text-sky-400"></i>
-          <h3 class="font-bold text-base">Banco Compartilhado em Tempo Real (Equipe LHF)</h3>
+          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-300"></i>
+          <div>
+            <h3 class="font-extrabold text-base">Central da Equipe LHF & Backups</h3>
+            <p class="text-[11px] text-sky-200">Sincronização ativa e máquina do tempo contra perda de dados</p>
+          </div>
         </div>
-        <button onclick="closeCloudModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeCloudModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <div class="p-5 space-y-4 text-xs sm:text-sm text-slate-600">
-        <p>Para que você e seus colegas do LHF editem a chave juntos pelo celular ou PC gratuitamente 24h/dia:</p>
-        <ol class="list-decimal list-inside space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
-          <li>Acesse <strong>console.firebase.google.com</strong> (gratuito com conta Google).</li>
-          <li>Crie um projeto rápido, clique em <strong>Realtime Database</strong> → <em>Criar banco de dados (Modo de teste)</em>.</li>
-          <li>Copie o link do banco (ex: <code class="text-sky-700">https://lhf-macrokey-default-rtdb.firebaseio.com/</code>) e cole abaixo:</li>
-        </ol>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">URL do Firebase Realtime Database (Opcional):</label>
-          <input type="url" id="firebase-url-input" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 focus:outline-none focus:border-sky-600">
-        </div>
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-          <button onclick="pullFromCloud()" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold">
-            <i data-lucide="cloud-download" class="w-4 h-4 text-sky-600"></i> Baixar da Nuvem Agora
-          </button>
+
+      <div class="p-5 space-y-5 max-h-[82vh] overflow-y-auto">
+        <!-- 1. Identificação do Pesquisador -->
+        <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200">
+          <label class="block text-xs font-extrabold uppercase text-sky-900 mb-1.5">Seu Nome / Apelido no Laboratório</label>
           <div class="flex gap-2">
-            <button onclick="saveCloudConfigAndPush()" class="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm">
-              <i data-lucide="cloud-upload" class="w-4 h-4"></i> Salvar & Enviar p/ Equipe
+            <input type="text" id="author-name-input" placeholder="Ex: Cadu, Pedro, Maria Clara..." class="flex-1 text-sm bg-white border border-sky-300 rounded-xl px-3 py-2 font-bold text-slate-800 focus:outline-none focus:border-sky-600">
+            <button onclick="saveAuthorName()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition">
+              Salvar Nome
             </button>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1.5">Seu nome aparece nos pontos de restauração para que um colega não sobrescreva o trabalho do outro sem saber.</p>
+        </div>
+
+        <!-- 2. Status da Versão Atual -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
+          <div>
+            <span class="text-slate-400 font-bold uppercase text-[10px] block">Última atualização na nuvem</span>
+            <span id="cloud-last-meta" class="font-bold text-slate-800">Verificando...</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="pullFromCloud(true)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <i data-lucide="cloud-download" class="w-3.5 h-3.5 text-sky-600"></i> Puxar da Nuvem
+            </button>
+            <button onclick="forcePushWithBackup('Ponto de restauração manual')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <i data-lucide="cloud-upload" class="w-3.5 h-3.5"></i> Forçar Envio
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Histórico de Versões (Rollbacks na Nuvem) -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <i data-lucide="history" class="w-4 h-4 text-sky-600"></i> Últimas Versões Salvas (Restaurar Backup)
+            </h4>
+            <button onclick="loadCloudBackupsList()" class="text-[11px] text-sky-600 font-bold hover:underline">Atualizar lista</button>
+          </div>
+          <div id="cloud-backups-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <p class="text-xs text-slate-400 italic py-2">Carregando histórico da nuvem...</p>
+          </div>
+        </div>
+
+        <!-- 4. Backup em Arquivo Local (.JSON) -->
+        <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs font-bold text-slate-500">Backup físico no aparelho:</span>
+          <div class="flex items-center gap-2">
+            <button onclick="exportDatabase()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Baixar .JSON
+            </button>
+            <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importar .JSON
+              <input type="file" accept=".json" class="hidden" onchange="importDatabase(event)">
+            </label>
           </div>
         </div>
       </div>
@@ -413,12 +464,26 @@
 
   <script>
     // ============================================================================
-    // 1. DADOS INICIAIS DE EXEMPLO (MACROINVERTEBRADOS AQUÁTICOS - LHF)
+    // 1. CONFIGURAÇÕES FIXAS DO LHF (FIREBASE + IMGBB API)
+    // ============================================================================
+    const FIREBASE_BASE_URL = "https://lhf-macrokey-default-rtdb.firebaseio.com";
+    const FIREBASE_MAIN_ENDPOINT = `${FIREBASE_BASE_URL}/lhf_macrokey.json`;
+    const FIREBASE_BACKUPS_ENDPOINT = `${FIREBASE_BASE_URL}/lhf_backups.json`;
+    const IMGBB_API_KEY = "e567c0c399da8d64e5b04704f180995d";
+
+    const STORAGE_KEY = "lhf_macrokey_db_v3";
+    const AUTHOR_KEY = "lhf_macrokey_author_name";
+
+    // ============================================================================
+    // 2. DADOS INICIAIS DE EXEMPLO (MACROINVERTEBRADOS AQUÁTICOS - LHF)
     // ============================================================================
     const DEFAULT_DB = {
       meta: {
         title: "Chave Prática de Macroinvertebrados Bentônicos - LHF",
-        startNodeId: "passo_1"
+        startNodeId: "passo_1",
+        revision: 1,
+        lastAuthor: "Sistema LHF",
+        lastUpdated: new Date().toISOString()
       },
       terms: [
         {
@@ -591,15 +656,11 @@
     };
 
     // ============================================================================
-    // 2. GERENCIAMENTO DE ESTADO, COMPRESSÃO DE IMAGEM E NUVEM
+    // 3. ESTADO, UPLOAD IMGBB E PROTEÇÃO ANTI-SOBRESCRITA COM BACKUP
     // ============================================================================
-    const STORAGE_KEY = "lhf_macrokey_db_v2";
-    const CLOUD_URL_KEY = "lhf_macrokey_firebase_url";
-    const DEFAULT_FIREBASE_URL = "https://lhf-macrokey-default-rtdb.firebaseio.com/";
-if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("https://")) {
-  localStorage.setItem(CLOUD_URL_KEY, DEFAULT_FIREBASE_URL);
-}
-    let db = loadDatabase();
+    let db = loadLocalDatabase();
+    let lastSyncedRevision = db.meta?.revision || 1;
+    let syncDebounceTimer = null;
 
     let keyState = {
       currentNodeId: db.meta.startNodeId || (db.nodes[0] ? db.nodes[0].id : null),
@@ -614,63 +675,327 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       selectedTaxonId: db.taxa[0]?.id || null
     };
 
-    function loadDatabase() {
+    function getAuthorName() {
+      return localStorage.getItem(AUTHOR_KEY) || "";
+    }
+
+    function ensureAuthorIdentified() {
+      let name = getAuthorName();
+      if (!name) {
+        name = prompt("Para proteger as edições da equipe LHF, digite seu nome ou apelido (ex: Cadu, Pedro):", "Cadu") || "Pesquisador LHF";
+        localStorage.setItem(AUTHOR_KEY, name.trim());
+        updateHeaderAuthorUI();
+      }
+      return name;
+    }
+
+    function saveAuthorName() {
+      const val = document.getElementById("author-name-input").value.trim();
+      if (!val) return;
+      localStorage.setItem(AUTHOR_KEY, val);
+      updateHeaderAuthorUI();
+      showToast(`Identificado como: ${val}`);
+    }
+
+    function updateHeaderAuthorUI() {
+      const name = getAuthorName() || "Definir Nome";
+      const el = document.getElementById("header-author-name");
+      if (el) el.textContent = name;
+      const input = document.getElementById("author-name-input");
+      if (input) input.value = getAuthorName();
+    }
+
+    function loadLocalDatabase() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          parsed.meta = parsed.meta || { revision: 1 };
+          return parsed;
+        }
       } catch (e) {
         console.error("Erro ao ler localStorage:", e);
       }
       return JSON.parse(JSON.stringify(DEFAULT_DB));
     }
 
-    function saveDatabase(msg = "Salvo automaticamente") {
+    // Salva localmente e agenda sincronização segura com a nuvem (debounce de 1.2s para não enviar a cada letra digitada)
+    function saveDatabase(actionLabel = "Alteração salva") {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-        showToast(msg);
+        updateHeaderCounters();
         renderQuickTermSearch();
-        // Se tiver nuvem configurada, sincroniza em background
-        const cloudUrl = localStorage.getItem(CLOUD_URL_KEY);
-        if (cloudUrl) pushToCloudSilent(cloudUrl);
+        setSyncStatusUI("saving", "Salvando na nuvem...");
+
+        clearTimeout(syncDebounceTimer);
+        syncDebounceTimer = setTimeout(() => {
+          syncWithCloudSafe(actionLabel);
+        }, 1200);
       } catch (e) {
-        alert("Limite de memória local atingido! Exporte seu JSON ou remova fotos muito pesadas.");
+        alert("Erro ao salvar no navegador.");
       }
     }
 
-    // COMPRESSOR AUTOMÁTICO DE IMAGENS (Evita travar o navegador e corrige o bug de upload)
-    function compressAndReadImage(file, callback) {
-      if (!file) return;
+    function setSyncStatusUI(state, text) {
+      const dot = document.getElementById("sync-dot");
+      const label = document.getElementById("sync-status-text");
+      if (!dot || !label) return;
+      label.textContent = text;
+      if (state === "saving") {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
+      } else if (state === "error") {
+        dot.className = "w-2 h-2 rounded-full bg-rose-400";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+      }
+    }
+
+    // SINCRONIZAÇÃO COM VERIFICAÇÃO DE CONFLITO E BACKUP AUTOMÁTICO DE VERSÕES
+    async function syncWithCloudSafe(actionSummary = "Edição na chave") {
+      const author = getAuthorName() || "Pesquisador LHF";
+      try {
+        // 1. Consulta a versão que está na nuvem antes de sobrescrever
+        const checkRes = await fetch(FIREBASE_MAIN_ENDPOINT);
+        const remoteDb = await checkRes.json();
+
+        if (remoteDb && remoteDb.meta && remoteDb.meta.revision > lastSyncedRevision) {
+          // Outro colega salvou algo mais novo!
+          const remoteAuthor = remoteDb.meta.lastAuthor || "Outro colega";
+          const confirmOverwrite = confirm(
+            `⚠️ ATENÇÃO (Proteção contra Sobrescrita):\n\n` +
+            `${remoteAuthor} acabou de atualizar a chave na nuvem (Revisão #${remoteDb.meta.revision}).\n\n` +
+            `• Clique em [Cancelar] para BAIXAR a versão de ${remoteAuthor} e não perder o que ele(a) fez.\n` +
+            `• Clique em [OK] se quiser gravar a sua versão por cima (a versão de ${remoteAuthor} ficará salva nos Backups).`
+          );
+
+          if (!confirmOverwrite) {
+            db = remoteDb;
+            lastSyncedRevision = remoteDb.meta.revision;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+            renderAll();
+            setSyncStatusUI("ok", `Atualizado (${remoteAuthor})`);
+            showToast(`Versão de ${remoteAuthor} carregada!`);
+            return;
+          }
+        }
+
+        // 2. Se havia dados válidos na nuvem e a diferença de tempo for > 2 min (ou autor diferente), guarda um backup na fila!
+        if (remoteDb && remoteDb.nodes) {
+          await pushVersionToBackupHistory(remoteDb);
+        }
+
+        // 3. Incrementa a revisão e grava a nova versão
+        const nextRev = Math.max(lastSyncedRevision, remoteDb?.meta?.revision || 0) + 1;
+        db.meta = {
+          ...db.meta,
+          revision: nextRev,
+          lastAuthor: author,
+          lastUpdated: new Date().toISOString(),
+          lastAction: actionSummary
+        };
+
+        const putRes = await fetch(FIREBASE_MAIN_ENDPOINT, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(db)
+        });
+
+        if (putRes.ok) {
+          lastSyncedRevision = nextRev;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+          setSyncStatusUI("ok", `Sincronizado (v${nextRev})`);
+          updateCloudMetaModalText();
+        }
+      } catch (err) {
+        console.warn("Erro ao sincronizar:", err);
+        setSyncStatusUI("error", "Offline (Salvo no aparelho)");
+      }
+    }
+
+    // Guarda até 5 versões anteriores no nó /lhf_backups.json do Firebase
+    async function pushVersionToBackupHistory(snapshotToBackup) {
+      try {
+        const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
+        let backups = await res.json();
+        if (!Array.isArray(backups)) backups = [];
+
+        // Evita duplicar backup se a revisão for idêntica à última salva na fila
+        if (backups.length > 0 && backups[0]. revision === snapshotToBackup.meta?.revision) {
+          return;
+        }
+
+        backups.unshift({
+          revision: snapshotToBackup.meta?.revision || 1,
+          author: snapshotToBackup.meta?.lastAuthor || "Equipe LHF",
+          timestamp: snapshotToBackup.meta?.lastUpdated || new Date().toISOString(),
+          action: snapshotToBackup.meta?.lastAction || "Versão anterior",
+          stats: `${snapshotToBackup.nodes?.length || 0} passos, ${snapshotToBackup.terms?.length || 0} estruturas`,
+          data: snapshotToBackup
+        });
+
+        // Mantém as 5 últimas versões completas
+        backups = backups.slice(0, 5);
+
+        await fetch(FIREBASE_BACKUPS_ENDPOINT, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(backups)
+        });
+      } catch (e) {
+        console.warn("Não foi possível gravar histórico de backup:", e);
+      }
+    }
+
+    async function forcePushWithBackup(reason) {
+      ensureAuthorIdentified();
+      await syncWithCloudSafe(reason);
+      await loadCloudBackupsList();
+      showToast("Versão enviada e backup registrado!");
+    }
+
+    async function pullFromCloud(notify = false) {
+      try {
+        setSyncStatusUI("saving", "Buscando nuvem...");
+        const res = await fetch(FIREBASE_MAIN_ENDPOINT);
+        const data = await res.json();
+        if (data && data.nodes && data.terms) {
+          db = data;
+          lastSyncedRevision = data.meta?.revision || 1;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+          renderAll();
+          setSyncStatusUI("ok", `Sincronizado (v${lastSyncedRevision})`);
+          updateCloudMetaModalText();
+          if (notify) showToast(`Chave atualizada (v${lastSyncedRevision} por ${data.meta?.lastAuthor || 'Equipe'})!`);
+        } else {
+          // Se o banco no Firebase ainda estiver vazio, inicializa com o banco local
+          await syncWithCloudSafe("Inicialização da chave LHF");
+        }
+      } catch (e) {
+        setSyncStatusUI("error", "Modo Local");
+        if (notify) alert("Não foi possível conectar ao servidor da nuvem agora.");
+      }
+    }
+
+    async function loadCloudBackupsList() {
+      const container = document.getElementById("cloud-backups-list");
+      if (!container) return;
+      try {
+        const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
+        const backups = await res.json();
+        if (!Array.isArray(backups) || backups.length === 0) {
+          container.innerHTML = `<div class="p-3 bg-slate-50 rounded-xl border text-xs text-slate-400 text-center">Nenhum ponto de restauração anterior ainda. Eles são criados automaticamente conforme a equipe edita.</div>`;
+          return;
+        }
+
+        container.innerHTML = backups.map((b, idx) => {
+          const dt = new Date(b.timestamp).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+          return `
+            <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between gap-2 hover:border-sky-300 transition">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-extrabold text-[10px] mono">v${b.revision}</span>
+                  <span class="text-xs font-extrabold text-slate-800">${b.author}</span>
+                  <span class="text-[11px] text-slate-400">• ${dt}</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">${b.action || 'Salvamento automático'} (${b.stats || ''})</p>
+              </div>
+              <button onclick="restoreBackupVersion(${idx})" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shrink-0 transition">
+                Restaurar
+              </button>
+            </div>
+          `;
+        }).join('');
+      } catch (e) {
+        container.innerHTML = `<p class="text-xs text-rose-500">Erro ao carregar histórico.</p>`;
+      }
+    }
+
+    async function restoreBackupVersion(index) {
+      try {
+        const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
+        const backups = await res.json();
+        const target = backups?.[index];
+        if (!target || !target.data) return;
+
+        if (!confirm(`Deseja restaurar a chave para a versão v${target.revision} (salva por ${target.author})?\n\nA versão atual não será perdida (irá para o topo dos backups).`)) return;
+
+        ensureAuthorIdentified();
+        db = JSON.parse(JSON.stringify(target.data));
+        await syncWithCloudSafe(`Restaurou backup v${target.revision}`);
+        resetKey();
+        renderAll();
+        await loadCloudBackupsList();
+        showToast(`Versão v${target.revision} restaurada com sucesso!`);
+      } catch (e) {
+        alert("Erro ao restaurar versão.");
+      }
+    }
+
+    // ============================================================================
+    // 4. UPLOAD DE IMAGENS DIRETO PARA O IMGBB (URL LEVE + OTIMIZAÇÃO)
+    // ============================================================================
+    function prepareImageBlobForUpload(file, callback) {
       const reader = new FileReader();
       reader.onload = function(event) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 900;
-          const MAX_HEIGHT = 900;
+          const MAX_DIM = 1280; // Excelente nitidez para estruturas na lupa e leve para upload
           let width = img.width;
           let height = img.height;
 
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
+          if (width > height && width > MAX_DIM) {
+            height *= MAX_DIM / width;
+            width = MAX_DIM;
+          } else if (height > MAX_DIM) {
+            width *= MAX_DIM / height;
+            height = MAX_DIM;
           }
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.78);
-          callback(compressedBase64);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          // Extrai apenas a string Base64 limpa exigida pela API do ImgBB
+          const base64Clean = dataUrl.split(',')[1];
+          callback(base64Clean);
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    async function uploadFileToImgBB(file, onSuccess) {
+      if (!file) return;
+      ensureAuthorIdentified();
+      showToast("Enviando foto para o servidor ImgBB...");
+      setSyncStatusUI("saving", "Subindo imagem...");
+
+      prepareImageBlobForUpload(file, async (base64Clean) => {
+        try {
+          const formData = new FormData();
+          formData.append("key", IMGBB_API_KEY);
+          formData.append("image", base64Clean);
+
+          const response = await fetch("https://api.imgbb.com/1/upload", {
+            method: "POST",
+            body: formData
+          });
+          const result = await response.json();
+
+          if (result && result.success && result.data?.url) {
+            showToast("Foto hospedada com sucesso!");
+            onSuccess(result.data.url);
+          } else {
+            alert("Falha ao enviar para o ImgBB: " + (result?.error?.message || "Erro desconhecido"));
+            setSyncStatusUI("error", "Erro no upload");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Erro de conexão ao enviar foto para o ImgBB.");
+          setSyncStatusUI("error", "Erro de rede");
+        }
+      });
     }
 
     function showToast(message) {
@@ -679,11 +1004,11 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       toast.classList.remove("opacity-0", "pointer-events-none");
       setTimeout(() => {
         toast.classList.add("opacity-0", "pointer-events-none");
-      }, 2400);
+      }, 2600);
     }
 
     // ============================================================================
-    // 3. DETECTOR AUTOMÁTICO DE TERMOS (AUTO-LINKER SEM PRECISAR DE [[ ]])
+    // 5. DETECTOR AUTOMÁTICO DE TERMOS (AUTO-LINKER SEM PRECISAR DE [[ ]])
     // ============================================================================
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -691,10 +1016,8 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
     function parseInteractiveText(rawText) {
       if (!rawText) return "";
-      // Limpa colchetes antigos caso o usuário tenha digitado [[termo]]
       let cleanText = rawText.replace(/\[\[([^\]]+)\]\]/g, '$1');
 
-      // Monta dicionário de todas as palavras/sinônimos cadastrados no glossário (do maior para o menor)
       const phraseMap = [];
       db.terms.forEach(term => {
         if (term.name && term.name.trim()) {
@@ -710,7 +1033,6 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       phraseMap.sort((a, b) => b.phrase.length - a.phrase.length);
       if (phraseMap.length === 0) return cleanText;
 
-      // Substitui em uma única passagem usando tokens temporários para não aninhar HTML
       const placeholders = [];
       phraseMap.forEach((item) => {
         const regex = new RegExp(`(${escapeRegExp(item.phrase)})`, 'gi');
@@ -718,7 +1040,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
           const token = `__LHF_TERM_${placeholders.length}__`;
           placeholders.push({
             token,
-            html: `<button type="button" onclick="event.stopPropagation(); openTermModal('${item.id}')" class="term-chip" title="Clique para ver fotos e descrição desta estrutura">
+            html: `<button type="button" onclick="event.stopPropagation(); openTermModal('${item.id}')" class="term-chip" title="Ver fotos e descrição desta estrutura">
               <i data-lucide="search" class="w-3.5 h-3.5 shrink-0"></i>
               <span>${match}</span>
             </button>`
@@ -751,7 +1073,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     // ============================================================================
-    // 4. RENDERIZAÇÃO DA CHAVE INTERATIVA
+    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA
     // ============================================================================
     function renderKeyView() {
       const stage = document.getElementById("key-active-stage");
@@ -799,7 +1121,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         `).join('');
       }
 
-      // Se chegou em um Grupo Taxonômico Final
+      // Resultado Final (Táxon)
       if (keyState.currentTaxonId) {
         const taxon = db.taxa.find(t => t.id === keyState.currentTaxonId);
         if (!taxon) {
@@ -820,7 +1142,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                 </div>
               </div>
               <button onclick="editSpecificItem('taxon', '${taxon.id}')" class="bg-white/15 hover:bg-white/25 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition">
-                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar Grupo
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar Ficha
               </button>
             </div>
 
@@ -834,7 +1156,9 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
               ${taxon.images && taxon.images.length > 0 ? `
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   ${taxon.images.map(img => `
-                    <img src="${img}" alt="${taxon.name}" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-xs">
+                    <a href="${img}" target="_blank">
+                      <img src="${img}" alt="${taxon.name}" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-xs">
+                    </a>
                   `).join('')}
                 </div>
               ` : ''}
@@ -845,7 +1169,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                   <div class="text-sm text-slate-700 leading-relaxed">${parseInteractiveText(taxon.description)}</div>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Hábitat & Ecologia no Riacho</h4>
+                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Hábitat & Ecologia</h4>
                   <p class="text-sm text-slate-700 leading-relaxed">${taxon.habitat || 'Sem notas ecológicas.'}</p>
                 </div>
               </div>
@@ -869,7 +1193,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         return;
       }
 
-      // Renderiza o Passo Atual (Nó)
+      // Passo Atual (Nó)
       const node = db.nodes.find(n => n.id === keyState.currentNodeId);
       if (!node) {
         stage.innerHTML = `<div class="bg-white p-8 rounded-2xl border text-center">
@@ -886,8 +1210,8 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
               <span class="inline-block px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-xs mono mb-1">${node.code}</span>
               <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${node.title}</h2>
             </div>
-            <button onclick="editSpecificItem('node', '${node.id}')" class="text-xs bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 shrink-0 transition">
-              <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Editar
+            <button onclick="editSpecificItem('node', '${node.id}')" class="text-xs bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shrink-0 transition">
+              <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Editar Passo
             </button>
           </div>
           ${node.notes ? `<p class="text-xs sm:text-sm text-sky-900 bg-sky-50/80 border border-sky-200/70 px-3 py-2 rounded-xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
@@ -903,7 +1227,6 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                 destBadge = `<span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
               }
 
-              // Botões extras de estruturas marcadas via checkbox neste ramo
               const extraTerms = (opt.attachedTerms || [])
                 .map(tid => db.terms.find(t => t.id === tid))
                 .filter(Boolean);
@@ -924,7 +1247,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
                     ${extraTerms.length > 0 ? `
                       <div class="pt-2 flex flex-wrap items-center gap-1.5 border-t border-slate-100">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 mr-1">Ver estrutura na lupa:</span>
+                        <span class="text-[10px] font-bold uppercase text-slate-400 mr-1">Inspecionar estrutura:</span>
                         ${extraTerms.map(t => `
                           <button type="button" onclick="event.stopPropagation(); openTermModal('${t.id}')" class="term-chip text-xs">
                             <i data-lucide="search" class="w-3 h-3"></i> ${t.name}
@@ -953,7 +1276,9 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       if (!opt) return;
 
       if (!opt.targetId) {
-        alert("Esta alternativa ainda não está conectada a um próximo passo ou grupo. Selecione o destino na aba 'Construir / Editar'.");
+        if (confirm("Esta opção ainda não tem um destino conectado. Deseja abrir este passo no Construtor para conectar agora?")) {
+          editSpecificItem('node', node.id);
+        }
         return;
       }
 
@@ -1036,7 +1361,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     // ============================================================================
-    // 5. MODAL DE ESTRUTURA ANATÔMICA E GALERIA DO GLOSSÁRIO
+    // 7. MODAL DE ESTRUTURA ANATÔMICA E GALERIAS
     // ============================================================================
     function openTermModal(termId) {
       const modal = document.getElementById("term-modal");
@@ -1057,7 +1382,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       bodyEl.innerHTML = `
         ${term.synonyms && term.synonyms.length ? `
           <div class="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">
-            <strong>Termos reconhecidos automaticamente:</strong> ${[term.name, ...term.synonyms].join(', ')}
+            <strong>Variações reconhecidas no texto:</strong> ${[term.name, ...term.synonyms].join(', ')}
           </div>
         ` : ''}
 
@@ -1067,10 +1392,10 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
         ${term.images && term.images.length > 0 ? `
           <div>
-            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Exemplos em Fotos / Esquemas</h4>
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Exemplos em Fotos / Esquemas (Toque para ampliar)</h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               ${term.images.map(img => `
-                <a href="${img}" target="_blank" title="Abrir imagem em tamanho maior">
+                <a href="${img}" target="_blank" title="Abrir imagem original">
                   <img src="${img}" alt="${term.name}" class="w-full h-52 object-cover rounded-xl border border-slate-200 shadow-xs hover:opacity-95 transition">
                 </a>
               `).join('')}
@@ -1085,7 +1410,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="border border-slate-200 rounded-xl p-3.5">
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-              <i data-lucide="bug" class="w-3.5 h-3.5 text-emerald-600"></i> Grupos onde está presente
+              <i data-lucide="bug" class="w-3.5 h-3.5 text-emerald-600"></i> Grupos onde é comum
             </h4>
             ${linkedTaxa.length > 0 ? `
               <div class="flex flex-wrap gap-1.5">
@@ -1111,14 +1436,14 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                   </button>
                 `).join('')}
               </div>
-            ` : `<p class="text-xs text-slate-400 italic">Ainda não associada a nenhum passo.</p>`}
+            ` : `<p class="text-xs text-slate-400 italic">Ainda não citada em nenhum passo.</p>`}
           </div>
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
           <button onclick="closeTermModal()" class="text-xs font-bold text-slate-500 hover:text-slate-800">Fechar</button>
-          <button onclick="closeTermModal(); editSpecificItem('term', '${term.id}')" class="bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
-            <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> Adicionar Fotos / Editar Estrutura
+          <button onclick="closeTermModal(); editSpecificItem('term', '${term.id}')" class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs">
+            <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> Adicionar Foto / Editar
           </button>
         </div>
       `;
@@ -1176,7 +1501,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
             ` : `
               <div class="w-full h-28 bg-sky-50/60 flex flex-col items-center justify-center text-sky-400 border-b border-sky-100">
                 <i data-lucide="camera" class="w-7 h-7 mb-1 opacity-60"></i>
-                <span class="text-[11px] font-semibold">Toque p/ ver ou adicionar foto</span>
+                <span class="text-[11px] font-semibold">Toque p/ inspecionar ou enviar foto</span>
               </div>
             `}
             <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
@@ -1205,9 +1530,6 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       lucide.createIcons();
     }
 
-    // ============================================================================
-    // 6. CATÁLOGO DE GRUPOS TAXONÔMICOS
-    // ============================================================================
     function renderTaxaView() {
       const q = (document.getElementById("taxa-search-input")?.value || "").toLowerCase().trim();
       const grid = document.getElementById("taxa-grid");
@@ -1247,7 +1569,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                   </button>
                 `).join('')}
               </div>
-              <button onclick="viewTaxonInKey('${tx.id}')" class="text-xs font-extrabold text-emerald-700 hover:underline shrink-0">Abrir Ficha →</button>
+              <button onclick="viewTaxonInKey('${tx.id}')" class="text-xs font-extrabold text-emerald-700 hover:underline shrink-0">Ver Ficha →</button>
             </div>
           </div>
         `;
@@ -1256,7 +1578,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     // ============================================================================
-    // 7. MODO CONSTRUTOR (INTUITIVO, SEM [[ ]] E COM UPLOAD DE FOTOS CORRIGIDO)
+    // 8. MODO CONSTRUTOR APRIMORADO E INTERATIVO
     // ============================================================================
     function renderEditorView() {
       const rootSelect = document.getElementById("editor-root-node-select");
@@ -1276,21 +1598,25 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     function updateRootNode(nodeId) {
+      ensureAuthorIdentified();
       db.meta.startNodeId = nodeId;
-      saveDatabase("Passo inicial atualizado!");
+      saveDatabase("Alterou o passo inicial da chave");
       resetKey();
     }
 
-    // --- 7.1 EDITOR DE PASSOS DA CHAVE ---
+    // --- 8.1 EDITOR DE PASSOS DA CHAVE ---
     function renderEditorNodesList() {
       const listEl = document.getElementById("editor-nodes-list");
-      listEl.innerHTML = db.nodes.map(n => {
+      const q = (document.getElementById("editor-node-search")?.value || "").toLowerCase().trim();
+      const filtered = db.nodes.filter(n => !q || n.code.toLowerCase().includes(q) || n.title.toLowerCase().includes(q));
+
+      listEl.innerHTML = filtered.map(n => {
         const isSelected = n.id === editorState.selectedNodeId;
         return `
           <div onclick="selectEditorNode('${n.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600 shadow-xs' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold mono ${isSelected ? 'text-sky-800' : 'text-slate-700'}">${n.code}</span>
-              <span class="text-[11px] font-semibold text-slate-400">${n.options.length} opções</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white border text-slate-500">${n.options.length} opções</span>
             </div>
             <p class="text-xs font-semibold text-slate-800 truncate mt-0.5">${n.title}</p>
           </div>
@@ -1306,6 +1632,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     function createNewNode() {
+      ensureAuthorIdentified();
       const nextNum = db.nodes.length + 1;
       const newNode = {
         id: "passo_" + Date.now(),
@@ -1319,7 +1646,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       };
       db.nodes.push(newNode);
       editorState.selectedNodeId = newNode.id;
-      saveDatabase("Novo passo criado!");
+      saveDatabase(`Criou ${newNode.code}`);
       renderEditorView();
     }
 
@@ -1335,12 +1662,12 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         <div class="space-y-5">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
-              <h3 class="font-extrabold text-slate-900 text-base">Editando ${node.code}</h3>
-              <p class="text-xs text-slate-500">Escreva normalmente. Termos cadastrados no glossário ganham lupa sozinhos!</p>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 block">Editando Passo da Chave</span>
+              <h3 class="font-extrabold text-slate-900 text-lg">${node.code} — ${node.title}</h3>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="jumpToNodeFromExternal('${node.id}')" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
-                <i data-lucide="play" class="w-3.5 h-3.5"></i> Ver na Chave
+              <button onclick="jumpToNodeFromExternal('${node.id}')" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> Testar Passo
               </button>
               <button onclick="deleteNode('${node.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
                 Excluir
@@ -1350,26 +1677,26 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Nome/Número do Passo</label>
-              <input type="text" value="${node.code}" oninput="updateNodeField('${node.id}', 'code', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold">
+              <label class="block text-xs font-bold text-slate-600 mb-1">Código do Passo</label>
+              <input type="text" value="${node.code}" oninput="updateNodeField('${node.id}', 'code', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold bg-slate-50 focus:bg-white">
             </div>
             <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-600 mb-1">O que está sendo avaliado neste passo?</label>
-              <input type="text" value="${node.title}" oninput="updateNodeField('${node.id}', 'title', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+              <label class="block text-xs font-bold text-slate-600 mb-1">Caráter Morfológico Avaliado</label>
+              <input type="text" value="${node.title}" oninput="updateNodeField('${node.id}', 'title', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white">
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Dica para olhar na lupa (Opcional)</label>
-            <input type="text" value="${node.notes || ''}" oninput="updateNodeField('${node.id}', 'notes', this.value)" placeholder="Ex: Olhar em vista ventral..." class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+            <label class="block text-xs font-bold text-slate-600 mb-1">Dica de Observação na Lupa (Opcional)</label>
+            <input type="text" value="${node.notes || ''}" oninput="updateNodeField('${node.id}', 'notes', this.value)" placeholder="Ex: Observe em vista ventral com iluminação oblíqua..." class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white">
           </div>
 
           <!-- Alternativas / Ramos -->
           <div class="space-y-4 pt-2">
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-extrabold uppercase tracking-wider text-sky-900">Opções de Escolha (Botões deste passo)</h4>
-              <button onclick="addOptionToNode('${node.id}')" class="text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar Opção
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-sky-900">Alternativas de Decisão deste Passo</h4>
+              <button onclick="addOptionToNode('${node.id}')" class="text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar Alternativa
               </button>
             </div>
 
@@ -1377,20 +1704,25 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
               <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 space-y-3.5">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-slate-600">Código da Opção:</span>
-                    <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-extrabold mono border border-slate-300 rounded-lg px-2.5 py-1 bg-white">
+                    <span class="px-2.5 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">${opt.label}</span>
+                    <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-bold mono border border-slate-300 rounded-lg px-2 py-1 bg-white" title="Mudar rótulo (ex: 1a, 1b)">
                   </div>
-                  <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
+                  <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover alternativa</button>
                 </div>
 
                 <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Texto da Característica:</label>
-                  <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white">${opt.text}</textarea>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Descrição da Alternativa:</label>
+                  <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white focus:border-sky-500 focus:outline-none">${opt.text}</textarea>
+                  <!-- Prévia ao vivo das lupas detectadas -->
+                  <div class="mt-1.5 p-2.5 rounded-xl bg-white border border-sky-100 text-xs text-slate-600">
+                    <span class="text-[10px] font-extrabold uppercase text-sky-700 block mb-0.5">Prévia Interativa (Lupas automáticas):</span>
+                    <div id="preview-${opt.id}">${parseInteractiveText(opt.text)}</div>
+                  </div>
                 </div>
 
-                <!-- Marcar Estruturas com 1 Clique (Sem precisar de [[ ]]) -->
+                <!-- Fixar botões de estrutura extras com 1 toque -->
                 <div class="bg-white p-3 rounded-xl border border-slate-200">
-                  <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-2">Vincular botão de estrutura (Lupa) a esta opção:</label>
+                  <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-2">Fixar botão de estrutura (Lupa) no rodapé desta opção:</label>
                   <div class="flex flex-wrap gap-1.5">
                     ${db.terms.map(t => {
                       const isChecked = (opt.attachedTerms || []).includes(t.id);
@@ -1404,44 +1736,57 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <!-- Destino -->
-                  <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
-                    <label class="block text-[11px] font-extrabold uppercase text-sky-800">Ao clicar nesta opção, ir para:</label>
+                  <!-- Conexão de Destino -->
+                  <div class="bg-white p-3.5 rounded-xl border border-sky-200 space-y-2">
+                    <label class="block text-[11px] font-extrabold uppercase text-sky-900">Conexão: Ao clicar aqui, levar para:</label>
                     <div class="flex flex-col sm:flex-row gap-2">
                       <select onchange="updateOptionTargetType('${node.id}', '${opt.id}', this.value)" class="text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-slate-50 font-bold">
                         <option value="node" ${opt.targetType === 'node' ? 'selected' : ''}>Outro Passo</option>
-                        <option value="taxon" ${opt.targetType === 'taxon' ? 'selected' : ''}>Grupo Final (Resultado)</option>
+                        <option value="taxon" ${opt.targetType === 'taxon' ? 'selected' : ''}>Grupo Final (Táxon)</option>
                       </select>
 
-                      <select onchange="updateOptionField('${node.id}', '${opt.id}', 'targetId', this.value)" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white font-semibold">
-                        <option value="">-- Escolha o destino --</option>
+                      <select onchange="updateOptionField('${node.id}', '${opt.id}', 'targetId', this.value); renderEditorNodeForm(); lucide.createIcons();" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white font-semibold">
+                        <option value="">-- Selecione o destino --</option>
                         ${opt.targetType === 'node'
                           ? db.nodes.filter(n => n.id !== node.id).map(n => `<option value="${n.id}" ${opt.targetId === n.id ? 'selected' : ''}>${n.code}: ${n.title}</option>`).join('')
                           : db.taxa.map(t => `<option value="${t.id}" ${opt.targetId === t.id ? 'selected' : ''}>${t.name} (${t.order || t.rank})</option>`).join('')
                         }
                       </select>
                     </div>
-                    ${opt.targetType === 'node' ? `
-                      <button type="button" onclick="createAndLinkSubNode('${node.id}', '${opt.id}')" class="text-[11px] text-sky-700 hover:underline font-bold flex items-center gap-1 pt-1">
-                        <i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i> + Criar próximo passo automaticamente conectado aqui
-                      </button>
-                    ` : ''}
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                      ${opt.targetType === 'node' ? `
+                        <button type="button" onclick="createAndLinkSubNode('${node.id}', '${opt.id}')" class="text-[11px] text-sky-700 hover:underline font-bold flex items-center gap-1">
+                          <i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i> + Criar novo passo já conectado
+                        </button>
+                      ` : `
+                        <button type="button" onclick="createAndLinkTaxon('${node.id}', '${opt.id}')" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
+                          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Criar novo grupo já conectado
+                        </button>
+                      `}
+
+                      ${opt.targetId ? `
+                        <button type="button" onclick="editSpecificItem('${opt.targetType}', '${opt.targetId}')" class="text-[11px] bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 px-2 py-0.5 rounded font-bold">
+                          Abrir destino →
+                        </button>
+                      ` : ''}
+                    </div>
                   </div>
 
-                  <!-- Foto da Opção -->
-                  <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-400">Foto desta Opção (Câmera / Galeria / Link)</label>
+                  <!-- Upload de Foto via ImgBB -->
+                  <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-500">Imagem Ilustrativa da Opção (ImgBB)</label>
                     <div class="flex items-center gap-2">
-                      <label class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-lg text-xs font-bold cursor-pointer flex items-center gap-1.5 shrink-0 transition">
-                        <i data-lucide="camera" class="w-3.5 h-3.5"></i> Escolher Foto
+                      <label class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-lg text-xs font-bold cursor-pointer flex items-center gap-1.5 shrink-0 transition shadow-xs">
+                        <i data-lucide="camera" class="w-3.5 h-3.5"></i> Enviar Foto
                         <input type="file" accept="image/*" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
                       </label>
-                      <input type="text" value="${opt.image && !opt.image.startsWith('data:') ? opt.image : ''}" placeholder="Ou cole link https://..." oninput="updateOptionField('${node.id}', '${opt.id}', 'image', this.value)" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2">
+                      <input type="text" value="${opt.image || ''}" placeholder="Ou cole URL https://..." oninput="updateOptionField('${node.id}', '${opt.id}', 'image', this.value)" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2">
                     </div>
                     ${opt.image ? `
-                      <div class="flex items-center gap-2 pt-1">
+                      <div class="flex items-center gap-3 pt-1">
                         <img src="${opt.image}" class="w-16 h-12 object-cover rounded-lg border">
-                        <button type="button" onclick="updateOptionField('${node.id}', '${opt.id}', 'image', ''); renderEditorNodeForm(); lucide.createIcons();" class="text-xs text-rose-600 font-semibold hover:underline">Remover foto</button>
+                        <button type="button" onclick="updateOptionField('${node.id}', '${opt.id}', 'image', ''); renderEditorNodeForm(); lucide.createIcons();" class="text-xs text-rose-600 font-bold hover:underline">Remover foto</button>
                       </div>
                     ` : ''}
                   </div>
@@ -1454,6 +1799,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     function toggleOptionAttachedTerm(nodeId, optId, termId) {
+      ensureAuthorIdentified();
       const node = db.nodes.find(n => n.id === nodeId);
       if (!node) return;
       const opt = node.options.find(o => o.id === optId);
@@ -1464,7 +1810,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       } else {
         opt.attachedTerms.push(termId);
       }
-      saveDatabase();
+      saveDatabase(`Editou lupas do ${node.code}`);
       renderEditorNodeForm();
       lucide.createIcons();
     }
@@ -1472,8 +1818,8 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     function uploadOptionImageFile(event, nodeId, optId) {
       const file = event.target.files[0];
       if (!file) return;
-      compressAndReadImage(file, (base64Img) => {
-        updateOptionField(nodeId, optId, 'image', base64Img);
+      uploadFileToImgBB(file, (hostedUrl) => {
+        updateOptionField(nodeId, optId, 'image', hostedUrl);
         renderEditorNodeForm();
         lucide.createIcons();
       });
@@ -1483,7 +1829,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const node = db.nodes.find(n => n.id === nodeId);
       if (!node) return;
       node[field] = value;
-      saveDatabase();
+      saveDatabase(`Editou ${node.code}`);
       renderEditorNodesList();
     }
 
@@ -1493,7 +1839,14 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const opt = node.options.find(o => o.id === optId);
       if (!opt) return;
       opt[field] = value;
-      saveDatabase();
+      if (field === 'text') {
+        const prev = document.getElementById(`preview-${optId}`);
+        if (prev) {
+          prev.innerHTML = parseInteractiveText(value);
+          lucide.createIcons();
+        }
+      }
+      saveDatabase(`Editou opção ${opt.label}`);
     }
 
     function updateOptionTargetType(nodeId, optId, newType) {
@@ -1503,12 +1856,13 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       if (!opt) return;
       opt.targetType = newType;
       opt.targetId = "";
-      saveDatabase();
+      saveDatabase(`Alterou destino em ${node.code}`);
       renderEditorNodeForm();
       lucide.createIcons();
     }
 
     function addOptionToNode(nodeId) {
+      ensureAuthorIdentified();
       const node = db.nodes.find(n => n.id === nodeId);
       if (!node) return;
       const letter = String.fromCharCode(97 + node.options.length);
@@ -1521,7 +1875,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         targetType: "node",
         targetId: ""
       });
-      saveDatabase("Opção adicionada!");
+      saveDatabase(`Adicionou ramo em ${node.code}`);
       renderEditorNodeForm();
       lucide.createIcons();
     }
@@ -1533,17 +1887,18 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         return;
       }
       node.options = node.options.filter(o => o.id !== optId);
-      saveDatabase("Opção removida");
+      saveDatabase(`Removeu opção de ${node.code}`);
       renderEditorNodeForm();
       lucide.createIcons();
     }
 
     function createAndLinkSubNode(parentNodeId, optId) {
+      ensureAuthorIdentified();
       const nextNum = db.nodes.length + 1;
       const newNode = {
         id: "passo_" + Date.now(),
         code: `Passo ${nextNum}`,
-        title: `Passo seguinte`,
+        title: `Caráter derivado`,
         notes: "",
         options: [
           { id: "opt_" + Date.now() + "_1", label: `${nextNum}a`, text: "Primeira alternativa...", image: "", attachedTerms: [], targetType: "node", targetId: "" },
@@ -1553,7 +1908,28 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       db.nodes.push(newNode);
       updateOptionField(parentNodeId, optId, 'targetId', newNode.id);
       editorState.selectedNodeId = newNode.id;
-      saveDatabase(`Conectado ao ${newNode.code}!`);
+      saveDatabase(`Criou e conectou ${newNode.code}`);
+      renderEditorView();
+    }
+
+    function createAndLinkTaxon(parentNodeId, optId) {
+      const name = prompt("Digite o nome científico do novo Grupo/Família (ex: Hydropsychidae):");
+      if (!name || !name.trim()) return;
+      ensureAuthorIdentified();
+      const newTx = {
+        id: "tax_" + Date.now(),
+        name: name.trim(),
+        rank: "Família",
+        order: "",
+        family: name.trim(),
+        commonName: "",
+        description: "Diagnose morfológica...",
+        habitat: "",
+        images: []
+      };
+      db.taxa.push(newTx);
+      updateOptionField(parentNodeId, optId, 'targetId', newTx.id);
+      saveDatabase(`Criou e conectou grupo ${newTx.name}`);
       renderEditorView();
     }
 
@@ -1563,17 +1939,21 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         return;
       }
       if (!confirm("Deseja excluir este passo?")) return;
+      ensureAuthorIdentified();
       db.nodes = db.nodes.filter(n => n.id !== nodeId);
       if (db.meta.startNodeId === nodeId) db.meta.startNodeId = db.nodes[0].id;
       editorState.selectedNodeId = db.nodes[0].id;
-      saveDatabase("Passo excluído");
+      saveDatabase("Excluiu um passo da chave");
       renderEditorView();
     }
 
-    // --- 7.2 EDITOR DE ESTRUTURAS (GLOSSÁRIO) COM UPLOAD CORRIGIDO ---
+    // --- 8.2 EDITOR DE ESTRUTURAS (GLOSSÁRIO) COM UPLOAD IMGBB ---
     function renderEditorTermsList() {
       const listEl = document.getElementById("editor-terms-list");
-      listEl.innerHTML = db.terms.map(t => {
+      const q = (document.getElementById("editor-term-search")?.value || "").toLowerCase().trim();
+      const filtered = db.terms.filter(t => !q || t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+
+      listEl.innerHTML = filtered.map(t => {
         const isSelected = t.id === editorState.selectedTermId;
         const imgCount = (t.images || []).length;
         return `
@@ -1596,6 +1976,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     function createNewTerm() {
+      ensureAuthorIdentified();
       const newTerm = {
         id: "term_" + Date.now(),
         name: "Nova Estrutura",
@@ -1606,7 +1987,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       };
       db.terms.push(newTerm);
       editorState.selectedTermId = newTerm.id;
-      saveDatabase("Nova estrutura criada!");
+      saveDatabase("Cadastrou nova estrutura no glossário");
       renderEditorView();
     }
 
@@ -1622,34 +2003,37 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         <div class="space-y-5">
           <div class="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
-              <h3 class="font-extrabold text-slate-900 text-base">Estrutura: ${term.name}</h3>
-              <p class="text-xs text-emerald-700 font-semibold">✓ Reconhecimento automático ativo nos textos da chave</p>
+              <h3 class="font-extrabold text-slate-900 text-lg">Estrutura: ${term.name}</h3>
+              <p class="text-xs text-emerald-700 font-semibold">✓ Qualquer passo que contenha "${term.name}" ganhará botão de lupa automaticamente</p>
             </div>
             <div class="flex gap-2">
-              <button onclick="openTermModal('${term.id}')" class="text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold">Testar Modal</button>
+              <button onclick="openTermModal('${term.id}')" class="text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold">Ver Lupa</button>
               <button onclick="deleteTerm('${term.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">Excluir</button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Nome da Estrutura</label>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nome Principal da Estrutura</label>
               <input type="text" value="${term.name}" oninput="updateTermField('${term.id}', 'name', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold">
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Variações no plural/singular (separadas por vírgula)</label>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Sinônimos / Plural / Singular (separados por vírgula)</label>
               <input type="text" value="${(term.synonyms || []).join(', ')}" oninput="updateTermSynonyms('${term.id}', this.value)" placeholder="Ex: brânquia abdominal, lamelas" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Explicação Resumida da Estrutura</label>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Explicação Morfológica Resumida</label>
             <textarea rows="3" oninput="updateTermField('${term.id}', 'description', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${term.description}</textarea>
           </div>
 
-          <!-- UPLOAD DE IMAGENS DA ESTRUTURA (CORRIGIDO E COM COMPRESSÃO) -->
+          <!-- UPLOAD DE IMAGENS DA ESTRUTURA VIA IMGBB -->
           <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200 space-y-3">
-            <label class="block text-xs font-extrabold uppercase text-sky-900">Fotos e Exemplos desta Estrutura</label>
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-extrabold uppercase text-sky-900">Fotos e Exemplos desta Estrutura (Hospedagem ImgBB)</label>
+              <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Sem limite de peso no Firebase</span>
+            </div>
             
             <div class="flex flex-col sm:flex-row gap-2">
               <label class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-2 shadow-xs transition shrink-0">
@@ -1658,8 +2042,8 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
               </label>
 
               <div class="flex flex-1 gap-2">
-                <input type="text" id="new-term-img-url" placeholder="Ou cole o link (URL) de uma imagem da web..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
-                <button type="button" onclick="addTermImageByUrl('${term.id}')" class="bg-slate-800 hover:bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+                <input type="text" id="new-term-img-url" placeholder="Ou cole um link https:// de imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
+                <button type="button" onclick="addTermImageByUrl('${term.id}')" class="bg-slate-800 hover:bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Adicionar Link</button>
               </div>
             </div>
 
@@ -1669,17 +2053,17 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                   <div class="relative group rounded-xl overflow-hidden border border-slate-200 bg-white shadow-xs">
                     <img src="${img}" class="w-full h-28 object-cover">
                     <button type="button" onclick="removeTermImage('${term.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold shadow">
-                      Excluir
+                      Remover
                     </button>
                   </div>
                 `).join('')}
               </div>
-            ` : `<p class="text-xs text-slate-500 italic">Nenhuma imagem adicionada ainda. Clique em "Enviar Foto" acima.</p>`}
+            ` : `<p class="text-xs text-slate-500 italic">Nenhuma imagem adicionada ainda.</p>`}
           </div>
 
           <!-- Grupos onde é frequente -->
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
-            <label class="block text-xs font-extrabold uppercase text-slate-500 mb-2.5">Em quais grupos esta estrutura é frequente?</label>
+            <label class="block text-xs font-extrabold uppercase text-slate-500 mb-2.5">Em quais grupos esta estrutura é comum?</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
               ${db.taxa.map(tx => {
                 const checked = (term.relatedTaxa || []).includes(tx.id);
@@ -1696,7 +2080,6 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       `;
     }
 
-    // Função dedicada que corrige o bug de escopo ao enviar fotos no Glossário
     function uploadTermImageFile(event, termId) {
       const files = Array.from(event.target.files || []);
       if (files.length === 0) return;
@@ -1706,11 +2089,11 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
       let processed = 0;
       files.forEach(file => {
-        compressAndReadImage(file, (base64Img) => {
-          term.images.push(base64Img);
+        uploadFileToImgBB(file, (hostedUrl) => {
+          term.images.push(hostedUrl);
           processed++;
           if (processed === files.length) {
-            saveDatabase("Foto(s) adicionada(s) à estrutura!");
+            saveDatabase(`Adicionou foto em ${term.name}`);
             renderEditorTermsList();
             renderEditorTermForm();
             lucide.createIcons();
@@ -1723,7 +2106,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
       term[field] = value;
-      saveDatabase();
+      saveDatabase(`Editou estrutura ${term.name}`);
       renderEditorTermsList();
     }
 
@@ -1731,7 +2114,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
       term.synonyms = rawStr.split(',').map(s => s.trim()).filter(Boolean);
-      saveDatabase();
+      saveDatabase(`Editou sinônimos de ${term.name}`);
     }
 
     function toggleTermTaxon(termId, taxonId, isChecked) {
@@ -1743,7 +2126,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       } else if (!isChecked) {
         term.relatedTaxa = term.relatedTaxa.filter(id => id !== taxonId);
       }
-      saveDatabase();
+      saveDatabase(`Vinculou táxon em ${term.name}`);
       renderEditorTermForm();
       lucide.createIcons();
     }
@@ -1755,7 +2138,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       if (!term) return;
       term.images = term.images || [];
       term.images.push(input.value.trim());
-      saveDatabase("Link de imagem salvo!");
+      saveDatabase(`Adicionou imagem em ${term.name}`);
       renderEditorTermsList();
       renderEditorTermForm();
       lucide.createIcons();
@@ -1765,7 +2148,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
       term.images.splice(idx, 1);
-      saveDatabase("Imagem removida");
+      saveDatabase(`Removeu imagem de ${term.name}`);
       renderEditorTermsList();
       renderEditorTermForm();
       lucide.createIcons();
@@ -1773,16 +2156,20 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
     function deleteTerm(termId) {
       if (!confirm("Excluir esta estrutura do glossário?")) return;
+      ensureAuthorIdentified();
       db.terms = db.terms.filter(t => t.id !== termId);
       editorState.selectedTermId = db.terms[0]?.id || null;
-      saveDatabase("Estrutura removida");
+      saveDatabase("Removeu estrutura do glossário");
       renderEditorView();
     }
 
-    // --- 7.3 EDITOR DE GRUPOS TAXONÔMICOS (TÁXONS) ---
+    // --- 8.3 EDITOR DE GRUPOS TAXONÔMICOS (TÁXONS) ---
     function renderEditorTaxaList() {
       const listEl = document.getElementById("editor-taxa-list");
-      listEl.innerHTML = db.taxa.map(tx => {
+      const q = (document.getElementById("editor-taxon-search")?.value || "").toLowerCase().trim();
+      const filtered = db.taxa.filter(tx => !q || tx.name.toLowerCase().includes(q) || (tx.order || "").toLowerCase().includes(q));
+
+      listEl.innerHTML = filtered.map(tx => {
         const isSelected = tx.id === editorState.selectedTaxonId;
         return `
           <div onclick="selectEditorTaxon('${tx.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
@@ -1804,6 +2191,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
     }
 
     function createNewTaxon() {
+      ensureAuthorIdentified();
       const newTx = {
         id: "tax_" + Date.now(),
         name: "Novo Grupo",
@@ -1811,13 +2199,13 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         order: "Ephemeroptera",
         family: "",
         commonName: "",
-        description: "Principais características para bater o martelo neste grupo...",
+        description: "Principais características diagnósticas...",
         habitat: "Riachos preservados, folhiço, pedras...",
         images: []
       };
       db.taxa.push(newTx);
       editorState.selectedTaxonId = newTx.id;
-      saveDatabase("Novo grupo cadastrado!");
+      saveDatabase("Cadastrou novo grupo taxonômico");
       renderEditorView();
     }
 
@@ -1834,7 +2222,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
           <div class="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
               <h3 class="font-extrabold italic text-slate-900 text-lg">${tx.name}</h3>
-              <p class="text-xs text-slate-500">Cadastre a Ordem, Família e fotos deste grupo.</p>
+              <p class="text-xs text-slate-500">Vincule Ordem, Família e fotos diagnósticas.</p>
             </div>
             <button onclick="deleteTaxon('${tx.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
               Excluir Grupo
@@ -1857,7 +2245,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
               </select>
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">Ordem a que pertence</label>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Ordem Relacionada</label>
               <input type="text" value="${tx.order || ''}" oninput="updateTaxonField('${tx.id}', 'order', this.value)" placeholder="Ex: Ephemeroptera, Plecoptera, Trichoptera..." class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
             </div>
             <div>
@@ -1877,21 +2265,21 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Hábitat & Bioindicação</label>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Hábitat & Ecologia</label>
             <textarea rows="2" oninput="updateTaxonField('${tx.id}', 'habitat', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${tx.habitat || ''}</textarea>
           </div>
 
-          <!-- Upload de Fotos do Táxon -->
+          <!-- Upload de Fotos do Táxon via ImgBB -->
           <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 space-y-3">
-            <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo</label>
+            <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo (ImgBB)</label>
             <div class="flex flex-col sm:flex-row gap-2">
-              <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-2 shrink-0">
+              <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-2 shrink-0 shadow-xs">
                 <i data-lucide="camera" class="w-4 h-4"></i> Enviar Foto do Espécime
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
               </label>
               <div class="flex flex-1 gap-2">
                 <input type="text" id="new-taxon-img-url" placeholder="Ou cole URL da imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
-                <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+                <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Adicionar Link</button>
               </div>
             </div>
             ${(tx.images && tx.images.length > 0) ? `
@@ -1899,7 +2287,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
                 ${tx.images.map((img, i) => `
                   <div class="relative rounded-xl overflow-hidden border bg-white">
                     <img src="${img}" class="w-full h-28 object-cover">
-                    <button type="button" onclick="removeTaxonImage('${tx.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold">Excluir</button>
+                    <button type="button" onclick="removeTaxonImage('${tx.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold">Remover</button>
                   </div>
                 `).join('')}
               </div>
@@ -1918,11 +2306,11 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
       let processed = 0;
       files.forEach(file => {
-        compressAndReadImage(file, (base64Img) => {
-          tx.images.push(base64Img);
+        uploadFileToImgBB(file, (hostedUrl) => {
+          tx.images.push(hostedUrl);
           processed++;
           if (processed === files.length) {
-            saveDatabase("Foto(s) adicionada(s) ao grupo!");
+            saveDatabase(`Adicionou foto em ${tx.name}`);
             renderEditorTaxonForm();
             lucide.createIcons();
           }
@@ -1934,7 +2322,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const tx = db.taxa.find(t => t.id === taxonId);
       if (!tx) return;
       tx[field] = value;
-      saveDatabase();
+      saveDatabase(`Editou grupo ${tx.name}`);
       renderEditorTaxaList();
     }
 
@@ -1945,7 +2333,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       if (!tx) return;
       tx.images = tx.images || [];
       tx.images.push(input.value.trim());
-      saveDatabase("Foto adicionada!");
+      saveDatabase(`Adicionou foto em ${tx.name}`);
       renderEditorTaxonForm();
       lucide.createIcons();
     }
@@ -1954,27 +2342,27 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       const tx = db.taxa.find(t => t.id === taxonId);
       if (!tx) return;
       tx.images.splice(idx, 1);
-      saveDatabase();
+      saveDatabase(`Removeu foto de ${tx.name}`);
       renderEditorTaxonForm();
       lucide.createIcons();
     }
 
     function deleteTaxon(taxonId) {
       if (!confirm("Excluir este grupo taxonômico?")) return;
+      ensureAuthorIdentified();
       db.taxa = db.taxa.filter(t => t.id !== taxonId);
       editorState.selectedTaxonId = db.taxa[0]?.id || null;
-      saveDatabase("Grupo removido");
+      saveDatabase("Removeu grupo taxonômico");
       renderEditorView();
     }
 
     // ============================================================================
-    // 8. NAVEGAÇÃO, BACKUP E SINCRONIZAÇÃO EM NUVEM (FIREBASE REST)
+    // 9. NAVEGAÇÃO GERAL E MODAL DA CENTRAL DE EQUIPE
     // ============================================================================
     function switchMainTab(tabName) {
       ['key', 'glossary', 'taxa', 'editor'].forEach(t => {
         document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tabName);
         
-        // Desktop nav
         const btn = document.getElementById(`tab-btn-${t}`);
         if (btn) {
           if (t === tabName) {
@@ -1984,7 +2372,6 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
           }
         }
 
-        // Mobile bottom nav
         const mobBtn = document.getElementById(`mob-tab-${t}`);
         if (mobBtn) {
           if (t === tabName) {
@@ -2037,12 +2424,23 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       }
     }
 
-    // --- Sincronização Nuvem p/ Equipe LHF ---
+    function updateCloudMetaModalText() {
+      const el = document.getElementById("cloud-last-meta");
+      if (!el) return;
+      const rev = db.meta?.revision || 1;
+      const author = db.meta?.lastAuthor || "Equipe LHF";
+      const dt = db.meta?.lastUpdated ? new Date(db.meta.lastUpdated).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : "Agora";
+      el.textContent = `Revisão v${rev} por ${author} (${dt})`;
+    }
+
     function openCloudModal() {
-      document.getElementById("firebase-url-input").value = localStorage.getItem(CLOUD_URL_KEY) || "";
+      updateHeaderAuthorUI();
+      updateCloudMetaModalText();
+      loadCloudBackupsList();
       const m = document.getElementById("cloud-modal");
       m.classList.remove("hidden");
       m.classList.add("flex");
+      lucide.createIcons();
     }
 
     function closeCloudModal() {
@@ -2051,83 +2449,15 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       m.classList.remove("flex");
     }
 
-    function formatFirebaseEndpoint(rawUrl) {
-      let clean = rawUrl.trim().replace(/\/$/, "");
-      if (!clean.endsWith(".json")) clean += "/lhf_macrokey.json";
-      return clean;
-    }
-
-    async function saveCloudConfigAndPush() {
-      const rawUrl = document.getElementById("firebase-url-input").value.trim();
-      if (!rawUrl) {
-        localStorage.removeItem(CLOUD_URL_KEY);
-        showToast("Modo Nuvem desativado (usando memória local).");
-        closeCloudModal();
-        return;
-      }
-      localStorage.setItem(CLOUD_URL_KEY, rawUrl);
-      try {
-        const res = await fetch(formatFirebaseEndpoint(rawUrl), {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(db)
-        });
-        if (res.ok) {
-          showToast("Conectado! Chave enviada para a nuvem da equipe.");
-          closeCloudModal();
-        } else {
-          alert("Não foi possível gravar na URL informada. Verifique se o Realtime Database está em modo de teste.");
-        }
-      } catch (e) {
-        alert("Erro de conexão com a URL informada.");
-      }
-    }
-
-    async function pullFromCloud() {
-      const rawUrl = document.getElementById("firebase-url-input").value.trim() || localStorage.getItem(CLOUD_URL_KEY);
-      if (!rawUrl) {
-        alert("Cole primeiro a URL do banco compartilhado.");
-        return;
-      }
-      try {
-        const res = await fetch(formatFirebaseEndpoint(rawUrl));
-        const data = await res.json();
-        if (data && data.nodes && data.terms) {
-          db = data;
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-          resetKey();
-          renderAll();
-          showToast("Chave atualizada com os dados da equipe!");
-          closeCloudModal();
-        } else {
-          alert("Nenhum banco encontrado nessa nuvem ainda. Clique em 'Salvar & Enviar' primeiro.");
-        }
-      } catch (e) {
-        alert("Erro ao buscar dados da nuvem.");
-      }
-    }
-
-    async function pushToCloudSilent(rawUrl) {
-      try {
-        await fetch(formatFirebaseEndpoint(rawUrl), {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(db)
-        });
-      } catch (e) {
-        console.warn("Falha ao sincronizar em background:", e);
-      }
-    }
-
     function exportDatabase() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
       const dlAnchor = document.createElement('a');
       dlAnchor.setAttribute("href", dataStr);
-      dlAnchor.setAttribute("download", `lhf_macrokey_${new Date().toISOString().slice(0,10)}.json`);
+      dlAnchor.setAttribute("download", `lhf_macrokey_v${db.meta?.revision || 1}_${new Date().toISOString().slice(0,10)}.json`);
       document.body.appendChild(dlAnchor);
       dlAnchor.click();
       dlAnchor.remove();
-      showToast("Arquivo JSON baixado!");
+      showToast("Backup .JSON baixado!");
     }
 
     function importDatabase(event) {
@@ -2138,10 +2468,12 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
         try {
           const parsed = JSON.parse(e.target.result);
           if (parsed.nodes && parsed.terms && parsed.taxa) {
+            ensureAuthorIdentified();
             db = parsed;
-            saveDatabase("Chave carregada com sucesso!");
+            saveDatabase("Importou arquivo JSON completo");
             resetKey();
             renderAll();
+            closeCloudModal();
           } else {
             alert("Arquivo JSON inválido.");
           }
@@ -2152,15 +2484,16 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
       reader.readAsText(file);
     }
 
-    function resetToFactoryData() {
-      if (!confirm("Restaurar os dados originais de exemplo?")) return;
-      db = JSON.parse(JSON.stringify(DEFAULT_DB));
-      saveDatabase("Exemplo padrão restaurado");
-      resetKey();
-      renderAll();
+    function updateHeaderCounters() {
+      const tCount = document.getElementById("nav-count-terms");
+      const txCount = document.getElementById("nav-count-taxa");
+      if (tCount) tCount.textContent = db.terms.length;
+      if (txCount) txCount.textContent = db.taxa.length;
     }
 
     function renderAll() {
+      updateHeaderAuthorUI();
+      updateHeaderCounters();
       renderKeyView();
       renderQuickTermSearch();
       renderGlossaryView();
@@ -2178,18 +2511,7 @@ if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("htt
 
     window.addEventListener("DOMContentLoaded", () => {
       renderAll();
-      // Se houver nuvem configurada, puxa a versão mais recente ao abrir o app no celular
-      const savedCloud = localStorage.getItem(CLOUD_URL_KEY);
-      if (savedCloud) {
-        fetch(formatFirebaseEndpoint(savedCloud))
-          .then(r => r.json())
-          .then(data => {
-            if (data && data.nodes && data.terms) {
-              db = data;
-              renderAll();
-            }
-          }).catch(() => {});
-      }
+      pullFromCloud(false);
     });
   </script>
 </body>
