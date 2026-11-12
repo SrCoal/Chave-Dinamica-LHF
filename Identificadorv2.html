@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LHF MacroKey | Chave Interativa de Macroinvertebrados</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --lhf-blue-dark: #072f5f;
+      --lhf-blue-main: #0066b2;
+      --lhf-blue-light: #38bdf8;
+      --lhf-green-main: #2e8b57;
+      --lhf-green-light: #4ade80;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f0f6fc;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Gradiente Institucional LHF (Azul Hidrologia + Toque Verde Florestal) */
+    .lhf-header-gradient {
+      background: linear-gradient(135deg, #062347 0%, #005b9f 65%, #0d7a5f 100%);
+    }
+
+    /* Botão de Lupa Automático no Texto */
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.12rem 0.55rem;
+      margin: 0.1rem 0.15rem;
+      background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.9em;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(2, 132, 199, 0.1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      vertical-align: baseline;
+    }
+    .term-chip:hover, .term-chip:active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0369a1;
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    /* Cards de Decisão da Chave */
+    .decision-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 1rem;
+      transition: all 0.2s ease;
+    }
+    .decision-card:hover {
+      border-color: #0284c7;
+      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15);
+      transform: translateY(-2px);
+    }
+    .decision-card:active {
+      transform: scale(0.99);
+    }
+
+    /* Animação Suave de Entrada */
+    .fade-slide-in {
+      animation: fadeSlide 0.25s ease-out forwards;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Barra de rolagem limpa */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #e2e8f0; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-20 md:pb-6">
+
+  <!-- ==================== CABEÇALHO SUPERIOR (LHF BRANDING) ==================== -->
+  <header class="lhf-header-gradient text-white shadow-lg sticky top-0 z-30 border-b border-sky-400/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+      
+      <!-- Logo LHF + Título -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full bg-white p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300">
+          <!-- Tenta carregar a imagem oficial do LHF; se não achar na pasta, exibe o SVG vetorial idêntico -->
+          <img src="image_0df51a.png" alt="Logo LHF" class="w-full h-full object-contain" onerror="this.style.display='none'; document.getElementById('lhf-svg-fallback').style.display='block';">
+          <svg id="lhf-svg-fallback" style="display:none;" viewBox="0 0 100 100" class="w-10 h-10">
+            <path d="M15,50 A35,35 0 0,1 65,18 C50,35 35,55 25,82 A35,35 0 0,1 15,50 Z" fill="#0066b2"/>
+            <path d="M55,25 C45,45 35,60 22,85" stroke="#38bdf8" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M85,50 A35,35 0 0,1 35,82 C55,65 68,45 78,20 A35,35 0 0,1 85,50 Z" fill="#16a34a"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest bg-sky-500/30 text-sky-100 px-2 py-0.5 rounded-full border border-sky-300/30">LHF • ESALQ/USP</span>
+            <span id="cloud-status-badge" onclick="openCloudModal()" class="cursor-pointer text-[10px] font-semibold bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded-full flex items-center gap-1 transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Modo Local / Nuvem
+            </span>
+          </div>
+          <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight mt-0.5">
+            MacroKey <span class="font-normal text-sky-200 text-xs sm:text-sm">| Chave de Macroinvertebrados</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Navegação Desktop -->
+      <nav class="hidden md:flex items-center bg-slate-900/40 backdrop-blur-md p-1 rounded-xl border border-white/15">
+        <button onclick="switchMainTab('key')" id="tab-btn-key" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-sky-900 shadow-sm">
+          <i data-lucide="git-fork" class="w-4 h-4"></i> Chave Interativa
+        </button>
+        <button onclick="switchMainTab('glossary')" id="tab-btn-glossary" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
+          <i data-lucide="microscope" class="w-4 h-4"></i> Glossário Anatômico
+        </button>
+        <button onclick="switchMainTab('taxa')" id="tab-btn-taxa" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
+          <i data-lucide="bug" class="w-4 h-4"></i> Grupos (Táxons)
+        </button>
+        <button onclick="switchMainTab('editor')" id="tab-btn-editor" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-amber-300 hover:text-amber-200">
+          <i data-lucide="sliders" class="w-4 h-4"></i> Construir / Editar
+        </button>
+      </nav>
+
+      <!-- Botões de Sincronização e Backup -->
+      <div class="flex items-center gap-1.5">
+        <button onclick="openCloudModal()" title="Conectar banco compartilhado para equipe do laboratório" class="flex items-center gap-1.5 bg-sky-500/20 hover:bg-sky-500/30 text-white border border-sky-300/30 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition">
+          <i data-lucide="cloud" class="w-4 h-4 text-sky-300"></i>
+          <span class="hidden sm:inline">Equipe / Nuvem</span>
+        </button>
+        <button onclick="exportDatabase()" title="Salvar arquivo JSON" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition">
+          <i data-lucide="download" class="w-4 h-4"></i>
+        </button>
+        <label title="Carregar arquivo JSON" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg transition cursor-pointer">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          <input type="file" accept=".json" class="hidden" onchange="importDatabase(event)">
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== NAVEGAÇÃO INFERIOR PARA CELULAR (MOBILE FIRST) ==================== -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl z-40 grid grid-cols-4 py-1.5 px-2">
+    <button onclick="switchMainTab('key')" id="mob-tab-key" class="flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 font-bold text-[11px]">
+      <i data-lucide="git-fork" class="w-5 h-5 mb-0.5"></i> Chave
+    </button>
+    <button onclick="switchMainTab('glossary')" id="mob-tab-glossary" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+      <i data-lucide="microscope" class="w-5 h-5 mb-0.5"></i> Estruturas
+    </button>
+    <button onclick="switchMainTab('taxa')" id="mob-tab-taxa" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+      <i data-lucide="bug" class="w-5 h-5 mb-0.5"></i> Grupos
+    </button>
+    <button onclick="switchMainTab('editor')" id="mob-tab-editor" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+      <i data-lucide="sliders" class="w-5 h-5 mb-0.5"></i> Editar
+    </button>
+  </nav>
+
+  <!-- ==================== ÁREA PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-5">
+
+    <!-- ==================== ABA 1: CHAVE INTERATIVA ==================== -->
+    <section id="view-key" class="space-y-5 fade-slide-in">
+      <!-- Barra de Progresso e Botões de Retorno -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-sky-100 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-1.5 flex-wrap text-xs" id="key-breadcrumb"></div>
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
+          <button onclick="stepBackKey()" id="btn-key-back" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Passo Anterior
+          </button>
+          <button onclick="resetKey()" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reiniciar
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Palco Principal dos Passos -->
+        <div class="lg:col-span-8 space-y-4" id="key-active-stage"></div>
+
+        <!-- Barra Lateral: Busca Rápida de Estruturas + Histórico -->
+        <div class="lg:col-span-4 space-y-5">
+          <!-- Widget de Consulta de Estrutura -->
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 mb-2.5 flex items-center gap-1.5">
+              <i data-lucide="search" class="w-4 h-4 text-sky-600"></i> Dúvida em uma estrutura?
+            </h3>
+            <div class="relative mb-3">
+              <input type="text" id="quick-term-search" oninput="renderQuickTermSearch()" placeholder="Ex: brânquia, garra, lígula..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500 focus:bg-white transition">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            </div>
+            <div id="quick-term-results" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- Trilha de Decisões Tomadas -->
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 mb-3 flex items-center gap-1.5">
+              <i data-lucide="footprints" class="w-4 h-4 text-emerald-600"></i> Caminho Seguido na Lupa
+            </h3>
+            <div id="key-history-list" class="space-y-2.5 text-xs text-slate-600"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABA 2: GLOSSÁRIO ANATÔMICO ==================== -->
+    <section id="view-glossary" class="hidden space-y-5 fade-slide-in">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="microscope" class="w-6 h-6 text-sky-600"></i> Biblioteca de Estruturas Anatômicas
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Qualquer termo cadastrado aqui vira automaticamente um botão de lupa quando escrito nos passos da chave.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+          <div class="relative flex-1 sm:w-60">
+            <input type="text" id="glossary-search-input" oninput="renderGlossaryView()" placeholder="Buscar termo..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+          <select id="glossary-taxon-filter" onchange="renderGlossaryView()" class="py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <option value="">Todos os Grupos</option>
+          </select>
+          <button onclick="openEditorForNew('term')" class="flex items-center justify-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> Nova Estrutura
+          </button>
+        </div>
+      </div>
+
+      <div id="glossary-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- ==================== ABA 3: GRUPOS TAXONÔMICOS ==================== -->
+    <section id="view-taxa" class="hidden space-y-5 fade-slide-in">
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="bug" class="w-6 h-6 text-emerald-600"></i> Grupos de Macroinvertebrados (Táxons)
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Ordens, famílias e gêneros vinculados à chave do LHF.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+          <div class="relative flex-1 sm:w-64">
+            <input type="text" id="taxa-search-input" oninput="renderTaxaView()" placeholder="Filtrar ordem, família..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+          <button onclick="openEditorForNew('taxon')" class="flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> Novo Grupo
+          </button>
+        </div>
+      </div>
+
+      <div id="taxa-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    </section>
+
+    <!-- ==================== ABA 4: CONSTRUTOR SIMPLIFICADO ==================== -->
+    <section id="view-editor" class="hidden space-y-5 fade-slide-in">
+      
+      <!-- Banner Explicativo Simples -->
+      <div class="bg-gradient-to-r from-sky-900 to-sky-800 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="bg-sky-500/20 p-2.5 rounded-xl border border-sky-400/30">
+            <i data-lucide="sparkles" class="w-6 h-6 text-sky-300"></i>
+          </div>
+          <div>
+            <h2 class="font-extrabold text-base sm:text-lg">Modo Construtor Simplificado</h2>
+            <p class="text-xs text-sky-200 mt-0.5">
+              <strong>Sem códigos complicados:</strong> Basta escrever normalmente. Qualquer palavra cadastrada em "Estruturas" ganha lupa sozinha no texto!
+            </p>
+          </div>
+        </div>
+        <button onclick="resetToFactoryData()" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-sky-100 shrink-0 transition">
+          Restaurar Exemplo Inicial
+        </button>
+      </div>
+
+      <!-- Seletor de Sub-Abas do Construtor -->
+      <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs">
+        <button onclick="switchEditorSubTab('nodes')" id="ed-tab-nodes" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 bg-sky-600 text-white shadow-xs">
+          <i data-lucide="git-branch" class="w-4 h-4"></i> <span>1. Passos da Chave</span>
+        </button>
+        <button onclick="switchEditorSubTab('terms')" id="ed-tab-terms" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+          <i data-lucide="microscope" class="w-4 h-4"></i> <span>2. Estruturas (Lupas)</span>
+        </button>
+        <button onclick="switchEditorSubTab('taxa')" id="ed-tab-taxa" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+          <i data-lucide="bug" class="w-4 h-4"></i> <span>3. Grupos (Finais)</span>
+        </button>
+      </div>
+
+      <!-- SUB-ABA 4.1: EDITOR DE PASSOS -->
+      <div id="editor-sub-nodes" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[500px] lg:max-h-[720px]">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-extrabold text-slate-800 text-sm">Passos Cadastrados</h3>
+            <button onclick="createNewNode()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Passo
+            </button>
+          </div>
+          <div class="mb-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+            <label class="text-[10px] font-extrabold uppercase text-slate-400 block mb-1">Qual é o 1º Passo da Chave?</label>
+            <select id="editor-root-node-select" onchange="updateRootNode(this.value)" class="w-full text-xs bg-white border border-slate-300 rounded-lg p-1.5 font-bold text-sky-900"></select>
+          </div>
+          <div id="editor-nodes-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+        </div>
+
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-node-form-container"></div>
+      </div>
+
+      <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (GLOSSÁRIO) -->
+      <div id="editor-sub-terms" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[450px] lg:max-h-[680px]">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-extrabold text-slate-800 text-sm">Estruturas & Termos</h3>
+            <button onclick="createNewTerm()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Estrutura
+            </button>
+          </div>
+          <div id="editor-terms-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+        </div>
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-term-form-container"></div>
+      </div>
+
+      <!-- SUB-ABA 4.3: EDITOR DE TÁXONS -->
+      <div id="editor-sub-taxa" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[450px] lg:max-h-[680px]">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-extrabold text-slate-800 text-sm">Grupos Taxonômicos</h3>
+            <button onclick="createNewTaxon()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Grupo
+            </button>
+          </div>
+          <div id="editor-taxa-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+        </div>
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-taxon-form-container"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ==================== MODAL: INSPETOR DE ESTRUTURA ANATÔMICA (LUPA) ==================== -->
+  <div id="term-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-sky-100 overflow-hidden fade-slide-in">
+      <div class="lhf-header-gradient text-white px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="bg-white/20 p-2 rounded-xl">
+            <i data-lucide="search" class="w-5 h-5 text-sky-200"></i>
+          </span>
+          <div>
+            <span class="text-[10px] uppercase tracking-widest text-sky-200 font-bold block">Estrutura Morfológica Diagnóstica</span>
+            <h3 id="modal-term-title" class="text-lg font-extrabold"></h3>
+          </div>
+        </div>
+        <button onclick="closeTermModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 max-h-[80vh] overflow-y-auto space-y-5" id="modal-term-body"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SINCRONIZAÇÃO EM NUVEM P/ LABORATÓRIO ==================== -->
+  <div id="cloud-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden fade-slide-in">
+      <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="cloud" class="w-5 h-5 text-sky-400"></i>
+          <h3 class="font-bold text-base">Banco Compartilhado em Tempo Real (Equipe LHF)</h3>
+        </div>
+        <button onclick="closeCloudModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5 space-y-4 text-xs sm:text-sm text-slate-600">
+        <p>Para que você e seus colegas do LHF editem a chave juntos pelo celular ou PC gratuitamente 24h/dia:</p>
+        <ol class="list-decimal list-inside space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
+          <li>Acesse <strong>console.firebase.google.com</strong> (gratuito com conta Google).</li>
+          <li>Crie um projeto rápido, clique em <strong>Realtime Database</strong> → <em>Criar banco de dados (Modo de teste)</em>.</li>
+          <li>Copie o link do banco (ex: <code class="text-sky-700">https://lhf-chave-default-rtdb.firebaseio.com</code>) e cole abaixo:</li>
+        </ol>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">URL do Firebase Realtime Database (Opcional):</label>
+          <input type="url" id="firebase-url-input" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 focus:outline-none focus:border-sky-600">
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+          <button onclick="pullFromCloud()" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl text-xs font-bold">
+            <i data-lucide="cloud-download" class="w-4 h-4 text-sky-600"></i> Baixar da Nuvem Agora
+          </button>
+          <div class="flex gap-2">
+            <button onclick="saveCloudConfigAndPush()" class="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm">
+              <i data-lucide="cloud-upload" class="w-4 h-4"></i> Salvar & Enviar p/ Equipe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificação Flutuante (Toast) -->
+  <div id="toast" class="fixed bottom-16 md:bottom-6 right-4 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50 border border-sky-500/30">
+    <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-400"></i>
+    <span id="toast-msg">Salvo com sucesso!</span>
+  </div>
+
+  <script>
+    // ============================================================================
+    // 1. DADOS INICIAIS DE EXEMPLO (MACROINVERTEBRADOS AQUÁTICOS - LHF)
+    // ============================================================================
+    const DEFAULT_DB = {
+      meta: {
+        title: "Chave Prática de Macroinvertebrados Bentônicos - LHF",
+        startNodeId: "passo_1"
+      },
+      terms: [
+        {
+          id: "term_branquias_abd",
+          name: "brânquias traqueais abdominais",
+          synonyms: ["brânquias abdominais", "lamelas branquiais"],
+          description: "Projeções laminares, filamentosas ou em tufos inseridas nas laterais dos segmentos abdominais I a VII, responsáveis pelas trocas gasosas.",
+          images: [],
+          relatedTaxa: ["tax_leptophlebiidae", "tax_baetidae"]
+        },
+        {
+          id: "term_garra_tarsal",
+          name: "garras tarsais",
+          synonyms: ["garra tarsal", "unha tarsal", "uma garra tarsal", "duas garras tarsais"],
+          description: "Unhas quitinosas no ápice das pernas. Ninfas de Ephemeroptera possuem apenas 1 garra por perna; ninfas de Plecoptera possuem sempre 2 garras por perna.",
+          images: [],
+          relatedTaxa: ["tax_perlidae", "tax_baetidae", "tax_leptophlebiidae"]
+        },
+        {
+          id: "term_mascara_labial",
+          name: "máscara labial",
+          synonyms: ["lábio preênsil", "mento"],
+          description: "Peça bucal inferior articulada e extensível (em forma de concha ou pinça), exclusiva de imaturos de Odonata para captura de presas.",
+          images: [],
+          relatedTaxa: ["tax_libellulidae"]
+        },
+        {
+          id: "term_branquias_toracicas",
+          name: "brânquias torácicas",
+          synonyms: ["tufos branquiais torácicos"],
+          description: "Tufos ramificados de filamentos branquiais localizados na base ventral das pernas torácicas, típicos de Plecoptera (Perlidae).",
+          images: [],
+          relatedTaxa: ["tax_perlidae"]
+        },
+        {
+          id: "term_filamentos_caudais",
+          name: "filamentos caudais",
+          synonyms: ["cercos", "paracerco"],
+          description: "Apêndices caudais no final do abdômen. Plecoptera apresenta sempre 2 cercos; Ephemeroptera geralmente apresenta 3 (dois cercos laterais e um paracerco central).",
+          images: [],
+          relatedTaxa: ["tax_baetidae", "tax_leptophlebiidae", "tax_perlidae"]
+        }
+      ],
+      taxa: [
+        {
+          id: "tax_leptophlebiidae",
+          name: "Leptophlebiidae",
+          rank: "Família",
+          order: "Ephemeroptera",
+          family: "Leptophlebiidae",
+          commonName: "Efêmeras de brânquias bifurcadas",
+          description: "Ninfas achatadas dorsoventralmente. Presença de brânquias abdominais bifurcadas, duplas ou com projeções filamentosas e três filamentos caudais longos.",
+          habitat: "Associadas a folhiço submerso (litterbags) e pedras em riachos florestados de boa qualidade.",
+          images: []
+        },
+        {
+          id: "tax_baetidae",
+          name: "Baetidae",
+          rank: "Família",
+          order: "Ephemeroptera",
+          family: "Baetidae",
+          commonName: "Efêmeras nadadoras",
+          description: "Corpo fusiforme hidrodinâmico. Brânquias abdominais formadas por uma única lamela oval simples e antenas longas.",
+          habitat: "Comuns em áreas de correnteza e vegetação marginal de riachos.",
+          images: []
+        },
+        {
+          id: "tax_perlidae",
+          name: "Perlidae",
+          rank: "Família",
+          order: "Plecoptera",
+          family: "Perlidae",
+          commonName: "Moscas-da-pedra predadoras",
+          description: "Ninfas achatadas com brânquias torácicas em tufos na base das pernas, duas garras tarsais por perna e dois filamentos caudais.",
+          habitat: "Riachos bem oxigenados e preservados; grupo EPT altamente sensível à poluição.",
+          images: []
+        },
+        {
+          id: "tax_libellulidae",
+          name: "Libellulidae",
+          rank: "Família",
+          order: "Odonata",
+          family: "Libellulidae",
+          commonName: "Larvas de libélula",
+          description: "Corpo robusto, cabeça com máscara labial côncava cobrindo a face em formato de concha.",
+          habitat: "Áreas de remanso, sedimento fino e folhiço de fundo em riachos.",
+          images: []
+        }
+      ],
+      nodes: [
+        {
+          id: "passo_1",
+          code: "Passo 1",
+          title: "Apêndices bucais e formato geral do abdômen",
+          notes: "Observe a região ventral da cabeça sob a lupa.",
+          options: [
+            {
+              id: "opt_1a",
+              label: "1a",
+              text: "Apêndice bucal inferior modificado em uma máscara labial articulada e extensível; abdômen largo sem cercos longos.",
+              image: "",
+              attachedTerms: ["term_mascara_labial"],
+              targetType: "taxon",
+              targetId: "tax_libellulidae"
+            },
+            {
+              id: "opt_1b",
+              label: "1b",
+              text: "Peças bucais não modificadas em máscara preênsil; abdômen terminando em dois ou três filamentos caudais longos.",
+              image: "",
+              attachedTerms: ["term_filamentos_caudais"],
+              targetType: "node",
+              targetId: "passo_2"
+            }
+          ]
+        },
+        {
+          id: "passo_2",
+          code: "Passo 2",
+          title: "Número de garras tarsais e posição das brânquias",
+          notes: "Observe a ponta das pernas e a base do tórax/abdômen.",
+          options: [
+            {
+              id: "opt_2a",
+              label: "2a",
+              text: "Pernas com apenas uma garra tarsal; presença de brânquias traqueais abdominais nas laterais do abdômen.",
+              image: "",
+              attachedTerms: ["term_garra_tarsal", "term_branquias_abd"],
+              targetType: "node",
+              targetId: "passo_3"
+            },
+            {
+              id: "opt_2b",
+              label: "2b",
+              text: "Pernas com duas garras tarsais; presença de tufos de brânquias torácicas na base das pernas e dois cercos.",
+              image: "",
+              attachedTerms: ["term_garra_tarsal", "term_branquias_toracicas"],
+              targetType: "taxon",
+              targetId: "tax_perlidae"
+            }
+          ]
+        },
+        {
+          id: "passo_3",
+          code: "Passo 3",
+          title: "Formato das brânquias abdominais (Ephemeroptera)",
+          notes: "Compare o formato das lamelas nos segmentos medianos do abdômen.",
+          options: [
+            {
+              id: "opt_3a",
+              label: "3a",
+              text: "Brânquias abdominais bifurcadas (em Y), duplas ou terminadas em prolongamentos filamentosos.",
+              image: "",
+              attachedTerms: ["term_branquias_abd"],
+              targetType: "taxon",
+              targetId: "tax_leptophlebiidae"
+            },
+            {
+              id: "opt_3b",
+              label: "3b",
+              text: "Brânquias abdominais formadas por lamelas simples, inteiras e arredondadas/ovais.",
+              image: "",
+              attachedTerms: ["term_branquias_abd"],
+              targetType: "taxon",
+              targetId: "tax_baetidae"
+            }
+          ]
+        }
+      ]
+    };
+
+    // ============================================================================
+    // 2. GERENCIAMENTO DE ESTADO, COMPRESSÃO DE IMAGEM E NUVEM
+    // ============================================================================
+    const STORAGE_KEY = "lhf_macrokey_db_v2";
+    const CLOUD_URL_KEY = "lhf_macrokey_firebase_url";
+    let db = loadDatabase();
+
+    let keyState = {
+      currentNodeId: db.meta.startNodeId || (db.nodes[0] ? db.nodes[0].id : null),
+      currentTaxonId: null,
+      history: []
+    };
+
+    let editorState = {
+      subTab: 'nodes',
+      selectedNodeId: db.nodes[0]?.id || null,
+      selectedTermId: db.terms[0]?.id || null,
+      selectedTaxonId: db.taxa[0]?.id || null
+    };
+
+    function loadDatabase() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.error("Erro ao ler localStorage:", e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_DB));
+    }
+
+    function saveDatabase(msg = "Salvo automaticamente") {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        showToast(msg);
+        renderQuickTermSearch();
+        // Se tiver nuvem configurada, sincroniza em background
+        const cloudUrl = localStorage.getItem(CLOUD_URL_KEY);
+        if (cloudUrl) pushToCloudSilent(cloudUrl);
+      } catch (e) {
+        alert("Limite de memória local atingido! Exporte seu JSON ou remova fotos muito pesadas.");
+      }
+    }
+
+    // COMPRESSOR AUTOMÁTICO DE IMAGENS (Evita travar o navegador e corrige o bug de upload)
+    function compressAndReadImage(file, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 900;
+          const MAX_HEIGHT = 900;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.78);
+          callback(compressedBase64);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toast-msg").textContent = message;
+      toast.classList.remove("opacity-0", "pointer-events-none");
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "pointer-events-none");
+      }, 2400);
+    }
+
+    // ============================================================================
+    // 3. DETECTOR AUTOMÁTICO DE TERMOS (AUTO-LINKER SEM PRECISAR DE [[ ]])
+    // ============================================================================
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function parseInteractiveText(rawText) {
+      if (!rawText) return "";
+      // Limpa colchetes antigos caso o usuário tenha digitado [[termo]]
+      let cleanText = rawText.replace(/\[\[([^\]]+)\]\]/g, '$1');
+
+      // Monta dicionário de todas as palavras/sinônimos cadastrados no glossário (do maior para o menor)
+      const phraseMap = [];
+      db.terms.forEach(term => {
+        if (term.name && term.name.trim()) {
+          phraseMap.push({ phrase: term.name.trim(), id: term.id });
+        }
+        (term.synonyms || []).forEach(syn => {
+          if (syn && syn.trim()) {
+            phraseMap.push({ phrase: syn.trim(), id: term.id });
+          }
+        });
+      });
+
+      phraseMap.sort((a, b) => b.phrase.length - a.phrase.length);
+      if (phraseMap.length === 0) return cleanText;
+
+      // Substitui em uma única passagem usando tokens temporários para não aninhar HTML
+      const placeholders = [];
+      phraseMap.forEach((item) => {
+        const regex = new RegExp(`(${escapeRegExp(item.phrase)})`, 'gi');
+        cleanText = cleanText.replace(regex, (match) => {
+          const token = `__LHF_TERM_${placeholders.length}__`;
+          placeholders.push({
+            token,
+            html: `<button type="button" onclick="event.stopPropagation(); openTermModal('${item.id}')" class="term-chip" title="Clique para ver fotos e descrição desta estrutura">
+              <i data-lucide="search" class="w-3.5 h-3.5 shrink-0"></i>
+              <span>${match}</span>
+            </button>`
+          });
+          return token;
+        });
+      });
+
+      placeholders.forEach(p => {
+        cleanText = cleanText.replace(p.token, p.html);
+      });
+
+      return cleanText;
+    }
+
+    function getNodesUsingTerm(termObj) {
+      const names = [termObj.name.toLowerCase(), ...(termObj.synonyms || []).map(s => s.toLowerCase())];
+      const matches = [];
+      db.nodes.forEach(node => {
+        node.options.forEach(opt => {
+          const textLower = (opt.text || "").toLowerCase();
+          const isAttached = (opt.attachedTerms || []).includes(termObj.id);
+          const isInText = names.some(n => n && textLower.includes(n));
+          if (isAttached || isInText) {
+            matches.push({ node, option: opt });
+          }
+        });
+      });
+      return matches;
+    }
+
+    // ============================================================================
+    // 4. RENDERIZAÇÃO DA CHAVE INTERATIVA
+    // ============================================================================
+    function renderKeyView() {
+      const stage = document.getElementById("key-active-stage");
+      const breadcrumb = document.getElementById("key-breadcrumb");
+      const historyList = document.getElementById("key-history-list");
+      const backBtn = document.getElementById("btn-key-back");
+
+      backBtn.disabled = keyState.history.length === 0;
+
+      // Breadcrumb
+      let bcHtml = `<button onclick="resetKey()" class="font-bold text-sky-700 hover:underline flex items-center gap-1">
+        <i data-lucide="home" class="w-3.5 h-3.5"></i> Início
+      </button>`;
+      keyState.history.forEach((h, idx) => {
+        bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <button onclick="jumpToHistoryIndex(${idx})" class="px-2 py-0.5 rounded-md bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold transition">
+            ${h.optionLabel}
+          </button>`;
+      });
+      if (keyState.currentTaxonId) {
+        const tx = db.taxa.find(t => t.id === keyState.currentTaxonId);
+        bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold">${tx ? tx.name : 'Resultado'}</span>`;
+      } else if (keyState.currentNodeId) {
+        const nd = db.nodes.find(n => n.id === keyState.currentNodeId);
+        if (nd) {
+          bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+            <span class="font-extrabold text-slate-900">${nd.code}</span>`;
+        }
+      }
+      breadcrumb.innerHTML = bcHtml;
+
+      // Histórico Lateral
+      if (keyState.history.length === 0) {
+        historyList.innerHTML = `<p class="text-slate-400 italic">Toque em uma das opções para iniciar a identificação.</p>`;
+      } else {
+        historyList.innerHTML = keyState.history.map((h, i) => `
+          <div class="border-l-2 border-sky-500 pl-3 py-1 bg-slate-50/70 rounded-r-lg">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sky-900">${h.nodeCode} → ${h.optionLabel}</span>
+              <button onclick="jumpToHistoryIndex(${i})" class="text-[11px] font-semibold text-sky-600 hover:underline">Voltar</button>
+            </div>
+            <p class="text-slate-500 line-clamp-2 mt-0.5">${h.optionText.replace(/\[\[|\]\]/g, '')}</p>
+          </div>
+        `).join('');
+      }
+
+      // Se chegou em um Grupo Taxonômico Final
+      if (keyState.currentTaxonId) {
+        const taxon = db.taxa.find(t => t.id === keyState.currentTaxonId);
+        if (!taxon) {
+          stage.innerHTML = `<div class="p-6 bg-white rounded-2xl border">Grupo não encontrado.</div>`;
+          return;
+        }
+        const relatedTerms = db.terms.filter(term => (term.relatedTaxa || []).includes(taxon.id));
+        stage.innerHTML = `
+          <div class="bg-white rounded-2xl shadow-md border-2 border-emerald-500 overflow-hidden fade-slide-in">
+            <div class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white px-5 py-4 flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-xl">
+                  <i data-lucide="award" class="w-7 h-7"></i>
+                </div>
+                <div>
+                  <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-100 block">Identificação Concluída • ${taxon.rank || 'Família'}</span>
+                  <h2 class="text-2xl font-extrabold italic">${taxon.name}</h2>
+                </div>
+              </div>
+              <button onclick="editSpecificItem('taxon', '${taxon.id}')" class="bg-white/15 hover:bg-white/25 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar Grupo
+              </button>
+            </div>
+
+            <div class="p-5 sm:p-6 space-y-5">
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-sky-50 text-sky-800 border border-sky-200 rounded-full text-xs font-bold">Ordem: ${taxon.order || 'Não informada'}</span>
+                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold">Família: ${taxon.family || taxon.name}</span>
+                ${taxon.commonName ? `<span class="px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-semibold">${taxon.commonName}</span>` : ''}
+              </div>
+
+              ${taxon.images && taxon.images.length > 0 ? `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  ${taxon.images.map(img => `
+                    <img src="${img}" alt="${taxon.name}" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-xs">
+                  `).join('')}
+                </div>
+              ` : ''}
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Diagnose Morfológica</h4>
+                  <div class="text-sm text-slate-700 leading-relaxed">${parseInteractiveText(taxon.description)}</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Hábitat & Ecologia no Riacho</h4>
+                  <p class="text-sm text-slate-700 leading-relaxed">${taxon.habitat || 'Sem notas ecológicas.'}</p>
+                </div>
+              </div>
+
+              ${relatedTerms.length > 0 ? `
+                <div>
+                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-2">Estruturas Diagnósticas deste Grupo</h4>
+                  <div class="flex flex-wrap gap-1.5">
+                    ${relatedTerms.map(t => `
+                      <button onclick="openTermModal('${t.id}')" class="term-chip">
+                        <i data-lucide="search" class="w-3.5 h-3.5"></i> ${t.name}
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Renderiza o Passo Atual (Nó)
+      const node = db.nodes.find(n => n.id === keyState.currentNodeId);
+      if (!node) {
+        stage.innerHTML = `<div class="bg-white p-8 rounded-2xl border text-center">
+          <p class="text-slate-500 mb-3">Nenhum passo inicial selecionado.</p>
+          <button onclick="switchMainTab('editor')" class="bg-sky-600 text-white px-4 py-2 rounded-xl text-sm font-bold">Abrir Construtor</button>
+        </div>`;
+        return;
+      }
+
+      stage.innerHTML = `
+        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-sky-100 fade-slide-in">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-xs mono mb-1">${node.code}</span>
+              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${node.title}</h2>
+            </div>
+            <button onclick="editSpecificItem('node', '${node.id}')" class="text-xs bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 shrink-0 transition">
+              <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Editar
+            </button>
+          </div>
+          ${node.notes ? `<p class="text-xs sm:text-sm text-sky-900 bg-sky-50/80 border border-sky-200/70 px-3 py-2 rounded-xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
+
+          <div class="space-y-3.5 mt-4">
+            ${node.options.map(opt => {
+              let destBadge = "";
+              if (opt.targetType === 'node') {
+                const targetNode = db.nodes.find(n => n.id === opt.targetId);
+                destBadge = `<span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 flex items-center gap-1">Segue p/ ${targetNode ? targetNode.code : '...'} <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>`;
+              } else if (opt.targetType === 'taxon') {
+                const targetTaxon = db.taxa.find(t => t.id === opt.targetId);
+                destBadge = `<span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
+              }
+
+              // Botões extras de estruturas marcadas via checkbox neste ramo
+              const extraTerms = (opt.attachedTerms || [])
+                .map(tid => db.terms.find(t => t.id === tid))
+                .filter(Boolean);
+
+              return `
+                <div onclick="selectKeyOption('${node.id}', '${opt.id}')" class="decision-card p-4 sm:p-5 cursor-pointer flex flex-col md:flex-row gap-4 justify-between items-start">
+                  <div class="space-y-2.5 flex-1 w-full">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="inline-flex items-center px-3 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">
+                        Opção ${opt.label}
+                      </span>
+                      <div>${destBadge}</div>
+                    </div>
+
+                    <div class="text-slate-800 text-sm sm:text-base leading-relaxed pt-1">
+                      ${parseInteractiveText(opt.text)}
+                    </div>
+
+                    ${extraTerms.length > 0 ? `
+                      <div class="pt-2 flex flex-wrap items-center gap-1.5 border-t border-slate-100">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 mr-1">Ver estrutura na lupa:</span>
+                        ${extraTerms.map(t => `
+                          <button type="button" onclick="event.stopPropagation(); openTermModal('${t.id}')" class="term-chip text-xs">
+                            <i data-lucide="search" class="w-3 h-3"></i> ${t.name}
+                          </button>
+                        `).join('')}
+                      </div>
+                    ` : ''}
+                  </div>
+
+                  ${opt.image ? `
+                    <img src="${opt.image}" alt="Opção ${opt.label}" class="w-full md:w-40 h-36 md:h-28 object-cover rounded-xl border border-slate-200 shrink-0">
+                  ` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function selectKeyOption(nodeId, optionId) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      const opt = node.options.find(o => o.id === optionId);
+      if (!opt) return;
+
+      if (!opt.targetId) {
+        alert("Esta alternativa ainda não está conectada a um próximo passo ou grupo. Selecione o destino na aba 'Construir / Editar'.");
+        return;
+      }
+
+      keyState.history.push({
+        nodeId: node.id,
+        nodeCode: node.code,
+        optionLabel: opt.label,
+        optionText: opt.text
+      });
+
+      if (opt.targetType === "taxon") {
+        keyState.currentTaxonId = opt.targetId;
+      } else {
+        keyState.currentNodeId = opt.targetId;
+        keyState.currentTaxonId = null;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderKeyView();
+    }
+
+    function stepBackKey() {
+      if (keyState.history.length === 0) return;
+      const last = keyState.history.pop();
+      keyState.currentNodeId = last.nodeId;
+      keyState.currentTaxonId = null;
+      renderKeyView();
+    }
+
+    function jumpToHistoryIndex(idx) {
+      const target = keyState.history[idx];
+      keyState.history = keyState.history.slice(0, idx);
+      keyState.currentNodeId = target.nodeId;
+      keyState.currentTaxonId = null;
+      renderKeyView();
+    }
+
+    function resetKey() {
+      keyState.currentNodeId = db.meta.startNodeId || (db.nodes[0] ? db.nodes[0].id : null);
+      keyState.currentTaxonId = null;
+      keyState.history = [];
+      renderKeyView();
+    }
+
+    function jumpToNodeFromExternal(nodeId) {
+      closeTermModal();
+      switchMainTab('key');
+      keyState.currentNodeId = nodeId;
+      keyState.currentTaxonId = null;
+      renderKeyView();
+    }
+
+    function renderQuickTermSearch() {
+      const q = (document.getElementById("quick-term-search")?.value || "").toLowerCase().trim();
+      const container = document.getElementById("quick-term-results");
+      if (!container) return;
+
+      const filtered = db.terms.filter(t =>
+        t.name.toLowerCase().includes(q) ||
+        t.description.toLowerCase().includes(q) ||
+        (t.synonyms && t.synonyms.some(s => s.toLowerCase().includes(q)))
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-2">Nenhuma estrutura encontrada.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(t => `
+        <button onclick="openTermModal('${t.id}')" class="w-full text-left p-2 rounded-xl hover:bg-sky-50 border border-transparent hover:border-sky-200 transition flex items-center justify-between group">
+          <div class="pr-2">
+            <span class="text-xs font-bold text-slate-800 group-hover:text-sky-800 block">${t.name}</span>
+            <span class="text-[11px] text-slate-400 line-clamp-1">${t.description}</span>
+          </div>
+          <span class="bg-sky-100 text-sky-700 p-1.5 rounded-lg shrink-0">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+          </span>
+        </button>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // ============================================================================
+    // 5. MODAL DE ESTRUTURA ANATÔMICA E GALERIA DO GLOSSÁRIO
+    // ============================================================================
+    function openTermModal(termId) {
+      const modal = document.getElementById("term-modal");
+      const titleEl = document.getElementById("modal-term-title");
+      const bodyEl = document.getElementById("modal-term-body");
+
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+
+      titleEl.textContent = term.name;
+
+      const linkedTaxa = (term.relatedTaxa || [])
+        .map(tid => db.taxa.find(tx => tx.id === tid))
+        .filter(Boolean);
+
+      const nodeUsages = getNodesUsingTerm(term);
+
+      bodyEl.innerHTML = `
+        ${term.synonyms && term.synonyms.length ? `
+          <div class="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">
+            <strong>Termos reconhecidos automaticamente:</strong> ${[term.name, ...term.synonyms].join(', ')}
+          </div>
+        ` : ''}
+
+        <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-100 text-sm text-slate-800 leading-relaxed">
+          ${term.description || 'Sem descrição cadastrada.'}
+        </div>
+
+        ${term.images && term.images.length > 0 ? `
+          <div>
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Exemplos em Fotos / Esquemas</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${term.images.map(img => `
+                <a href="${img}" target="_blank" title="Abrir imagem em tamanho maior">
+                  <img src="${img}" alt="${term.name}" class="w-full h-52 object-cover rounded-xl border border-slate-200 shadow-xs hover:opacity-95 transition">
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        ` : `
+          <div class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-4 text-center text-xs text-slate-400">
+            Nenhuma foto cadastrada ainda para esta estrutura.
+          </div>
+        `}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-slate-200 rounded-xl p-3.5">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+              <i data-lucide="bug" class="w-3.5 h-3.5 text-emerald-600"></i> Grupos onde está presente
+            </h4>
+            ${linkedTaxa.length > 0 ? `
+              <div class="flex flex-wrap gap-1.5">
+                ${linkedTaxa.map(tx => `
+                  <button onclick="closeTermModal(); viewTaxonInKey('${tx.id}')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-xs font-bold transition">
+                    ${tx.name} <span class="font-normal text-emerald-600">(${tx.order || tx.rank})</span>
+                  </button>
+                `).join('')}
+              </div>
+            ` : `<p class="text-xs text-slate-400 italic">Nenhum grupo vinculado.</p>`}
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-3.5">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+              <i data-lucide="git-fork" class="w-3.5 h-3.5 text-sky-600"></i> Onde aparece na chave
+            </h4>
+            ${nodeUsages.length > 0 ? `
+              <div class="space-y-1">
+                ${nodeUsages.map(u => `
+                  <button onclick="jumpToNodeFromExternal('${u.node.id}')" class="w-full text-left text-xs px-2.5 py-1.5 rounded-lg hover:bg-sky-50 text-slate-700 flex items-center justify-between font-medium">
+                    <span><strong>${u.node.code}</strong> (Opção ${u.option.label})</span>
+                    <span class="text-sky-600 font-bold">Ir ao passo →</span>
+                  </button>
+                `).join('')}
+              </div>
+            ` : `<p class="text-xs text-slate-400 italic">Ainda não associada a nenhum passo.</p>`}
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
+          <button onclick="closeTermModal()" class="text-xs font-bold text-slate-500 hover:text-slate-800">Fechar</button>
+          <button onclick="closeTermModal(); editSpecificItem('term', '${term.id}')" class="bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
+            <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> Adicionar Fotos / Editar Estrutura
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      lucide.createIcons();
+    }
+
+    function closeTermModal() {
+      const modal = document.getElementById("term-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function viewTaxonInKey(taxonId) {
+      switchMainTab('key');
+      keyState.currentTaxonId = taxonId;
+      renderKeyView();
+    }
+
+    function renderGlossaryView() {
+      const searchQ = (document.getElementById("glossary-search-input")?.value || "").toLowerCase().trim();
+      const taxonFilter = document.getElementById("glossary-taxon-filter")?.value || "";
+      const selectEl = document.getElementById("glossary-taxon-filter");
+
+      if (selectEl) {
+        const currentVal = selectEl.value;
+        selectEl.innerHTML = `<option value="">Todos os Grupos Relacionados</option>` +
+          db.taxa.map(t => `<option value="${t.id}" ${t.id === currentVal ? 'selected' : ''}>${t.name} (${t.order || t.rank})</option>`).join('');
+      }
+
+      const filtered = db.terms.filter(term => {
+        const matchesText = !searchQ ||
+          term.name.toLowerCase().includes(searchQ) ||
+          term.description.toLowerCase().includes(searchQ) ||
+          (term.synonyms && term.synonyms.some(s => s.toLowerCase().includes(searchQ)));
+        const matchesTaxon = !taxonFilter || (term.relatedTaxa && term.relatedTaxa.includes(taxonFilter));
+        return matchesText && matchesTaxon;
+      });
+
+      const grid = document.getElementById("glossary-grid");
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white p-8 rounded-2xl border text-center text-slate-500">Nenhuma estrutura encontrada.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(term => {
+        const linkedTaxa = (term.relatedTaxa || []).map(id => db.taxa.find(t => t.id === id)).filter(Boolean);
+        const thumb = term.images && term.images[0] ? term.images[0] : null;
+        return `
+          <div onclick="openTermModal('${term.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-400 transition cursor-pointer flex flex-col overflow-hidden">
+            ${thumb ? `
+              <img src="${thumb}" alt="${term.name}" class="w-full h-44 object-cover border-b border-slate-100">
+            ` : `
+              <div class="w-full h-28 bg-sky-50/60 flex flex-col items-center justify-center text-sky-400 border-b border-sky-100">
+                <i data-lucide="camera" class="w-7 h-7 mb-1 opacity-60"></i>
+                <span class="text-[11px] font-semibold">Toque p/ ver ou adicionar foto</span>
+              </div>
+            `}
+            <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="font-extrabold text-slate-900 text-base">${term.name}</h3>
+                  <span class="bg-sky-50 text-sky-600 p-1.5 rounded-lg shrink-0">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                  </span>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-3 mt-1.5 leading-relaxed">${term.description}</p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div class="flex flex-wrap gap-1">
+                  ${linkedTaxa.length ? linkedTaxa.map(tx => `
+                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md text-[11px] font-bold">${tx.name}</span>
+                  `).join('') : `<span class="text-[11px] text-slate-400 italic">Sem grupo fixo</span>`}
+                </div>
+                <button onclick="event.stopPropagation(); editSpecificItem('term', '${term.id}')" class="text-xs font-bold text-sky-600 hover:underline shrink-0">Editar</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // ============================================================================
+    // 6. CATÁLOGO DE GRUPOS TAXONÔMICOS
+    // ============================================================================
+    function renderTaxaView() {
+      const q = (document.getElementById("taxa-search-input")?.value || "").toLowerCase().trim();
+      const grid = document.getElementById("taxa-grid");
+
+      const filtered = db.taxa.filter(tx =>
+        !q ||
+        tx.name.toLowerCase().includes(q) ||
+        (tx.order || "").toLowerCase().includes(q) ||
+        (tx.family || "").toLowerCase().includes(q) ||
+        (tx.commonName || "").toLowerCase().includes(q)
+      );
+
+      grid.innerHTML = filtered.map(tx => {
+        const thumb = tx.images && tx.images[0] ? tx.images[0] : null;
+        const associatedTerms = db.terms.filter(term => (term.relatedTaxa || []).includes(tx.id));
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 flex flex-col justify-between space-y-4">
+            <div>
+              ${thumb ? `<img src="${thumb}" class="w-full h-44 object-cover rounded-xl mb-3 border border-slate-100">` : ''}
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full">${tx.order || 'Ordem'} • ${tx.rank || 'Família'}</span>
+                <button onclick="editSpecificItem('taxon', '${tx.id}')" class="text-slate-400 hover:text-sky-700 p-1">
+                  <i data-lucide="edit-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+              <h3 class="text-lg font-extrabold italic text-slate-900 mt-1.5">${tx.name}</h3>
+              ${tx.commonName ? `<p class="text-xs text-emerald-700 font-semibold">${tx.commonName}</p>` : ''}
+              <div class="text-xs text-slate-600 leading-relaxed mt-2">${parseInteractiveText(tx.description)}</div>
+              ${tx.habitat ? `<p class="text-[11px] text-slate-500 mt-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Hábitat:</strong> ${tx.habitat}</p>` : ''}
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div class="flex flex-wrap gap-1">
+                ${associatedTerms.map(t => `
+                  <button onclick="openTermModal('${t.id}')" class="text-[11px] font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-md flex items-center gap-1">
+                    <i data-lucide="search" class="w-2.5 h-2.5"></i> ${t.name}
+                  </button>
+                `).join('')}
+              </div>
+              <button onclick="viewTaxonInKey('${tx.id}')" class="text-xs font-extrabold text-emerald-700 hover:underline shrink-0">Abrir Ficha →</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // ============================================================================
+    // 7. MODO CONSTRUTOR (INTUITIVO, SEM [[ ]] E COM UPLOAD DE FOTOS CORRIGIDO)
+    // ============================================================================
+    function renderEditorView() {
+      const rootSelect = document.getElementById("editor-root-node-select");
+      if (rootSelect) {
+        rootSelect.innerHTML = db.nodes.map(n =>
+          `<option value="${n.id}" ${db.meta.startNodeId === n.id ? 'selected' : ''}>${n.code} - ${n.title}</option>`
+        ).join('');
+      }
+
+      renderEditorNodesList();
+      renderEditorNodeForm();
+      renderEditorTermsList();
+      renderEditorTermForm();
+      renderEditorTaxaList();
+      renderEditorTaxonForm();
+      lucide.createIcons();
+    }
+
+    function updateRootNode(nodeId) {
+      db.meta.startNodeId = nodeId;
+      saveDatabase("Passo inicial atualizado!");
+      resetKey();
+    }
+
+    // --- 7.1 EDITOR DE PASSOS DA CHAVE ---
+    function renderEditorNodesList() {
+      const listEl = document.getElementById("editor-nodes-list");
+      listEl.innerHTML = db.nodes.map(n => {
+        const isSelected = n.id === editorState.selectedNodeId;
+        return `
+          <div onclick="selectEditorNode('${n.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600 shadow-xs' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold mono ${isSelected ? 'text-sky-800' : 'text-slate-700'}">${n.code}</span>
+              <span class="text-[11px] font-semibold text-slate-400">${n.options.length} opções</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 truncate mt-0.5">${n.title}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectEditorNode(id) {
+      editorState.selectedNodeId = id;
+      renderEditorNodesList();
+      renderEditorNodeForm();
+      lucide.createIcons();
+    }
+
+    function createNewNode() {
+      const nextNum = db.nodes.length + 1;
+      const newNode = {
+        id: "passo_" + Date.now(),
+        code: `Passo ${nextNum}`,
+        title: "Novo Caráter de Identificação",
+        notes: "",
+        options: [
+          { id: "opt_" + Date.now() + "_a", label: `${nextNum}a`, text: "Descreva a primeira opção...", image: "", attachedTerms: [], targetType: "node", targetId: "" },
+          { id: "opt_" + Date.now() + "_b", label: `${nextNum}b`, text: "Descreva a opção contrastante...", image: "", attachedTerms: [], targetType: "node", targetId: "" }
+        ]
+      };
+      db.nodes.push(newNode);
+      editorState.selectedNodeId = newNode.id;
+      saveDatabase("Novo passo criado!");
+      renderEditorView();
+    }
+
+    function renderEditorNodeForm() {
+      const container = document.getElementById("editor-node-form-container");
+      const node = db.nodes.find(n => n.id === editorState.selectedNodeId);
+      if (!node) {
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione ou crie um passo ao lado.</p>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <h3 class="font-extrabold text-slate-900 text-base">Editando ${node.code}</h3>
+              <p class="text-xs text-slate-500">Escreva normalmente. Termos cadastrados no glossário ganham lupa sozinhos!</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="jumpToNodeFromExternal('${node.id}')" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> Ver na Chave
+              </button>
+              <button onclick="deleteNode('${node.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
+                Excluir
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nome/Número do Passo</label>
+              <input type="text" value="${node.code}" oninput="updateNodeField('${node.id}', 'code', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-600 mb-1">O que está sendo avaliado neste passo?</label>
+              <input type="text" value="${node.title}" oninput="updateNodeField('${node.id}', 'title', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Dica para olhar na lupa (Opcional)</label>
+            <input type="text" value="${node.notes || ''}" oninput="updateNodeField('${node.id}', 'notes', this.value)" placeholder="Ex: Olhar em vista ventral..." class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+          </div>
+
+          <!-- Alternativas / Ramos -->
+          <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-extrabold uppercase tracking-wider text-sky-900">Opções de Escolha (Botões deste passo)</h4>
+              <button onclick="addOptionToNode('${node.id}')" class="text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar Opção
+              </button>
+            </div>
+
+            ${node.options.map((opt) => `
+              <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 space-y-3.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-600">Código da Opção:</span>
+                    <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-extrabold mono border border-slate-300 rounded-lg px-2.5 py-1 bg-white">
+                  </div>
+                  <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Texto da Característica:</label>
+                  <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white">${opt.text}</textarea>
+                </div>
+
+                <!-- Marcar Estruturas com 1 Clique (Sem precisar de [[ ]]) -->
+                <div class="bg-white p-3 rounded-xl border border-slate-200">
+                  <label class="block text-[11px] font-extrabold uppercase text-slate-400 mb-2">Vincular botão de estrutura (Lupa) a esta opção:</label>
+                  <div class="flex flex-wrap gap-1.5">
+                    ${db.terms.map(t => {
+                      const isChecked = (opt.attachedTerms || []).includes(t.id);
+                      return `
+                        <button type="button" onclick="toggleOptionAttachedTerm('${node.id}', '${opt.id}', '${t.id}')" class="text-xs px-2.5 py-1 rounded-full font-semibold border transition flex items-center gap-1 ${isChecked ? 'bg-sky-600 text-white border-sky-700' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
+                          <i data-lucide="${isChecked ? 'check' : 'plus'}" class="w-3 h-3"></i> ${t.name}
+                        </button>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <!-- Destino -->
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
+                    <label class="block text-[11px] font-extrabold uppercase text-sky-800">Ao clicar nesta opção, ir para:</label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                      <select onchange="updateOptionTargetType('${node.id}', '${opt.id}', this.value)" class="text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-slate-50 font-bold">
+                        <option value="node" ${opt.targetType === 'node' ? 'selected' : ''}>Outro Passo</option>
+                        <option value="taxon" ${opt.targetType === 'taxon' ? 'selected' : ''}>Grupo Final (Resultado)</option>
+                      </select>
+
+                      <select onchange="updateOptionField('${node.id}', '${opt.id}', 'targetId', this.value)" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white font-semibold">
+                        <option value="">-- Escolha o destino --</option>
+                        ${opt.targetType === 'node'
+                          ? db.nodes.filter(n => n.id !== node.id).map(n => `<option value="${n.id}" ${opt.targetId === n.id ? 'selected' : ''}>${n.code}: ${n.title}</option>`).join('')
+                          : db.taxa.map(t => `<option value="${t.id}" ${opt.targetId === t.id ? 'selected' : ''}>${t.name} (${t.order || t.rank})</option>`).join('')
+                        }
+                      </select>
+                    </div>
+                    ${opt.targetType === 'node' ? `
+                      <button type="button" onclick="createAndLinkSubNode('${node.id}', '${opt.id}')" class="text-[11px] text-sky-700 hover:underline font-bold flex items-center gap-1 pt-1">
+                        <i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i> + Criar próximo passo automaticamente conectado aqui
+                      </button>
+                    ` : ''}
+                  </div>
+
+                  <!-- Foto da Opção -->
+                  <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
+                    <label class="block text-[11px] font-extrabold uppercase text-slate-400">Foto desta Opção (Câmera / Galeria / Link)</label>
+                    <div class="flex items-center gap-2">
+                      <label class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-lg text-xs font-bold cursor-pointer flex items-center gap-1.5 shrink-0 transition">
+                        <i data-lucide="camera" class="w-3.5 h-3.5"></i> Escolher Foto
+                        <input type="file" accept="image/*" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
+                      </label>
+                      <input type="text" value="${opt.image && !opt.image.startsWith('data:') ? opt.image : ''}" placeholder="Ou cole link https://..." oninput="updateOptionField('${node.id}', '${opt.id}', 'image', this.value)" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2">
+                    </div>
+                    ${opt.image ? `
+                      <div class="flex items-center gap-2 pt-1">
+                        <img src="${opt.image}" class="w-16 h-12 object-cover rounded-lg border">
+                        <button type="button" onclick="updateOptionField('${node.id}', '${opt.id}', 'image', ''); renderEditorNodeForm(); lucide.createIcons();" class="text-xs text-rose-600 font-semibold hover:underline">Remover foto</button>
+                      </div>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleOptionAttachedTerm(nodeId, optId, termId) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      const opt = node.options.find(o => o.id === optId);
+      if (!opt) return;
+      opt.attachedTerms = opt.attachedTerms || [];
+      if (opt.attachedTerms.includes(termId)) {
+        opt.attachedTerms = opt.attachedTerms.filter(id => id !== termId);
+      } else {
+        opt.attachedTerms.push(termId);
+      }
+      saveDatabase();
+      renderEditorNodeForm();
+      lucide.createIcons();
+    }
+
+    function uploadOptionImageFile(event, nodeId, optId) {
+      const file = event.target.files[0];
+      if (!file) return;
+      compressAndReadImage(file, (base64Img) => {
+        updateOptionField(nodeId, optId, 'image', base64Img);
+        renderEditorNodeForm();
+        lucide.createIcons();
+      });
+    }
+
+    function updateNodeField(nodeId, field, value) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      node[field] = value;
+      saveDatabase();
+      renderEditorNodesList();
+    }
+
+    function updateOptionField(nodeId, optId, field, value) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      const opt = node.options.find(o => o.id === optId);
+      if (!opt) return;
+      opt[field] = value;
+      saveDatabase();
+    }
+
+    function updateOptionTargetType(nodeId, optId, newType) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      const opt = node.options.find(o => o.id === optId);
+      if (!opt) return;
+      opt.targetType = newType;
+      opt.targetId = "";
+      saveDatabase();
+      renderEditorNodeForm();
+      lucide.createIcons();
+    }
+
+    function addOptionToNode(nodeId) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      const letter = String.fromCharCode(97 + node.options.length);
+      node.options.push({
+        id: "opt_" + Date.now(),
+        label: `${node.code.replace(/\D/g, '') || ''}${letter}`,
+        text: "Nova característica...",
+        image: "",
+        attachedTerms: [],
+        targetType: "node",
+        targetId: ""
+      });
+      saveDatabase("Opção adicionada!");
+      renderEditorNodeForm();
+      lucide.createIcons();
+    }
+
+    function removeOptionFromNode(nodeId, optId) {
+      const node = db.nodes.find(n => n.id === nodeId);
+      if (!node || node.options.length <= 1) {
+        alert("Cada passo precisa ter pelo menos uma opção.");
+        return;
+      }
+      node.options = node.options.filter(o => o.id !== optId);
+      saveDatabase("Opção removida");
+      renderEditorNodeForm();
+      lucide.createIcons();
+    }
+
+    function createAndLinkSubNode(parentNodeId, optId) {
+      const nextNum = db.nodes.length + 1;
+      const newNode = {
+        id: "passo_" + Date.now(),
+        code: `Passo ${nextNum}`,
+        title: `Passo seguinte`,
+        notes: "",
+        options: [
+          { id: "opt_" + Date.now() + "_1", label: `${nextNum}a`, text: "Primeira alternativa...", image: "", attachedTerms: [], targetType: "node", targetId: "" },
+          { id: "opt_" + Date.now() + "_2", label: `${nextNum}b`, text: "Segunda alternativa...", image: "", attachedTerms: [], targetType: "node", targetId: "" }
+        ]
+      };
+      db.nodes.push(newNode);
+      updateOptionField(parentNodeId, optId, 'targetId', newNode.id);
+      editorState.selectedNodeId = newNode.id;
+      saveDatabase(`Conectado ao ${newNode.code}!`);
+      renderEditorView();
+    }
+
+    function deleteNode(nodeId) {
+      if (db.nodes.length <= 1) {
+        alert("A chave precisa ter pelo menos um passo.");
+        return;
+      }
+      if (!confirm("Deseja excluir este passo?")) return;
+      db.nodes = db.nodes.filter(n => n.id !== nodeId);
+      if (db.meta.startNodeId === nodeId) db.meta.startNodeId = db.nodes[0].id;
+      editorState.selectedNodeId = db.nodes[0].id;
+      saveDatabase("Passo excluído");
+      renderEditorView();
+    }
+
+    // --- 7.2 EDITOR DE ESTRUTURAS (GLOSSÁRIO) COM UPLOAD CORRIGIDO ---
+    function renderEditorTermsList() {
+      const listEl = document.getElementById("editor-terms-list");
+      listEl.innerHTML = db.terms.map(t => {
+        const isSelected = t.id === editorState.selectedTermId;
+        const imgCount = (t.images || []).length;
+        return `
+          <div onclick="selectEditorTerm('${t.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+            <div class="flex items-center justify-between">
+              <p class="text-xs font-extrabold text-slate-800">${t.name}</p>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white text-slate-500 border">${imgCount} foto(s)</span>
+            </div>
+            <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${t.description}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectEditorTerm(id) {
+      editorState.selectedTermId = id;
+      renderEditorTermsList();
+      renderEditorTermForm();
+      lucide.createIcons();
+    }
+
+    function createNewTerm() {
+      const newTerm = {
+        id: "term_" + Date.now(),
+        name: "Nova Estrutura",
+        synonyms: [],
+        description: "Explique de forma simples como reconhecer esta estrutura na lupa...",
+        images: [],
+        relatedTaxa: []
+      };
+      db.terms.push(newTerm);
+      editorState.selectedTermId = newTerm.id;
+      saveDatabase("Nova estrutura criada!");
+      renderEditorView();
+    }
+
+    function renderEditorTermForm() {
+      const container = document.getElementById("editor-term-form-container");
+      const term = db.terms.find(t => t.id === editorState.selectedTermId);
+      if (!term) {
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione uma estrutura à esquerda.</p>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div>
+              <h3 class="font-extrabold text-slate-900 text-base">Estrutura: ${term.name}</h3>
+              <p class="text-xs text-emerald-700 font-semibold">✓ Reconhecimento automático ativo nos textos da chave</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="openTermModal('${term.id}')" class="text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold">Testar Modal</button>
+              <button onclick="deleteTerm('${term.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">Excluir</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nome da Estrutura</label>
+              <input type="text" value="${term.name}" oninput="updateTermField('${term.id}', 'name', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Variações no plural/singular (separadas por vírgula)</label>
+              <input type="text" value="${(term.synonyms || []).join(', ')}" oninput="updateTermSynonyms('${term.id}', this.value)" placeholder="Ex: brânquia abdominal, lamelas" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Explicação Resumida da Estrutura</label>
+            <textarea rows="3" oninput="updateTermField('${term.id}', 'description', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${term.description}</textarea>
+          </div>
+
+          <!-- UPLOAD DE IMAGENS DA ESTRUTURA (CORRIGIDO E COM COMPRESSÃO) -->
+          <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200 space-y-3">
+            <label class="block text-xs font-extrabold uppercase text-sky-900">Fotos e Exemplos desta Estrutura</label>
+            
+            <div class="flex flex-col sm:flex-row gap-2">
+              <label class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-2 shadow-xs transition shrink-0">
+                <i data-lucide="image-plus" class="w-4 h-4"></i> Enviar Foto do Celular / PC
+                <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTermImageFile(event, '${term.id}')">
+              </label>
+
+              <div class="flex flex-1 gap-2">
+                <input type="text" id="new-term-img-url" placeholder="Ou cole o link (URL) de uma imagem da web..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
+                <button type="button" onclick="addTermImageByUrl('${term.id}')" class="bg-slate-800 hover:bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+              </div>
+            </div>
+
+            ${(term.images && term.images.length > 0) ? `
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                ${term.images.map((img, i) => `
+                  <div class="relative group rounded-xl overflow-hidden border border-slate-200 bg-white shadow-xs">
+                    <img src="${img}" class="w-full h-28 object-cover">
+                    <button type="button" onclick="removeTermImage('${term.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold shadow">
+                      Excluir
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `<p class="text-xs text-slate-500 italic">Nenhuma imagem adicionada ainda. Clique em "Enviar Foto" acima.</p>`}
+          </div>
+
+          <!-- Grupos onde é frequente -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <label class="block text-xs font-extrabold uppercase text-slate-500 mb-2.5">Em quais grupos esta estrutura é frequente?</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              ${db.taxa.map(tx => {
+                const checked = (term.relatedTaxa || []).includes(tx.id);
+                return `
+                  <label class="flex items-center gap-2 text-xs bg-white p-2.5 rounded-xl border ${checked ? 'border-sky-500 bg-sky-50/40' : 'border-slate-200'} cursor-pointer">
+                    <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleTermTaxon('${term.id}', '${tx.id}', this.checked)" class="rounded text-sky-600 w-4 h-4">
+                    <span><strong>${tx.name}</strong> <span class="text-slate-400">(${tx.order || ''})</span></span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Função dedicada que corrige o bug de escopo ao enviar fotos no Glossário
+    function uploadTermImageFile(event, termId) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term.images = term.images || [];
+
+      let processed = 0;
+      files.forEach(file => {
+        compressAndReadImage(file, (base64Img) => {
+          term.images.push(base64Img);
+          processed++;
+          if (processed === files.length) {
+            saveDatabase("Foto(s) adicionada(s) à estrutura!");
+            renderEditorTermsList();
+            renderEditorTermForm();
+            lucide.createIcons();
+          }
+        });
+      });
+    }
+
+    function updateTermField(termId, field, value) {
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term[field] = value;
+      saveDatabase();
+      renderEditorTermsList();
+    }
+
+    function updateTermSynonyms(termId, rawStr) {
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term.synonyms = rawStr.split(',').map(s => s.trim()).filter(Boolean);
+      saveDatabase();
+    }
+
+    function toggleTermTaxon(termId, taxonId, isChecked) {
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term.relatedTaxa = term.relatedTaxa || [];
+      if (isChecked && !term.relatedTaxa.includes(taxonId)) {
+        term.relatedTaxa.push(taxonId);
+      } else if (!isChecked) {
+        term.relatedTaxa = term.relatedTaxa.filter(id => id !== taxonId);
+      }
+      saveDatabase();
+      renderEditorTermForm();
+      lucide.createIcons();
+    }
+
+    function addTermImageByUrl(termId) {
+      const input = document.getElementById("new-term-img-url");
+      if (!input || !input.value.trim()) return;
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term.images = term.images || [];
+      term.images.push(input.value.trim());
+      saveDatabase("Link de imagem salvo!");
+      renderEditorTermsList();
+      renderEditorTermForm();
+      lucide.createIcons();
+    }
+
+    function removeTermImage(termId, idx) {
+      const term = db.terms.find(t => t.id === termId);
+      if (!term) return;
+      term.images.splice(idx, 1);
+      saveDatabase("Imagem removida");
+      renderEditorTermsList();
+      renderEditorTermForm();
+      lucide.createIcons();
+    }
+
+    function deleteTerm(termId) {
+      if (!confirm("Excluir esta estrutura do glossário?")) return;
+      db.terms = db.terms.filter(t => t.id !== termId);
+      editorState.selectedTermId = db.terms[0]?.id || null;
+      saveDatabase("Estrutura removida");
+      renderEditorView();
+    }
+
+    // --- 7.3 EDITOR DE GRUPOS TAXONÔMICOS (TÁXONS) ---
+    function renderEditorTaxaList() {
+      const listEl = document.getElementById("editor-taxa-list");
+      listEl.innerHTML = db.taxa.map(tx => {
+        const isSelected = tx.id === editorState.selectedTaxonId;
+        return `
+          <div onclick="selectEditorTaxon('${tx.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold italic text-slate-800">${tx.name}</span>
+              <span class="text-[10px] font-bold uppercase bg-white px-2 py-0.5 rounded border text-slate-600">${tx.order || tx.rank}</span>
+            </div>
+            <p class="text-[11px] text-slate-500 truncate mt-0.5">${tx.commonName || tx.description}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectEditorTaxon(id) {
+      editorState.selectedTaxonId = id;
+      renderEditorTaxaList();
+      renderEditorTaxonForm();
+      lucide.createIcons();
+    }
+
+    function createNewTaxon() {
+      const newTx = {
+        id: "tax_" + Date.now(),
+        name: "Novo Grupo",
+        rank: "Família",
+        order: "Ephemeroptera",
+        family: "",
+        commonName: "",
+        description: "Principais características para bater o martelo neste grupo...",
+        habitat: "Riachos preservados, folhiço, pedras...",
+        images: []
+      };
+      db.taxa.push(newTx);
+      editorState.selectedTaxonId = newTx.id;
+      saveDatabase("Novo grupo cadastrado!");
+      renderEditorView();
+    }
+
+    function renderEditorTaxonForm() {
+      const container = document.getElementById("editor-taxon-form-container");
+      const tx = db.taxa.find(t => t.id === editorState.selectedTaxonId);
+      if (!tx) {
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione um grupo ao lado.</p>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div>
+              <h3 class="font-extrabold italic text-slate-900 text-lg">${tx.name}</h3>
+              <p class="text-xs text-slate-500">Cadastre a Ordem, Família e fotos deste grupo.</p>
+            </div>
+            <button onclick="deleteTaxon('${tx.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
+              Excluir Grupo
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nome Científico (Ex: Perlidae, Elmidae)</label>
+              <input type="text" value="${tx.name}" oninput="updateTaxonField('${tx.id}', 'name', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 font-bold italic">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Nível Taxonômico</label>
+              <select onchange="updateTaxonField('${tx.id}', 'rank', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white font-semibold">
+                <option value="Ordem" ${tx.rank === 'Ordem' ? 'selected' : ''}>Ordem</option>
+                <option value="Subordem" ${tx.rank === 'Subordem' ? 'selected' : ''}>Subordem</option>
+                <option value="Família" ${tx.rank === 'Família' ? 'selected' : ''}>Família</option>
+                <option value="Subfamília" ${tx.rank === 'Subfamília' ? 'selected' : ''}>Subfamília</option>
+                <option value="Gênero" ${tx.rank === 'Gênero' ? 'selected' : ''}>Gênero</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Ordem a que pertence</label>
+              <input type="text" value="${tx.order || ''}" oninput="updateTaxonField('${tx.id}', 'order', this.value)" placeholder="Ex: Ephemeroptera, Plecoptera, Trichoptera..." class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Família</label>
+              <input type="text" value="${tx.family || ''}" oninput="updateTaxonField('${tx.id}', 'family', this.value)" placeholder="Ex: Leptophlebiidae" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Nome Popular / Resumo Rápido (Opcional)</label>
+            <input type="text" value="${tx.commonName || ''}" oninput="updateTaxonField('${tx.id}', 'commonName', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Diagnose Morfológica</label>
+            <textarea rows="3" oninput="updateTaxonField('${tx.id}', 'description', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${tx.description || ''}</textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Hábitat & Bioindicação</label>
+            <textarea rows="2" oninput="updateTaxonField('${tx.id}', 'habitat', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${tx.habitat || ''}</textarea>
+          </div>
+
+          <!-- Upload de Fotos do Táxon -->
+          <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 space-y-3">
+            <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-2 shrink-0">
+                <i data-lucide="camera" class="w-4 h-4"></i> Enviar Foto do Espécime
+                <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
+              </label>
+              <div class="flex flex-1 gap-2">
+                <input type="text" id="new-taxon-img-url" placeholder="Ou cole URL da imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
+                <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+              </div>
+            </div>
+            ${(tx.images && tx.images.length > 0) ? `
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                ${tx.images.map((img, i) => `
+                  <div class="relative rounded-xl overflow-hidden border bg-white">
+                    <img src="${img}" class="w-full h-28 object-cover">
+                    <button type="button" onclick="removeTaxonImage('${tx.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold">Excluir</button>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function uploadTaxonImageFile(event, taxonId) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+      const tx = db.taxa.find(t => t.id === taxonId);
+      if (!tx) return;
+      tx.images = tx.images || [];
+
+      let processed = 0;
+      files.forEach(file => {
+        compressAndReadImage(file, (base64Img) => {
+          tx.images.push(base64Img);
+          processed++;
+          if (processed === files.length) {
+            saveDatabase("Foto(s) adicionada(s) ao grupo!");
+            renderEditorTaxonForm();
+            lucide.createIcons();
+          }
+        });
+      });
+    }
+
+    function updateTaxonField(taxonId, field, value) {
+      const tx = db.taxa.find(t => t.id === taxonId);
+      if (!tx) return;
+      tx[field] = value;
+      saveDatabase();
+      renderEditorTaxaList();
+    }
+
+    function addTaxonImageByUrl(taxonId) {
+      const input = document.getElementById("new-taxon-img-url");
+      if (!input || !input.value.trim()) return;
+      const tx = db.taxa.find(t => t.id === taxonId);
+      if (!tx) return;
+      tx.images = tx.images || [];
+      tx.images.push(input.value.trim());
+      saveDatabase("Foto adicionada!");
+      renderEditorTaxonForm();
+      lucide.createIcons();
+    }
+
+    function removeTaxonImage(taxonId, idx) {
+      const tx = db.taxa.find(t => t.id === taxonId);
+      if (!tx) return;
+      tx.images.splice(idx, 1);
+      saveDatabase();
+      renderEditorTaxonForm();
+      lucide.createIcons();
+    }
+
+    function deleteTaxon(taxonId) {
+      if (!confirm("Excluir este grupo taxonômico?")) return;
+      db.taxa = db.taxa.filter(t => t.id !== taxonId);
+      editorState.selectedTaxonId = db.taxa[0]?.id || null;
+      saveDatabase("Grupo removido");
+      renderEditorView();
+    }
+
+    // ============================================================================
+    // 8. NAVEGAÇÃO, BACKUP E SINCRONIZAÇÃO EM NUVEM (FIREBASE REST)
+    // ============================================================================
+    function switchMainTab(tabName) {
+      ['key', 'glossary', 'taxa', 'editor'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tabName);
+        
+        // Desktop nav
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          if (t === tabName) {
+            btn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-sky-900 shadow-sm";
+          } else {
+            btn.className = `flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${t === 'editor' ? 'text-amber-300 hover:text-amber-200' : 'text-sky-100 hover:text-white'}`;
+          }
+        }
+
+        // Mobile bottom nav
+        const mobBtn = document.getElementById(`mob-tab-${t}`);
+        if (mobBtn) {
+          if (t === tabName) {
+            mobBtn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 bg-sky-50 font-extrabold text-[11px]";
+          } else {
+            mobBtn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]";
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderAll();
+    }
+
+    function switchEditorSubTab(sub) {
+      editorState.subTab = sub;
+      ['nodes', 'terms', 'taxa'].forEach(s => {
+        document.getElementById(`editor-sub-${s}`).classList.toggle('hidden', s !== sub);
+        const btn = document.getElementById(`ed-tab-${s}`);
+        if (s === sub) {
+          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 bg-sky-600 text-white shadow-xs";
+        } else {
+          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100";
+        }
+      });
+      renderEditorView();
+    }
+
+    function editSpecificItem(type, id) {
+      switchMainTab('editor');
+      if (type === 'node') {
+        switchEditorSubTab('nodes');
+        selectEditorNode(id);
+      } else if (type === 'term') {
+        switchEditorSubTab('terms');
+        selectEditorTerm(id);
+      } else if (type === 'taxon') {
+        switchEditorSubTab('taxa');
+        selectEditorTaxon(id);
+      }
+    }
+
+    function openEditorForNew(type) {
+      switchMainTab('editor');
+      if (type === 'term') {
+        switchEditorSubTab('terms');
+        createNewTerm();
+      } else if (type === 'taxon') {
+        switchEditorSubTab('taxa');
+        createNewTaxon();
+      }
+    }
+
+    // --- Sincronização Nuvem p/ Equipe LHF ---
+    function openCloudModal() {
+      document.getElementById("firebase-url-input").value = localStorage.getItem(CLOUD_URL_KEY) || "";
+      const m = document.getElementById("cloud-modal");
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeCloudModal() {
+      const m = document.getElementById("cloud-modal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    function formatFirebaseEndpoint(rawUrl) {
+      let clean = rawUrl.trim().replace(/\/$/, "");
+      if (!clean.endsWith(".json")) clean += "/lhf_macrokey.json";
+      return clean;
+    }
+
+    async function saveCloudConfigAndPush() {
+      const rawUrl = document.getElementById("firebase-url-input").value.trim();
+      if (!rawUrl) {
+        localStorage.removeItem(CLOUD_URL_KEY);
+        showToast("Modo Nuvem desativado (usando memória local).");
+        closeCloudModal();
+        return;
+      }
+      localStorage.setItem(CLOUD_URL_KEY, rawUrl);
+      try {
+        const res = await fetch(formatFirebaseEndpoint(rawUrl), {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(db)
+        });
+        if (res.ok) {
+          showToast("Conectado! Chave enviada para a nuvem da equipe.");
+          closeCloudModal();
+        } else {
+          alert("Não foi possível gravar na URL informada. Verifique se o Realtime Database está em modo de teste.");
+        }
+      } catch (e) {
+        alert("Erro de conexão com a URL informada.");
+      }
+    }
+
+    async function pullFromCloud() {
+      const rawUrl = document.getElementById("firebase-url-input").value.trim() || localStorage.getItem(CLOUD_URL_KEY);
+      if (!rawUrl) {
+        alert("Cole primeiro a URL do banco compartilhado.");
+        return;
+      }
+      try {
+        const res = await fetch(formatFirebaseEndpoint(rawUrl));
+        const data = await res.json();
+        if (data && data.nodes && data.terms) {
+          db = data;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+          resetKey();
+          renderAll();
+          showToast("Chave atualizada com os dados da equipe!");
+          closeCloudModal();
+        } else {
+          alert("Nenhum banco encontrado nessa nuvem ainda. Clique em 'Salvar & Enviar' primeiro.");
+        }
+      } catch (e) {
+        alert("Erro ao buscar dados da nuvem.");
+      }
+    }
+
+    async function pushToCloudSilent(rawUrl) {
+      try {
+        await fetch(formatFirebaseEndpoint(rawUrl), {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(db)
+        });
+      } catch (e) {
+        console.warn("Falha ao sincronizar em background:", e);
+      }
+    }
+
+    function exportDatabase() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `lhf_macrokey_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(dlAnchor);
+      dlAnchor.click();
+      dlAnchor.remove();
+      showToast("Arquivo JSON baixado!");
+    }
+
+    function importDatabase(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed.nodes && parsed.terms && parsed.taxa) {
+            db = parsed;
+            saveDatabase("Chave carregada com sucesso!");
+            resetKey();
+            renderAll();
+          } else {
+            alert("Arquivo JSON inválido.");
+          }
+        } catch (err) {
+          alert("Erro ao ler o arquivo JSON.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetToFactoryData() {
+      if (!confirm("Restaurar os dados originais de exemplo?")) return;
+      db = JSON.parse(JSON.stringify(DEFAULT_DB));
+      saveDatabase("Exemplo padrão restaurado");
+      resetKey();
+      renderAll();
+    }
+
+    function renderAll() {
+      renderKeyView();
+      renderQuickTermSearch();
+      renderGlossaryView();
+      renderTaxaView();
+      renderEditorView();
+      lucide.createIcons();
+    }
+
+    document.getElementById("term-modal").addEventListener("click", (e) => {
+      if (e.target.id === "term-modal") closeTermModal();
+    });
+    document.getElementById("cloud-modal").addEventListener("click", (e) => {
+      if (e.target.id === "cloud-modal") closeCloudModal();
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderAll();
+      // Se houver nuvem configurada, puxa a versão mais recente ao abrir o app no celular
+      const savedCloud = localStorage.getItem(CLOUD_URL_KEY);
+      if (savedCloud) {
+        fetch(formatFirebaseEndpoint(savedCloud))
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.nodes && data.terms) {
+              db = data;
+              renderAll();
+            }
+          }).catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
