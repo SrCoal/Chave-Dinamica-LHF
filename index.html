@@ -595,6 +595,10 @@
     // ============================================================================
     const STORAGE_KEY = "lhf_macrokey_db_v2";
     const CLOUD_URL_KEY = "lhf_macrokey_firebase_url";
+    const DEFAULT_FIREBASE_URL = "https://SEU-PROJETO-default-rtdb.firebaseio.com";
+if (!localStorage.getItem(CLOUD_URL_KEY) && DEFAULT_FIREBASE_URL.startsWith("https://")) {
+  localStorage.setItem(CLOUD_URL_KEY, DEFAULT_FIREBASE_URL);
+}
     let db = loadDatabase();
 
     let keyState = {
