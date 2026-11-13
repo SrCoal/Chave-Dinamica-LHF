@@ -16,7 +16,7 @@
       
       <!-- Logo LHF + Status -->
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white p-1 shadow-lg flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300/80 transition hover:scale-105">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white p-1 shadow-lg flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300/80 transition hover:scale-105">
           <img src="image_0df51a.png" alt="Logo LHF" class="w-full h-full object-contain" onerror="this.style.display='none'; document.getElementById('lhf-svg-fallback').style.display='block';">
           <svg id="lhf-svg-fallback" style="display:none;" viewBox="0 0 100 100" class="w-10 h-10">
             <path d="M15,50 A35,35 0 0,1 65,18 C50,35 35,55 25,82 A35,35 0 0,1 15,50 Z" fill="#0066b2"/>
@@ -53,17 +53,20 @@
           <i data-lucide="bug" class="w-4 h-4"></i> Grupos (<span id="nav-count-taxa">0</span>)
         </button>
         <button onclick="switchMainTab('editor')" id="tab-btn-editor" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-300 hover:text-amber-200 hover:bg-white/10">
-          <i data-lucide="Sparkles" class="w-4 h-4"></i> Construir Chave
+          <i data-lucide="sliders" class="w-4 h-4"></i> Construir Chave
         </button>
       </nav>
 
-      <!-- Ações Rápidas: Galeria & Perfil -->
-      <div class="flex items-center gap-2">
+      <!-- Ações Rápidas: Modo Escuro, Galeria & Perfil -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button onclick="toggleTheme()" id="theme-toggle-btn" title="Alternar Modo Claro / Modo Escuro" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 p-2 rounded-xl text-xs font-bold">
+          <i data-lucide="moon" id="theme-toggle-icon" class="w-4 h-4 text-amber-200"></i>
+        </button>
         <button onclick="openMediaLibraryModal(null)" title="Abrir Biblioteca de Fotos do Laboratório" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 p-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold">
           <i data-lucide="images" class="w-4 h-4 text-sky-200"></i>
           <span class="hidden lg:inline">Biblioteca</span>
         </button>
-        <button onclick="openCloudModal()" title="Perfil, Sincronização e Backups" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 px-3 py-1.5 rounded-xl text-xs font-bold">
+        <button onclick="openCloudModal()" title="Perfil, Sincronização e Backups" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold">
           <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
           <div class="text-left hidden sm:block">
             <span class="block text-[9px] uppercase tracking-wider text-sky-200 leading-none">Equipe LHF</span>
@@ -236,7 +239,7 @@
         </button>
       </div>
 
-      <!-- SUB-ABA 4.1: EDITOR DE PASSOS (No mobile: Formulário em cima [order-1], Lista de demais passos embaixo [order-2]) -->
+      <!-- SUB-ABA 4.1: EDITOR DE PASSOS -->
       <div id="editor-sub-nodes" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-node-form-container"></div>
 
@@ -261,7 +264,7 @@
         </div>
       </div>
 
-      <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
+      <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS -->
       <div id="editor-sub-terms" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-term-form-container"></div>
 
@@ -280,7 +283,7 @@
         </div>
       </div>
 
-      <!-- SUB-ABA 4.3: EDITOR DE TÁXONS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
+      <!-- SUB-ABA 4.3: EDITOR DE TÁXONS -->
       <div id="editor-sub-taxa" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-taxon-form-container"></div>
 
@@ -323,11 +326,10 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: BIBLIOTECA VISUAL DE IMAGENS (CORRIGIDA P/ MOBILE) ==================== -->
+  <!-- ==================== MODAL 2: BIBLIOTECA VISUAL DE IMAGENS ==================== -->
   <div id="media-library-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-xs z-50 hidden items-center justify-center p-2 sm:p-4">
     <div class="bg-white rounded-3xl max-w-4xl w-full h-[88vh] max-h-[88vh] shadow-2xl border border-sky-100 overflow-hidden fade-slide-in flex flex-col">
       
-      <!-- Topo Compacto -->
       <div class="lhf-header-gradient text-white px-4 sm:px-5 py-3.5 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2.5 relative z-10">
           <i data-lucide="images" class="w-5 h-5 text-sky-200 shrink-0"></i>
@@ -341,7 +343,6 @@
         </button>
       </div>
 
-      <!-- Barra de Abas e Upload Rápido -->
       <div class="p-2.5 sm:p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-1.5 overflow-x-auto">
           <button type="button" onclick="setMediaLibraryFilter('all')" id="ml-filter-all" class="px-3 py-1.5 rounded-xl text-xs font-extrabold btn-hydro shrink-0">
@@ -370,7 +371,6 @@
         </div>
       </div>
 
-      <!-- Container de Rolagem Dedicado -->
       <div class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-100/70">
         <div id="media-library-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5"></div>
       </div>
@@ -392,7 +392,6 @@
       </div>
 
       <div class="p-5 space-y-5 max-h-[82vh] overflow-y-auto">
-        <!-- 1. Identificação do Pesquisador -->
         <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200">
           <label class="block text-xs font-extrabold uppercase text-sky-900 mb-1.5">Seu Nome / Apelido no Laboratório</label>
           <div class="flex gap-2">
@@ -403,7 +402,6 @@
           </div>
         </div>
 
-        <!-- 2. Status da Versão Atual -->
         <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
           <div>
             <span class="text-slate-400 font-bold uppercase text-[10px] block">Versão consolidada na nuvem</span>
@@ -419,7 +417,6 @@
           </div>
         </div>
 
-        <!-- 3. Histórico de Versões (Rollbacks na Nuvem) -->
         <div>
           <div class="flex items-center justify-between mb-2">
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
@@ -432,7 +429,6 @@
           </div>
         </div>
 
-        <!-- 4. Backup em Arquivo Local (.JSON) -->
         <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
           <span class="text-xs font-bold text-slate-500">Arquivo físico de segurança:</span>
           <div class="flex items-center gap-2">
@@ -485,10 +481,39 @@
 
     const STORAGE_KEY = "lhf_macrokey_db_v3";
     const AUTHOR_KEY = "lhf_macrokey_author_name";
+    const THEME_KEY = "lhf_macrokey_theme";
 
     // Intervalo rigoroso de 5 MINUTOS (300.000 ms) para upload automático na nuvem
     const AUTO_SYNC_DELAY_MS = 5 * 60 * 1000;
     const VERSION_BUMP_COOLDOWN_MS = 5 * 60 * 1000;
+
+    // ============================================================================
+    // 1.1 CONTROLE DE MODO ESCURO (DARK MODE)
+    // ============================================================================
+    function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+      }
+      updateThemeIcon();
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle("dark-mode");
+      localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+      updateThemeIcon();
+      showToast(isDark ? "Modo Escuro ativado" : "Modo Claro ativado");
+    }
+
+    function updateThemeIcon() {
+      const btn = document.getElementById("theme-toggle-btn");
+      if (!btn) return;
+      const isDark = document.body.classList.contains("dark-mode");
+      btn.innerHTML = isDark
+        ? `<i data-lucide="sun" class="w-4 h-4 text-amber-300"></i>`
+        : `<i data-lucide="moon" class="w-4 h-4 text-sky-200"></i>`;
+      lucide.createIcons();
+    }
 
     // ============================================================================
     // 2. DADOS DE FALLBACK E NORMALIZADOR DE ARRAYS DO FIREBASE
@@ -1271,7 +1296,7 @@
     }
 
     // ============================================================================
-    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA
+    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA (FOCO NA DESCRIÇÃO MORFOLÓGICA + ALTO CONTRASTE)
     // ============================================================================
     function renderKeyView() {
       const stage = document.getElementById("key-active-stage");
@@ -1311,7 +1336,7 @@
         historyList.innerHTML = keyState.history.map((h, i) => `
           <div class="border-l-3 border-sky-500 pl-3 py-1.5 bg-sky-50/50 rounded-r-xl">
             <div class="flex items-center justify-between">
-              <span class="font-extrabold text-sky-950">${h.nodeCode} → ${h.optionLabel}</span>
+              <span class="font-extrabold text-sky-950">${h.nodeCode} <span class="text-slate-400 font-normal">(${h.optionLabel})</span></span>
               <button onclick="jumpToHistoryIndex(${i})" class="text-[11px] font-bold text-sky-600 hover:underline">Voltar aqui</button>
             </div>
             <p class="text-slate-500 line-clamp-2 mt-0.5">${h.optionText.replace(/\[\[|\]\]/g, '')}</p>
@@ -1389,7 +1414,7 @@
         return;
       }
 
-      // Passo Atual (Nó)
+      // Passo Atual (Nó) com superfície contrastante (.step-stage-card)
       const node = db.nodes.find(n => n.id === keyState.currentNodeId);
       if (!node) {
         stage.innerHTML = `<div class="bg-white p-8 rounded-2xl border text-center">
@@ -1400,26 +1425,26 @@
       }
 
       stage.innerHTML = `
-        <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-sky-200/80 fade-slide-in">
+        <div class="step-stage-card p-4 sm:p-6 fade-slide-in">
           <div class="flex items-start justify-between gap-3 mb-2">
             <div>
-              <span class="inline-block px-3 py-0.5 rounded-lg bg-gradient-to-r from-sky-100 to-emerald-100 text-sky-900 border border-sky-200 font-extrabold text-xs mono mb-1.5">${node.code}</span>
+              <span class="inline-block px-2.5 py-0.5 rounded-md bg-white/80 text-sky-900 border border-sky-200/80 font-bold text-[11px] mono mb-1">${node.code}</span>
               <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900">${node.title}</h2>
             </div>
             <button onclick="editSpecificItem('node', '${node.id}')" class="btn-lhf btn-soft px-3.5 py-2 text-xs shrink-0">
               <i data-lucide="sliders" class="w-3.5 h-3.5 text-sky-700"></i> Editar Passo
             </button>
           </div>
-          ${node.notes ? `<p class="text-xs sm:text-sm text-sky-950 bg-sky-50/90 border border-sky-200/80 px-3.5 py-2.5 rounded-2xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
+          ${node.notes ? `<p class="text-xs sm:text-sm text-sky-950 bg-white/75 border border-sky-200/90 px-3.5 py-2.5 rounded-2xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
 
           <div class="space-y-4 mt-4">
             ${toArray(node.options).map(opt => {
               let destBadge = "";
               if (!opt.targetId) {
-                destBadge = `<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-600"></i> Conectar destino</span>`;
+                destBadge = `<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3 text-amber-600"></i> Conectar destino</span>`;
               } else if (opt.targetType === 'node') {
                 const targetNode = db.nodes.find(n => n.id === opt.targetId);
-                destBadge = `<span class="text-xs font-extrabold text-sky-800 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 flex items-center gap-1">Segue p/ ${targetNode ? targetNode.code : '...'} <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-sky-600"></i></span>`;
+                destBadge = `<span class="text-xs font-extrabold text-sky-800 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 flex items-center gap-1">Avançar <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-sky-600"></i></span>`;
               } else if (opt.targetType === 'taxon') {
                 const targetTaxon = db.taxa.find(t => t.id === opt.targetId);
                 destBadge = `<span class="text-xs font-extrabold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
@@ -1431,21 +1456,16 @@
 
               return `
                 <div onclick="selectKeyOption('${node.id}', '${opt.id}')" class="decision-card p-5 sm:p-6 cursor-pointer flex flex-col md:flex-row gap-4 justify-between items-start">
-                  <div class="space-y-3 flex-1 w-full">
-                    <div class="flex items-center justify-between gap-2">
-                      <span class="option-badge mono">
-                        Alternativa ${opt.label}
-                      </span>
-                      <div>${destBadge}</div>
-                    </div>
-
-                    <div class="text-slate-800 text-sm sm:text-base leading-relaxed pt-1 font-medium">
+                  <div class="space-y-3.5 flex-1 w-full">
+                    
+                    <!-- FOCO PRINCIPAL: DESCRIÇÃO MORFOLÓGICA EM DESTAQUE NO TOPO -->
+                    <div class="text-slate-900 text-base sm:text-lg font-semibold leading-relaxed">
                       ${parseInteractiveText(opt.text)}
                     </div>
 
                     ${extraTerms.length > 0 ? `
-                      <div class="pt-2.5 flex flex-wrap items-center gap-1.5 border-t border-slate-100">
-                        <span class="text-[10px] font-extrabold uppercase text-slate-400 mr-1">Inspecionar estrutura:</span>
+                      <div class="pt-2 flex flex-wrap items-center gap-1.5">
+                        <span class="text-[10px] font-extrabold uppercase text-slate-400 mr-1">Estruturas:</span>
                         ${extraTerms.map(t => `
                           <button type="button" onclick="event.stopPropagation(); openTermModal('${t.id}')" class="term-chip text-xs">
                             <i data-lucide="search" class="w-3 h-3"></i> ${t.name}
@@ -1453,6 +1473,12 @@
                         `).join('')}
                       </div>
                     ` : ''}
+
+                    <!-- RODAPÉ SECUNDÁRIO DISCRETO: RÓTULO TÉCNICO (1a/1b) + AÇÃO -->
+                    <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                      <span class="option-code-subtle mono">Ref. ${opt.label}</span>
+                      <div>${destBadge}</div>
+                    </div>
                   </div>
 
                   ${opt.image ? `
@@ -1632,7 +1658,7 @@
               <div class="space-y-1">
                 ${nodeUsages.map(u => `
                   <button onclick="jumpToNodeFromExternal('${u.node.id}')" class="w-full text-left text-xs px-2.5 py-1.5 rounded-xl hover:bg-sky-50 text-slate-700 flex items-center justify-between font-medium">
-                    <span><strong>${u.node.code}</strong> (Opção ${u.option.label})</span>
+                    <span><strong>${u.node.code}</strong> (Ref. ${u.option.label})</span>
                     <span class="text-sky-600 font-bold">Ir ao passo →</span>
                   </button>
                 `).join('')}
@@ -1700,7 +1726,7 @@
             ${thumb ? `
               <img src="${thumb}" alt="${term.name}" class="w-full h-44 object-cover border-b border-slate-100">
             ` : `
-              <div class="w-full h-28 bg-gradient-to-br from-sky-50 to-emerald-50/60 flex flex-col items-center justify-center text-sky-500 border-b border-sky-100">
+              <div class="w-full h-28 bg-sky-50/60 flex flex-col items-center justify-center text-sky-500 border-b border-sky-100">
                 <i data-lucide="camera" class="w-7 h-7 mb-1 opacity-70"></i>
                 <span class="text-[11px] font-bold">Toque p/ ver ou adicionar foto</span>
               </div>
@@ -1921,7 +1947,7 @@
                 <div class="p-4 rounded-2xl border-2 border-sky-100 bg-sky-50/30 space-y-3.5">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <span class="option-badge mono">${opt.label}</span>
+                      <span class="text-xs font-bold text-slate-500">Ref.</span>
                       <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-bold mono border border-slate-300 rounded-lg px-2 py-1 bg-white" title="Mudar rótulo (ex: 1a, 1b)">
                     </div>
                     <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
@@ -1931,14 +1957,12 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">Descrição Morfológica da Opção:</label>
                     <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white">${opt.text}</textarea>
                     
-                    <!-- Prévia Interativa CONDICIONAL: Oculta se não houver termos -->
                     <div id="preview-wrap-${opt.id}" class="${showPreview ? 'block' : 'hidden'} mt-1.5 p-2.5 rounded-xl bg-sky-50/90 border border-sky-200 text-xs text-slate-700">
                       <span class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">Lupas ativas nesta alternativa:</span>
                       <div id="preview-${opt.id}">${parseInteractiveText(opt.text)}</div>
                     </div>
                   </div>
 
-                  <!-- Fixar botões de estrutura extras -->
                   <div class="bg-white p-3 rounded-xl border border-slate-200">
                     <div class="flex items-center justify-between mb-2">
                       <label class="block text-[11px] font-extrabold uppercase text-slate-400">Vincular estrutura (Lupa) a esta opção:</label>
@@ -1957,7 +1981,6 @@
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <!-- Conexão de Destino -->
                     <div class="bg-white p-3.5 rounded-xl border border-sky-200 space-y-2">
                       <label class="block text-[11px] font-extrabold uppercase text-sky-900">Conexão: Ao clicar aqui, levar para:</label>
                       <div class="flex flex-col sm:flex-row gap-2">
@@ -1994,7 +2017,6 @@
                       </div>
                     </div>
 
-                    <!-- Imagem da Opção -->
                     <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2.5">
                       <label class="block text-[11px] font-extrabold uppercase text-slate-500">Foto desta Opção</label>
                       <div class="flex flex-wrap gap-1.5">
@@ -2302,7 +2324,6 @@
             <textarea rows="3" oninput="updateTermField('${term.id}', 'description', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${term.description}</textarea>
           </div>
 
-          <!-- FOTOS DA ESTRUTURA -->
           <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200 space-y-3">
             <label class="block text-xs font-extrabold uppercase text-sky-900">Fotos e Exemplos desta Estrutura</label>
             
@@ -2339,7 +2360,6 @@
             ` : `<p class="text-xs text-slate-500 italic">Nenhuma imagem adicionada ainda.</p>`}
           </div>
 
-          <!-- Grupos onde é frequente -->
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <label class="block text-xs font-extrabold uppercase text-slate-500 mb-2.5">Em quais grupos esta estrutura é comum?</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -2574,7 +2594,6 @@
             <textarea rows="2" oninput="updateTaxonField('${tx.id}', 'habitat', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${tx.habitat || ''}</textarea>
           </div>
 
-          <!-- Fotos do Táxon -->
           <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 space-y-3">
             <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo</label>
             <div class="flex flex-wrap gap-2">
@@ -2895,7 +2914,6 @@
       lucide.createIcons();
     }
 
-    // Efeito Ripple Interativo nos Botões LHF
     document.addEventListener("click", (e) => {
       const btn = e.target.closest(".btn-lhf, .media-btn");
       if (!btn) return;
@@ -2934,6 +2952,7 @@
     });
 
     window.addEventListener("DOMContentLoaded", () => {
+      initTheme();
       renderAll();
       pullFromCloud(false);
     });
