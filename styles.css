@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+:root {
+  --lhf-navy: #041e3a;
+  --lhf-blue-dark: #072f5f;
+  --lhf-blue-main: #0066b2;
+  --lhf-blue-bright: #0284c7;
+  --lhf-blue-light: #38bdf8;
+  --lhf-blue-soft: #e0f2fe;
+  --lhf-green-main: #0d7a5f;
+  --lhf-green-bright: #10b981;
+  --lhf-surface: #f0f6fc;
+  --lhf-card: #ffffff;
+  --lhf-border: #dbeafe;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--lhf-surface);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+  color: #0f172a;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Cabeçalho Institucional LHF */
+.lhf-header-gradient {
+  background: linear-gradient(135deg, var(--lhf-navy) 0%, var(--lhf-blue-main) 62%, var(--lhf-green-main) 100%);
+}
+
+/* Efeito Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Chips de Estrutura (Botões de Lupa no Texto) */
+.term-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.65rem;
+  margin: 0.1rem 0.15rem;
+  background: linear-gradient(180deg, #f0f9ff 0%, #bae6fd 100%);
+  color: #0369a1;
+  border: 1px solid #7dd3fc;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9em;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.12);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  vertical-align: baseline;
+}
+
+.term-chip:hover,
+.term-chip:active {
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border-color: #0369a1;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
+}
+
+/* Cartões de Decisão na Chave Interativa */
+.decision-card {
+  background: var(--lhf-card);
+  border: 2px solid #e2e8f0;
+  border-radius: 1.15rem;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.decision-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.decision-card:hover {
+  border-color: var(--lhf-blue-bright);
+  box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.16);
+  transform: translateY(-2px);
+}
+
+.decision-card:hover::before {
+  background: linear-gradient(180deg, var(--lhf-blue-bright), var(--lhf-green-bright));
+}
+
+.decision-card:active {
+  transform: scale(0.99);
+}
+
+/* Botões de Ação de Imagem (Câmera / Galeria / Biblioteca) */
+.media-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.media-btn:active {
+  transform: scale(0.96);
+}
+
+/* Miniaturas de Imagem com Zoom */
+.zoomable-img {
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.zoomable-img:hover {
+  transform: scale(1.015);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+}
+
+/* Animações Suaves */
+.fade-slide-in {
+  animation: fadeSlide 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Overlay de Upload em Andamento */
+.upload-spinner {
+  border: 3px solid rgba(56, 189, 248, 0.25);
+  border-top-color: #0284c7;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Scrollbar Customizada */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Ajustes Mobile */
+@media (max-width: 640px) {
+  .decision-card {
+    padding: 1rem !important;
+  }
+  input, select, textarea {
+    font-size: 16px !important; /* Evita zoom automático forçado no iOS/Android ao focar input */
+  }
+}
