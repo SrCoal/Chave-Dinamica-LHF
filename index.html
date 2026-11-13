@@ -27,7 +27,7 @@
         <div>
           <div class="flex items-center gap-1.5 flex-wrap">
             <span class="text-[10px] font-extrabold uppercase tracking-widest bg-sky-500/30 text-sky-100 px-2 py-0.5 rounded-full border border-sky-300/30">LHF • ESALQ/USP</span>
-            <button onclick="openCloudModal()" id="header-sync-pill" class="cursor-pointer text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 border border-emerald-400/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition" title="Clique para ver status de sincronização e backups">
+            <button onclick="openCloudModal()" id="header-sync-pill" class="cursor-pointer text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 border border-emerald-400/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition" title="Ver status de sincronização e backups">
               <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span id="sync-status-text">Sincronizado</span>
             </button>
@@ -61,7 +61,7 @@
       <div class="flex items-center gap-1.5">
         <button onclick="openMediaLibraryModal(null)" title="Abrir Biblioteca de Fotos do Laboratório" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
           <i data-lucide="images" class="w-4 h-4 text-sky-300"></i>
-          <span class="hidden lg:inline">Fotos</span>
+          <span class="hidden lg:inline">Biblioteca</span>
         </button>
         <button onclick="openCloudModal()" title="Perfil, Sincronização e Backups" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-2.5 py-1.5 rounded-xl text-xs font-bold transition">
           <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
@@ -95,17 +95,12 @@
 
     <!-- ==================== ABA 1: CHAVE INTERATIVA ==================== -->
     <section id="view-key" class="space-y-5 fade-slide-in">
-      <!-- Barra de Trilha e Retorno -->
-      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-sky-100 flex flex-wrap items-center justify-between gap-3">
+      <!-- Barra de Trilha Limpa (Apenas Início e Voltar Passo) -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-sky-100 flex items-center justify-between gap-3 flex-wrap">
         <div class="flex items-center gap-1.5 flex-wrap text-xs" id="key-breadcrumb"></div>
-        <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
-          <button onclick="stepBackKey()" id="btn-key-back" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar Passo
-          </button>
-          <button onclick="resetKey()" class="flex-1 sm:flex-initial justify-center flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 transition">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reiniciar Chave
-          </button>
-        </div>
+        <button onclick="stepBackKey()" id="btn-key-back" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition shrink-0">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar Passo
+        </button>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -199,10 +194,10 @@
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="font-extrabold text-base sm:text-lg">Estúdio de Construção LHF</h2>
-              <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">Versionamento Inteligente Ativo</span>
+              <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">Auto-Sync a cada 5 min</span>
             </div>
             <p class="text-xs text-sky-200 mt-0.5">
-              Suas edições ficam salvas na hora no aparelho e sincronizam na nuvem a cada 15s (ou clicando em <strong>Salvar Agora</strong>) sem inflar o número de versões.
+              Suas edições salvam na hora no aparelho e aguardam <strong>5 minutos completos</strong> antes de enviar para a nuvem (ou toque em <strong>Salvar na Nuvem Agora</strong>).
             </p>
           </div>
         </div>
@@ -229,36 +224,40 @@
         </button>
       </div>
 
-      <!-- SUB-ABA 4.1: EDITOR DE PASSOS -->
+      <!-- SUB-ABA 4.1: EDITOR DE PASSOS (No mobile: Formulário em cima [order-1], Lista de demais passos embaixo [order-2]) -->
       <div id="editor-sub-nodes" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[500px] lg:max-h-[760px]">
+        <!-- Formulário do Passo Atual (1º no Mobile, Direita no Desktop) -->
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-node-form-container"></div>
+
+        <!-- Lista de Todos os Passos (Abaixo no Mobile, Esquerda no Desktop) -->
+        <div id="editor-nodes-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[520px] lg:max-h-[760px]">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-slate-800 text-sm">Passos da Chave</h3>
+            <h3 class="font-extrabold text-slate-800 text-sm">Demais Passos da Chave</h3>
             <button onclick="createNewNode()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Passo
             </button>
           </div>
 
           <div class="relative mb-2.5">
-            <input type="text" id="editor-node-search" oninput="renderEditorNodesList()" placeholder="Buscar passo ou texto..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+            <input type="text" id="editor-node-search" oninput="renderEditorNodesList()" placeholder="Buscar outro passo..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
             <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
           </div>
 
           <div class="mb-3 bg-sky-50/60 p-2.5 rounded-xl border border-sky-100">
-            <label class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">1º Passo da Chave (Início)</label>
+            <label class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">1º Passo da Chave (Raiz Inicial)</label>
             <select id="editor-root-node-select" onchange="updateRootNode(this.value)" class="w-full text-xs bg-white border border-sky-200 rounded-lg p-1.5 font-bold text-sky-950"></select>
           </div>
           <div id="editor-nodes-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
-
-        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-node-form-container"></div>
       </div>
 
-      <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (GLOSSÁRIO) -->
+      <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
       <div id="editor-sub-terms" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-term-form-container"></div>
+
+        <div id="editor-terms-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-slate-800 text-sm">Estruturas & Termos</h3>
+            <h3 class="font-extrabold text-slate-800 text-sm">Demais Estruturas & Termos</h3>
             <button onclick="createNewTerm()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Estrutura
             </button>
@@ -269,14 +268,15 @@
           </div>
           <div id="editor-terms-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
-        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-term-form-container"></div>
       </div>
 
-      <!-- SUB-ABA 4.3: EDITOR DE TÁXONS -->
+      <!-- SUB-ABA 4.3: EDITOR DE TÁXONS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
       <div id="editor-sub-taxa" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-taxon-form-container"></div>
+
+        <div id="editor-taxa-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-extrabold text-slate-800 text-sm">Grupos Taxonômicos</h3>
+            <h3 class="font-extrabold text-slate-800 text-sm">Demais Grupos Taxonômicos</h3>
             <button onclick="createNewTaxon()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Grupo
             </button>
@@ -287,7 +287,6 @@
           </div>
           <div id="editor-taxa-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
-        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-taxon-form-container"></div>
       </div>
 
     </section>
@@ -314,44 +313,58 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL 2: BIBLIOTECA INTERNA DE IMAGENS REUTILIZÁVEIS ==================== -->
-  <div id="media-library-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-sky-100 overflow-hidden fade-slide-in flex flex-col max-h-[88vh]">
-      <div class="lhf-header-gradient text-white px-5 py-4 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-          <span class="bg-white/20 p-2 rounded-xl">
-            <i data-lucide="images" class="w-5 h-5 text-sky-200"></i>
-          </span>
+  <!-- ==================== MODAL 2: BIBLIOTECA VISUAL DE IMAGENS (CORRIGIDA P/ MOBILE) ==================== -->
+  <div id="media-library-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-xs z-50 hidden items-center justify-center p-2 sm:p-4">
+    <!-- Altura explícita h-[88vh] impede que o flexbox esmague as fotos no celular -->
+    <div class="bg-white rounded-2xl max-w-4xl w-full h-[88vh] max-h-[88vh] shadow-2xl border border-sky-100 overflow-hidden fade-slide-in flex flex-col">
+      
+      <!-- Topo Compacto -->
+      <div class="lhf-header-gradient text-white px-4 py-3 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="images" class="w-5 h-5 text-sky-200 shrink-0"></i>
           <div>
-            <h3 class="text-base sm:text-lg font-extrabold">Biblioteca de Imagens do App</h3>
-            <p class="text-[11px] text-sky-200">Reutilize fotos já enviadas em qualquer passo, estrutura ou grupo sem fazer novo upload</p>
+            <h3 class="text-sm sm:text-base font-extrabold leading-tight" id="media-modal-title">Toque em uma Foto para Selecionar</h3>
+            <p class="text-[11px] text-sky-200 leading-tight" id="media-modal-subtitle">Todas as fotos enviadas aparecem abaixo automaticamente</p>
           </div>
         </div>
-        <button onclick="closeMediaLibraryModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl transition">
+        <button type="button" onclick="closeMediaLibraryModal()" class="bg-white/15 hover:bg-white/25 text-white p-1.5 rounded-xl transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Barra de Busca e Upload para a Biblioteca -->
-      <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shrink-0">
-        <div class="relative flex-1">
-          <input type="text" id="media-lib-search" oninput="renderMediaLibraryGrid()" placeholder="Filtrar foto por nome, passo ou táxon (ex: Biomphalaria, brânquia)..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-sky-500">
-          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+      <!-- Barra de Abas e Upload Rápido -->
+      <div class="p-2.5 sm:p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1 overflow-x-auto">
+          <button type="button" onclick="setMediaLibraryFilter('all')" id="ml-filter-all" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-sky-600 text-white shadow-xs shrink-0">
+            Todas (<span id="ml-count-all">0</span>)
+          </button>
+          <button type="button" onclick="setMediaLibraryFilter('term')" id="ml-filter-term" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+            Estruturas
+          </button>
+          <button type="button" onclick="setMediaLibraryFilter('taxon')" id="ml-filter-taxon" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+            Grupos
+          </button>
+          <button type="button" onclick="setMediaLibraryFilter('node')" id="ml-filter-node" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+            Passos
+          </button>
         </div>
-        <div class="flex items-center gap-2">
-          <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white shadow-xs">
-            <i data-lucide="camera" class="w-4 h-4"></i> Câmera
+
+        <div class="flex items-center gap-1.5">
+          <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white py-1.5 px-2.5 text-xs">
+            <i data-lucide="camera" class="w-3.5 h-3.5"></i> Câmera
             <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadNewToMediaLibrary(event)">
           </label>
-          <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white shadow-xs">
-            <i data-lucide="upload" class="w-4 h-4"></i> Subir da Galeria
+          <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white py-1.5 px-2.5 text-xs">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i> Galeria
             <input type="file" accept="image/*" multiple class="hidden" onchange="uploadNewToMediaLibrary(event)">
           </label>
         </div>
       </div>
 
-      <!-- Grade de Fotos Disponíveis -->
-      <div id="media-library-grid" class="p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 flex-1"></div>
+      <!-- Container de Rolagem Dedicado (Separado da Grid para nunca travar no Android/iOS) -->
+      <div class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-100/70">
+        <div id="media-library-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      </div>
     </div>
   </div>
 
@@ -363,7 +376,7 @@
           <i data-lucide="shield-check" class="w-5 h-5 text-emerald-300"></i>
           <div>
             <h3 class="font-extrabold text-base">Central da Equipe LHF & Backups</h3>
-            <p class="text-[11px] text-sky-200">Controle de sessão inteligente (evita explosão de versões)</p>
+            <p class="text-[11px] text-sky-200">Sincronização automática a cada 5 minutos</p>
           </div>
         </div>
         <button onclick="closeCloudModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -392,7 +405,7 @@
               <i data-lucide="cloud-download" class="w-3.5 h-3.5 text-sky-600"></i> Baixar da Nuvem
             </button>
             <button onclick="forcePushWithBackup('Ponto de backup manual')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
-              <i data-lucide="bookmark-plus" class="w-3.5 h-3.5"></i> Criar Ponto de Backup
+              <i data-lucide="bookmark-plus" class="w-3.5 h-3.5"></i> Salvar Backup Agora
             </button>
           </div>
         </div>
@@ -464,13 +477,12 @@
     const STORAGE_KEY = "lhf_macrokey_db_v3";
     const AUTHOR_KEY = "lhf_macrokey_author_name";
 
-    // Intervalo de espera após digitar para enviar ao Firebase (15 segundos)
-    const AUTO_SYNC_DELAY_MS = 15000;
-    // Cooldown de 10 minutos para não inflar o número de revisão/backup na mesma sessão
-    const VERSION_BUMP_COOLDOWN_MS = 10 * 60 * 1000;
+    // Intervalo rigoroso de 5 MINUTOS (300.000 ms) para upload automático na nuvem
+    const AUTO_SYNC_DELAY_MS = 5 * 60 * 1000;
+    const VERSION_BUMP_COOLDOWN_MS = 5 * 60 * 1000;
 
     // ============================================================================
-    // 2. DADOS DE FALLBACK (SÓ USADOS SE NÃO HOUVER NADA NO FIREBASE NEM LOCAL)
+    // 2. DADOS DE FALLBACK E NORMALIZADOR DE ARRAYS DO FIREBASE
     // ============================================================================
     const DEFAULT_DB = {
       meta: {
@@ -545,15 +557,51 @@
       ]
     };
 
+    // Converte qualquer Objeto esparso do Firebase de volta para Array puro e indexa todas as imagens existentes
+    function toArray(val) {
+      if (!val) return [];
+      if (Array.isArray(val)) return val.filter(Boolean);
+      if (typeof val === "object") return Object.values(val).filter(Boolean);
+      return [];
+    }
+
+    function normalizeDatabase(raw) {
+      if (!raw || typeof raw !== "object") return JSON.parse(JSON.stringify(DEFAULT_DB));
+      raw.meta = raw.meta || { revision: 1, startNodeId: "passo_1" };
+      raw.mediaLibrary = toArray(raw.mediaLibrary);
+      raw.terms = toArray(raw.terms).map(t => ({
+        ...t,
+        synonyms: toArray(t.synonyms),
+        images: toArray(t.images),
+        relatedTaxa: toArray(t.relatedTaxa)
+      }));
+      raw.taxa = toArray(raw.taxa).map(tx => ({
+        ...tx,
+        images: toArray(tx.images)
+      }));
+      raw.nodes = toArray(raw.nodes).map(n => ({
+        ...n,
+        options: toArray(n.options).map(opt => ({
+          ...opt,
+          attachedTerms: toArray(opt.attachedTerms)
+        }))
+      }));
+      return raw;
+    }
+
     // ============================================================================
-    // 3. GERENCIAMENTO DE ESTADO E CONTROLE DE REVISÃO INTELIGENTE (ANTI-SPAM)
+    // 3. ESTADO E TEMPORIZADOR ESTRITO DE 5 MINUTOS PARA UPLOAD NA NUVEM
     // ============================================================================
     let db = loadLocalDatabase();
     let lastSyncedRevision = db.meta?.revision || 1;
-    let lastVersionBumpTime = 0; // Evita subir v1 -> v118 em poucos minutos
-    let syncDebounceTimer = null;
+    let lastVersionBumpTime = Date.now();
+    let syncTimerId = null;
+    let countdownIntervalId = null;
+    let nextSyncTimestamp = 0;
     let hasPendingCloudChanges = false;
-    let mediaPickerCallback = null; // Callback quando a biblioteca de imagens é aberta para escolher foto
+    let pendingActionSummary = "Edição na chave";
+    let mediaPickerCallback = null;
+    let mediaLibraryCategoryFilter = 'all';
 
     let keyState = {
       currentNodeId: db.meta.startNodeId || (db.nodes[0] ? db.nodes[0].id : null),
@@ -602,45 +650,65 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
-          const parsed = JSON.parse(raw);
-          parsed.meta = parsed.meta || { revision: 1 };
-          parsed.mediaLibrary = parsed.mediaLibrary || [];
-          return parsed;
+          return normalizeDatabase(JSON.parse(raw));
         }
       } catch (e) {
         console.error("Erro ao ler localStorage:", e);
       }
-      return JSON.parse(JSON.stringify(DEFAULT_DB));
+      return normalizeDatabase(JSON.parse(JSON.stringify(DEFAULT_DB)));
     }
 
-    // Salva no aparelho imediatamente e agenda envio p/ nuvem após 15s sem digitar
+    // Salva IMEDIATAMENTE no aparelho, mas agenda o upload na nuvem para daqui a exatos 5 MINUTOS
     function saveDatabase(actionLabel = "Edição na chave") {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
         updateHeaderCounters();
         renderQuickTermSearch();
 
+        pendingActionSummary = actionLabel;
         hasPendingCloudChanges = true;
-        setSyncStatusUI("pending", "Aguardando p/ sincronizar...");
+
         const btnSaveNow = document.getElementById("btn-save-now-header");
         if (btnSaveNow) {
           btnSaveNow.classList.remove("hidden");
           btnSaveNow.classList.add("inline-flex");
         }
 
-        clearTimeout(syncDebounceTimer);
-        syncDebounceTimer = setTimeout(() => {
-          syncWithCloudSafe(actionLabel, false);
-        }, AUTO_SYNC_DELAY_MS);
+        // Se ainda não há um timer de 5 minutos rodando, inicia a contagem de 5 minutos!
+        if (!syncTimerId) {
+          nextSyncTimestamp = Date.now() + AUTO_SYNC_DELAY_MS;
+          syncTimerId = setTimeout(() => {
+            syncTimerId = null;
+            clearInterval(countdownIntervalId);
+            syncWithCloudSafe(pendingActionSummary, false);
+          }, AUTO_SYNC_DELAY_MS);
+
+          updateCountdownUI();
+          clearInterval(countdownIntervalId);
+          countdownIntervalId = setInterval(updateCountdownUI, 1000);
+        }
       } catch (e) {
         console.error("Erro ao salvar localmente:", e);
       }
     }
 
+    function updateCountdownUI() {
+      if (!hasPendingCloudChanges || !nextSyncTimestamp) return;
+      const remainingMs = Math.max(0, nextSyncTimestamp - Date.now());
+      const totalSec = Math.ceil(remainingMs / 1000);
+      const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const secs = String(totalSec % 60).padStart(2, '0');
+      setSyncStatusUI("pending", `Auto-sync ${mins}:${secs}`);
+    }
+
     async function flushPendingSyncNow() {
-      clearTimeout(syncDebounceTimer);
-      await syncWithCloudSafe("Salvamento rápido", false);
-      showToast("Sincronizado com a nuvem LHF!");
+      if (syncTimerId) {
+        clearTimeout(syncTimerId);
+        syncTimerId = null;
+      }
+      clearInterval(countdownIntervalId);
+      await syncWithCloudSafe(pendingActionSummary || "Salvamento manual", false);
+      showToast("Enviado para a nuvem LHF!");
     }
 
     function setSyncStatusUI(state, text) {
@@ -665,16 +733,15 @@
       }
     }
 
-    // SINCRONIZAÇÃO INTELIGENTE: Só sobe o número da versão (v+1) se passaram 10 min, mudou o autor ou foi backup manual
     async function syncWithCloudSafe(actionSummary = "Edição na chave", forceNewVersion = false) {
       const author = getAuthorName() || "Pesquisador LHF";
       setSyncStatusUI("saving", "Sincronizando...");
 
       try {
         const checkRes = await fetch(FIREBASE_MAIN_ENDPOINT);
-        const remoteDb = await checkRes.json();
+        const remoteRaw = await checkRes.json();
+        const remoteDb = remoteRaw ? normalizeDatabase(remoteRaw) : null;
 
-        // Verifica conflito real de outro colega
         if (
           remoteDb &&
           remoteDb.meta &&
@@ -692,12 +759,11 @@
 
           if (!confirmOverwrite) {
             db = remoteDb;
-            db.mediaLibrary = db.mediaLibrary || [];
             lastSyncedRevision = remoteDb.meta.revision;
             hasPendingCloudChanges = false;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
             renderAll();
-            setSyncStatusUI("ok", `Sincronizado (v${lastSyncedRevision})`);
+            setSyncStatusUI("ok", `Nuvem v${lastSyncedRevision}`);
             showToast(`Atualizado com a versão de ${remoteAuthor}`);
             return;
           }
@@ -708,16 +774,14 @@
         const remoteAuthor = remoteDb?.meta?.lastAuthor || author;
         const timeSinceLastBump = now - lastVersionBumpTime;
 
-        // Decide se cria uma nova versão (v+1) ou se apenas atualiza a revisão atual da sessão
         const shouldBumpVersion =
           forceNewVersion ||
           remoteAuthor !== author ||
-          timeSinceLastBump > VERSION_BUMP_COOLDOWN_MS ||
-          lastVersionBumpTime === 0;
+          timeSinceLastBump >= VERSION_BUMP_COOLDOWN_MS;
 
         let targetRevision = remoteRev;
         if (shouldBumpVersion) {
-          if (remoteDb && remoteDb.nodes) {
+          if (remoteDb && remoteDb.nodes && remoteDb.nodes.length > 0) {
             await pushVersionToBackupHistory(remoteDb);
           }
           targetRevision = Math.max(lastSyncedRevision, remoteRev) + 1;
@@ -747,15 +811,14 @@
         }
       } catch (err) {
         console.warn("Falha na sincronização:", err);
-        setSyncStatusUI("error", "Salvo só no aparelho");
+        setSyncStatusUI("error", "Salvo no aparelho");
       }
     }
 
     async function pushVersionToBackupHistory(snapshotToBackup) {
       try {
         const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
-        let backups = await res.json();
-        if (!Array.isArray(backups)) backups = [];
+        let backups = toArray(await res.json());
 
         if (backups.length > 0 && backups[0].revision === snapshotToBackup.meta?.revision) {
           return;
@@ -784,7 +847,11 @@
 
     async function forcePushWithBackup(reason) {
       ensureAuthorIdentified();
-      clearTimeout(syncDebounceTimer);
+      if (syncTimerId) {
+        clearTimeout(syncTimerId);
+        syncTimerId = null;
+      }
+      clearInterval(countdownIntervalId);
       await syncWithCloudSafe(reason, true);
       await loadCloudBackupsList();
       showToast("Ponto de restauração criado na nuvem!");
@@ -794,16 +861,14 @@
       try {
         setSyncStatusUI("saving", "Conectando...");
         const res = await fetch(FIREBASE_MAIN_ENDPOINT);
-        const data = await res.json();
-        if (data && data.nodes && data.terms) {
-          db = data;
-          db.mediaLibrary = db.mediaLibrary || [];
-          lastSyncedRevision = data.meta?.revision || 1;
-          lastVersionBumpTime = Date.now(); // Inicia a sessão a partir da versão carregada
+        const rawData = await res.json();
+        if (rawData && (rawData.nodes || rawData.terms)) {
+          db = normalizeDatabase(rawData);
+          lastSyncedRevision = db.meta?.revision || 1;
+          lastVersionBumpTime = Date.now();
           hasPendingCloudChanges = false;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
 
-          // Garante que o passo atual existe
           if (!db.nodes.some(n => n.id === keyState.currentNodeId)) {
             keyState.currentNodeId = db.meta.startNodeId || db.nodes[0]?.id || null;
           }
@@ -829,7 +894,7 @@
     }
 
     // ============================================================================
-    // 4. NOVO MOTOR DE UPLOAD MOBILE (CORRIGE FOTOS PESADAS DE CELULAR + BIBLIOTECA)
+    // 4. UPLOAD MOBILE E BIBLIOTECA VISUAL COM 1 TOQUE DIRETO NA FOTO
     // ============================================================================
     function setUploadOverlay(visible, title = "Enviando foto...", sub = "Comprimindo imagem do celular") {
       const el = document.getElementById("upload-indicator");
@@ -840,7 +905,6 @@
       el.classList.toggle("flex", visible);
     }
 
-    // Comprime usando URL.createObjectURL + canvas.toBlob (usa 10x menos memória RAM no celular que Base64!)
     function compressImageToBlob(file) {
       return new Promise((resolve) => {
         const objectUrl = URL.createObjectURL(file);
@@ -868,21 +932,15 @@
             ctx.drawImage(img, 0, 0, width, height);
 
             canvas.toBlob((blob) => {
-              if (blob) {
-                resolve(blob);
-              } else {
-                resolve(file); // Fallback p/ arquivo original se toBlob falhar
-              }
+              resolve(blob || file);
             }, 'image/jpeg', 0.82);
           } catch (err) {
-            console.warn("Erro no canvas, enviando arquivo direto:", err);
             resolve(file);
           }
         };
 
         img.onerror = function() {
           URL.revokeObjectURL(objectUrl);
-          // Caso seja um formato especial do celular, envia o próprio arquivo direto para a API do ImgBB converter
           resolve(file);
         };
 
@@ -893,11 +951,11 @@
     async function uploadFileToImgBB(file, contextLabel, onSuccess) {
       if (!file) return;
       ensureAuthorIdentified();
-      setUploadOverlay(true, `Subindo foto (${file.name.slice(0, 18)}...)`, "Otimizando resolução para o ImgBB...");
+      setUploadOverlay(true, `Processando imagem...`, "Reduzindo peso para envio rápido...");
 
       try {
         const processedBlob = await compressImageToBlob(file);
-        setUploadOverlay(true, "Enviando para a nuvem ImgBB...", "Aguarde alguns segundos...");
+        setUploadOverlay(true, "Subindo para a nuvem ImgBB...", "Aguarde alguns segundos...");
 
         const formData = new FormData();
         formData.append("key", IMGBB_API_KEY);
@@ -913,25 +971,23 @@
 
         if (result && result.success && result.data?.url) {
           const hostedUrl = result.data.url;
-          // Registra automaticamente na Biblioteca de Imagens do App para reutilização futura!
-          registerImageInLibrary(hostedUrl, contextLabel || file.name.replace(/\.[^/.]+$/, ""));
-          showToast("Foto enviada e salva na Biblioteca!");
+          registerImageInLibrary(hostedUrl, contextLabel || "Foto LHF");
+          showToast("Foto pronta e adicionada à Biblioteca!");
           onSuccess(hostedUrl);
         } else {
-          alert("O servidor de imagens recusou o arquivo: " + (result?.error?.message || "Tente tirar um print ou usar formato JPG/PNG."));
+          alert("Erro ao enviar imagem: " + (result?.error?.message || "Tente novamente."));
         }
       } catch (err) {
         setUploadOverlay(false);
         console.error("Erro no upload:", err);
-        alert("Falha de conexão ao subir a foto. Verifique sua internet no celular.");
+        alert("Falha de conexão ao subir a foto. Verifique sua internet.");
       }
     }
 
-    // Indexa todas as fotos do banco + biblioteca explícita sem duplicatas
-    function registerImageInLibrary(url, label = "Imagem LHF") {
-      if (!url || !url.startsWith("http")) return;
-      db.mediaLibrary = db.mediaLibrary || [];
-      if (!db.mediaLibrary.some(item => item.url === url)) {
+    function registerImageInLibrary(url, label = "Foto LHF") {
+      if (!url || typeof url !== "string" || !url.startsWith("http")) return;
+      db.mediaLibrary = toArray(db.mediaLibrary);
+      if (!db.mediaLibrary.some(item => item && item.url === url)) {
         db.mediaLibrary.unshift({
           url,
           label: label || "Foto LHF",
@@ -940,35 +996,78 @@
       }
     }
 
+    // Varre absolutamente todas as imagens salvas em qualquer lugar do banco para exibir na Biblioteca sem precisar pesquisar
     function getAllCatalogedImages() {
       const map = new Map();
-      (db.mediaLibrary || []).forEach(item => {
-        if (item.url) map.set(item.url, item.label || "Biblioteca");
-      });
-      (db.terms || []).forEach(t => {
-        (t.images || []).forEach(url => {
-          if (url && !map.has(url)) map.set(url, `Estrutura: ${t.name}`);
+
+      toArray(db.terms).forEach(t => {
+        toArray(t.images).forEach(url => {
+          if (url && typeof url === "string" && !map.has(url)) {
+            map.set(url, { url, label: t.name || "Estrutura", category: 'term', badge: 'Estrutura' });
+          }
         });
       });
-      (db.taxa || []).forEach(tx => {
-        (tx.images || []).forEach(url => {
-          if (url && !map.has(url)) map.set(url, `Táxon: ${tx.name}`);
+
+      toArray(db.taxa).forEach(tx => {
+        toArray(tx.images).forEach(url => {
+          if (url && typeof url === "string" && !map.has(url)) {
+            map.set(url, { url, label: tx.name || "Grupo", category: 'taxon', badge: 'Grupo' });
+          }
         });
       });
-      (db.nodes || []).forEach(n => {
-        (n.options || []).forEach(opt => {
-          if (opt.image && !map.has(opt.image)) map.set(opt.image, `${n.code} (${opt.label})`);
+
+      toArray(db.nodes).forEach(n => {
+        toArray(n.options).forEach(opt => {
+          if (opt && opt.image && typeof opt.image === "string" && !map.has(opt.image)) {
+            map.set(opt.image, { url: opt.image, label: `${n.code || 'Passo'} (${opt.label || ''})`, category: 'node', badge: 'Passo' });
+          }
         });
       });
-      return Array.from(map.entries()).map(([url, label]) => ({ url, label }));
+
+      toArray(db.mediaLibrary).forEach(item => {
+        const url = typeof item === "string" ? item : item?.url;
+        const label = typeof item === "string" ? "Foto LHF" : (item?.label || "Foto LHF");
+        if (url && !map.has(url)) {
+          map.set(url, { url, label, category: 'all', badge: 'Biblioteca' });
+        }
+      });
+
+      return Array.from(map.values());
+    }
+
+    function setMediaLibraryFilter(cat) {
+      mediaLibraryCategoryFilter = cat;
+      ['all', 'term', 'taxon', 'node'].forEach(c => {
+        const btn = document.getElementById(`ml-filter-${c}`);
+        if (!btn) return;
+        if (c === cat) {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-extrabold bg-sky-600 text-white shadow-xs shrink-0";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0";
+        }
+      });
+      renderMediaLibraryGrid();
     }
 
     function openMediaLibraryModal(onSelectCallback = null) {
       mediaPickerCallback = onSelectCallback;
+      mediaLibraryCategoryFilter = 'all';
+
+      const titleEl = document.getElementById("media-modal-title");
+      const subEl = document.getElementById("media-modal-subtitle");
+
+      if (mediaPickerCallback) {
+        titleEl.textContent = "Toque na Foto para Adicionar";
+        subEl.textContent = "Basta 1 toque sobre qualquer imagem abaixo para vinculá-la";
+      } else {
+        titleEl.textContent = "Biblioteca de Fotos do Laboratório";
+        subEl.textContent = "Toque em uma foto para ampliar em tela cheia";
+      }
+
       const m = document.getElementById("media-library-modal");
       m.classList.remove("hidden");
       m.classList.add("flex");
-      renderMediaLibraryGrid();
+      setMediaLibraryFilter('all');
       lucide.createIcons();
     }
 
@@ -981,69 +1080,85 @@
 
     function renderMediaLibraryGrid() {
       const grid = document.getElementById("media-library-grid");
-      const q = (document.getElementById("media-lib-search")?.value || "").toLowerCase().trim();
-      const allImgs = getAllCatalogedImages().filter(item => !q || item.label.toLowerCase().includes(q));
+      if (!grid) return;
 
-      if (allImgs.length === 0) {
+      const allCatalog = getAllCatalogedImages();
+      const countEl = document.getElementById("ml-count-all");
+      if (countEl) countEl.textContent = allCatalog.length;
+
+      const filtered = allCatalog.filter(item => {
+        return mediaLibraryCategoryFilter === 'all' || item.category === mediaLibraryCategoryFilter;
+      });
+
+      if (filtered.length === 0) {
         grid.innerHTML = `
-          <div class="col-span-full py-12 text-center text-slate-400">
-            <p class="text-sm font-bold text-slate-600 mb-1">Nenhuma foto encontrada na biblioteca.</p>
-            <p class="text-xs">Use os botões "Câmera" ou "Subir da Galeria" acima para adicionar fotos reutilizáveis.</p>
+          <div class="col-span-full py-12 px-4 text-center bg-white rounded-2xl border border-slate-200">
+            <p class="text-sm font-bold text-slate-700 mb-1">Nenhuma foto encontrada nesta aba.</p>
+            <p class="text-xs text-slate-500">Toque em "Todas" no topo ou envie uma nova foto pela Câmera/Galeria.</p>
           </div>
         `;
         return;
       }
 
-      grid.innerHTML = allImgs.map((item, idx) => `
-        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:border-sky-500 transition flex flex-col justify-between group">
-          <div class="relative">
-            <img src="${item.url}" onclick="openImageLightbox('${item.url}')" class="w-full h-32 object-cover zoomable-img" alt="${item.label}">
-            <span class="absolute bottom-1.5 left-1.5 right-1.5 bg-slate-900/75 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded truncate">
-              ${item.label}
+      const isPickerMode = typeof mediaPickerCallback === "function";
+
+      // Renderiza cada foto usando <button type="button"> nativo para resposta imediata ao toque no celular
+      grid.innerHTML = filtered.map((item, idx) => `
+        <div class="bg-white rounded-2xl border-2 ${isPickerMode ? 'border-emerald-400 hover:border-emerald-600' : 'border-slate-200'} overflow-hidden shadow-sm flex flex-col justify-between relative">
+          <button 
+            type="button"
+            onclick="handleLibraryItemTap(${idx})"
+            class="w-full text-left focus:outline-none active:opacity-80 transition block relative"
+          >
+            <img src="${item.url}" class="w-full h-36 sm:h-40 object-cover block" alt="${item.label}">
+            <span class="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md">
+              ${item.badge}
             </span>
-          </div>
-          <div class="p-2 flex items-center justify-between gap-1 bg-slate-50">
-            ${mediaPickerCallback ? `
-              <button type="button" onclick="pickImageFromLibrary('${item.url}')" class="w-full bg-sky-600 hover:bg-sky-700 text-white text-xs font-extrabold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 shadow-xs transition">
-                <i data-lucide="check" class="w-3.5 h-3.5"></i> Usar esta Foto
-              </button>
-            ` : `
-              <button type="button" onclick="navigator.clipboard.writeText('${item.url}'); showToast('Link copiado!');" class="flex-1 bg-white hover:bg-sky-50 text-slate-700 border border-slate-200 text-[11px] font-bold py-1 px-2 rounded-lg">
-                Copiar Link
-              </button>
-              <button type="button" onclick="openImageLightbox('${item.url}')" class="bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 p-1 rounded-lg" title="Ampliar">
-                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
-              </button>
-            `}
-          </div>
+            <div class="p-2 bg-white border-t border-slate-100">
+              <p class="text-xs font-extrabold text-slate-800 truncate">${item.label}</p>
+              <span class="mt-1 w-full py-1.5 px-2 rounded-lg text-[11px] font-extrabold flex items-center justify-center gap-1 ${isPickerMode ? 'bg-emerald-600 text-white' : 'bg-sky-50 text-sky-700'}">
+                ${isPickerMode ? '✓ Usar esta Foto' : 'Ampliar Foto'}
+              </span>
+            </div>
+          </button>
         </div>
       `).join('');
+
+      // Guarda a lista filtrada atual em memória para evitar problemas com caracteres especiais em URLs no onclick
+      window._currentLibraryFilteredList = filtered;
       lucide.createIcons();
     }
 
-    function pickImageFromLibrary(url) {
+    function handleLibraryItemTap(idx) {
+      const item = window._currentLibraryFilteredList?.[idx];
+      if (!item || !item.url) return;
       if (typeof mediaPickerCallback === "function") {
-        mediaPickerCallback(url);
+        const cb = mediaPickerCallback;
+        closeMediaLibraryModal();
+        cb(item.url);
+        showToast("Foto adicionada da Biblioteca!");
+      } else {
+        openImageLightbox(item.url);
       }
-      closeMediaLibraryModal();
-      showToast("Foto vinculada da Biblioteca!");
     }
 
     function uploadNewToMediaLibrary(event) {
       const files = Array.from(event.target.files || []);
       if (files.length === 0) return;
-      const customLabel = prompt("Dê um nome curto para identificar esta(s) foto(s) na biblioteca (ex: Biomphalaria concha):", "Foto LHF") || "Foto LHF";
 
       let count = 0;
       files.forEach(file => {
-        uploadFileToImgBB(file, customLabel, (hostedUrl) => {
+        const defaultName = file.name ? file.name.replace(/\.[^/.]+$/, "") : "Foto LHF";
+        uploadFileToImgBB(file, defaultName, (hostedUrl) => {
           count++;
           if (count === files.length) {
-            saveDatabase(`Subiu foto (${customLabel}) na biblioteca`);
-            renderMediaLibraryGrid();
-            // Se o usuário estava escolhendo para um campo específico e subiu apenas 1 foto, já seleciona!
+            saveDatabase(`Subiu foto na biblioteca`);
             if (files.length === 1 && typeof mediaPickerCallback === "function") {
-              pickImageFromLibrary(hostedUrl);
+              const cb = mediaPickerCallback;
+              closeMediaLibraryModal();
+              cb(hostedUrl);
+            } else {
+              renderMediaLibraryGrid();
             }
           }
         });
@@ -1075,29 +1190,43 @@
     }
 
     // ============================================================================
-    // 5. DETECTOR AUTOMÁTICO DE TERMOS (AUTO-LINKER)
+    // 5. DETECTOR AUTOMÁTICO DE TERMOS E VERIFICADOR DE PRÉVIA
     // ============================================================================
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function getRegisteredTermsPhraseMap() {
+      const phraseMap = [];
+      toArray(db.terms).forEach(term => {
+        if (term.name && term.name.trim()) {
+          phraseMap.push({ phrase: term.name.trim(), id: term.id });
+        }
+        toArray(term.synonyms).forEach(syn => {
+          if (syn && syn.trim()) {
+            phraseMap.push({ phrase: syn.trim(), id: term.id });
+          }
+        });
+      });
+      phraseMap.sort((a, b) => b.phrase.length - a.phrase.length);
+      return phraseMap;
+    }
+
+    // Verifica se o texto da opção possui algum termo do glossário ou estrutura vinculada
+    function optionHasAssociatedTerms(opt) {
+      if (!opt) return false;
+      if (toArray(opt.attachedTerms).length > 0) return true;
+      const rawText = (opt.text || "").toLowerCase();
+      if (!rawText) return false;
+      const phraseMap = getRegisteredTermsPhraseMap();
+      return phraseMap.some(item => rawText.includes(item.phrase.toLowerCase()));
     }
 
     function parseInteractiveText(rawText) {
       if (!rawText) return "";
       let cleanText = rawText.replace(/\[\[([^\]]+)\]\]/g, '$1');
 
-      const phraseMap = [];
-      db.terms.forEach(term => {
-        if (term.name && term.name.trim()) {
-          phraseMap.push({ phrase: term.name.trim(), id: term.id });
-        }
-        (term.synonyms || []).forEach(syn => {
-          if (syn && syn.trim()) {
-            phraseMap.push({ phrase: syn.trim(), id: term.id });
-          }
-        });
-      });
-
-      phraseMap.sort((a, b) => b.phrase.length - a.phrase.length);
+      const phraseMap = getRegisteredTermsPhraseMap();
       if (phraseMap.length === 0) return cleanText;
 
       const placeholders = [];
@@ -1124,12 +1253,12 @@
     }
 
     function getNodesUsingTerm(termObj) {
-      const names = [termObj.name.toLowerCase(), ...(termObj.synonyms || []).map(s => s.toLowerCase())];
+      const names = [termObj.name.toLowerCase(), ...toArray(termObj.synonyms).map(s => s.toLowerCase())];
       const matches = [];
-      db.nodes.forEach(node => {
-        node.options.forEach(opt => {
+      toArray(db.nodes).forEach(node => {
+        toArray(node.options).forEach(opt => {
           const textLower = (opt.text || "").toLowerCase();
-          const isAttached = (opt.attachedTerms || []).includes(termObj.id);
+          const isAttached = toArray(opt.attachedTerms).includes(termObj.id);
           const isInText = names.some(n => n && textLower.includes(n));
           if (isAttached || isInText) {
             matches.push({ node, option: opt });
@@ -1140,7 +1269,7 @@
     }
 
     // ============================================================================
-    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA
+    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA (SEM BOTÃO REINICIAR DUPLICADO)
     // ============================================================================
     function renderKeyView() {
       const stage = document.getElementById("key-active-stage");
@@ -1150,24 +1279,27 @@
 
       backBtn.disabled = keyState.history.length === 0;
 
-      let bcHtml = `<button onclick="resetKey()" class="font-bold text-sky-700 hover:underline flex items-center gap-1">
-        <i data-lucide="home" class="w-3.5 h-3.5"></i> Início
+      // Botão único "Início" destacado e limpo
+      let bcHtml = `<button onclick="resetKey()" class="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-extrabold flex items-center gap-1.5 transition">
+        <i data-lucide="home" class="w-3.5 h-3.5 text-sky-600"></i> Início
       </button>`;
+
       keyState.history.forEach((h, idx) => {
         bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          <button onclick="jumpToHistoryIndex(${idx})" class="px-2 py-0.5 rounded-md bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold transition">
+          <button onclick="jumpToHistoryIndex(${idx})" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-800 font-bold transition">
             ${h.optionLabel}
           </button>`;
       });
+
       if (keyState.currentTaxonId) {
         const tx = db.taxa.find(t => t.id === keyState.currentTaxonId);
         bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          <span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-bold">${tx ? tx.name : 'Resultado'}</span>`;
+          <span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white font-bold">${tx ? tx.name : 'Resultado'}</span>`;
       } else if (keyState.currentNodeId) {
         const nd = db.nodes.find(n => n.id === keyState.currentNodeId);
         if (nd) {
           bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            <span class="font-extrabold text-slate-900">${nd.code}</span>`;
+            <span class="font-extrabold text-slate-900 px-1">${nd.code}</span>`;
         }
       }
       breadcrumb.innerHTML = bcHtml;
@@ -1193,7 +1325,7 @@
           stage.innerHTML = `<div class="p-6 bg-white rounded-2xl border">Grupo não encontrado.</div>`;
           return;
         }
-        const relatedTerms = db.terms.filter(term => (term.relatedTaxa || []).includes(taxon.id));
+        const relatedTerms = db.terms.filter(term => toArray(term.relatedTaxa).includes(taxon.id));
         stage.innerHTML = `
           <div class="bg-white rounded-2xl shadow-md border-2 border-emerald-500 overflow-hidden fade-slide-in">
             <div class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white px-5 py-4 flex items-center justify-between flex-wrap gap-3">
@@ -1280,7 +1412,7 @@
           ${node.notes ? `<p class="text-xs sm:text-sm text-sky-900 bg-sky-50/80 border border-sky-200/70 px-3 py-2 rounded-xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
 
           <div class="space-y-3.5 mt-4">
-            ${node.options.map(opt => {
+            ${toArray(node.options).map(opt => {
               let destBadge = "";
               if (!opt.targetId) {
                 destBadge = `<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-600"></i> Conectar destino</span>`;
@@ -1292,7 +1424,7 @@
                 destBadge = `<span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
               }
 
-              const extraTerms = (opt.attachedTerms || [])
+              const extraTerms = toArray(opt.attachedTerms)
                 .map(tid => db.terms.find(t => t.id === tid))
                 .filter(Boolean);
 
@@ -1408,7 +1540,7 @@
       const filtered = db.terms.filter(t =>
         t.name.toLowerCase().includes(q) ||
         t.description.toLowerCase().includes(q) ||
-        (t.synonyms && t.synonyms.some(s => s.toLowerCase().includes(q)))
+        toArray(t.synonyms).some(s => s.toLowerCase().includes(q))
       );
 
       if (filtered.length === 0) {
@@ -1443,7 +1575,7 @@
 
       titleEl.textContent = term.name;
 
-      const linkedTaxa = (term.relatedTaxa || [])
+      const linkedTaxa = toArray(term.relatedTaxa)
         .map(tid => db.taxa.find(tx => tx.id === tid))
         .filter(Boolean);
 
@@ -1548,8 +1680,8 @@
         const matchesText = !searchQ ||
           term.name.toLowerCase().includes(searchQ) ||
           term.description.toLowerCase().includes(searchQ) ||
-          (term.synonyms && term.synonyms.some(s => s.toLowerCase().includes(searchQ)));
-        const matchesTaxon = !taxonFilter || (term.relatedTaxa && term.relatedTaxa.includes(taxonFilter));
+          toArray(term.synonyms).some(s => s.toLowerCase().includes(searchQ));
+        const matchesTaxon = !taxonFilter || toArray(term.relatedTaxa).includes(taxonFilter);
         return matchesText && matchesTaxon;
       });
 
@@ -1560,7 +1692,7 @@
       }
 
       grid.innerHTML = filtered.map(term => {
-        const linkedTaxa = (term.relatedTaxa || []).map(id => db.taxa.find(t => t.id === id)).filter(Boolean);
+        const linkedTaxa = toArray(term.relatedTaxa).map(id => db.taxa.find(t => t.id === id)).filter(Boolean);
         const thumb = term.images && term.images[0] ? term.images[0] : null;
         return `
           <div onclick="openTermModal('${term.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-400 transition cursor-pointer flex flex-col overflow-hidden">
@@ -1612,7 +1744,7 @@
 
       grid.innerHTML = filtered.map(tx => {
         const thumb = tx.images && tx.images[0] ? tx.images[0] : null;
-        const associatedTerms = db.terms.filter(term => (term.relatedTaxa || []).includes(tx.id));
+        const associatedTerms = db.terms.filter(term => toArray(term.relatedTaxa).includes(tx.id));
         return `
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 flex flex-col justify-between space-y-4">
             <div>
@@ -1646,7 +1778,7 @@
     }
 
     // ============================================================================
-    // 8. MODO CONSTRUTOR COM CÂMERA DIRETA E BIBLIOTECA REUTILIZÁVEL
+    // 8. MODO CONSTRUTOR (FORMULÁRIO NO TOPO NO MOBILE E PRÉVIA CONDICIONAL)
     // ============================================================================
     function renderEditorView() {
       const rootSelect = document.getElementById("editor-root-node-select");
@@ -1680,19 +1812,19 @@
         !q ||
         n.code.toLowerCase().includes(q) ||
         n.title.toLowerCase().includes(q) ||
-        n.options.some(o => (o.text || "").toLowerCase().includes(q))
+        toArray(n.options).some(o => (o.text || "").toLowerCase().includes(q))
       );
 
       listEl.innerHTML = filtered.map(n => {
         const isSelected = n.id === editorState.selectedNodeId;
-        const hasUnlinked = n.options.some(o => !o.targetId);
+        const hasUnlinked = toArray(n.options).some(o => !o.targetId);
         return `
-          <div onclick="selectEditorNode('${n.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600 shadow-xs' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+          <div onclick="selectEditorNode('${n.id}', true)" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600 shadow-xs' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
             <div class="flex items-center justify-between gap-1">
               <span class="text-xs font-extrabold mono ${isSelected ? 'text-sky-800' : 'text-slate-700'}">${n.code}</span>
               <div class="flex items-center gap-1">
                 ${hasUnlinked ? `<span class="w-2 h-2 rounded-full bg-amber-400" title="Possui opção sem destino conectado"></span>` : ''}
-                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white border text-slate-500">${n.options.length} ramos</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white border text-slate-500">${toArray(n.options).length} ramos</span>
               </div>
             </div>
             <p class="text-xs font-semibold text-slate-800 truncate mt-0.5">${n.title}</p>
@@ -1701,11 +1833,14 @@
       }).join('');
     }
 
-    function selectEditorNode(id) {
+    function selectEditorNode(id, scrollOnMobile = false) {
       editorState.selectedNodeId = id;
       renderEditorNodesList();
       renderEditorNodeForm();
       lucide.createIcons();
+      if (scrollOnMobile && window.innerWidth < 1024) {
+        document.getElementById("editor-node-form-container")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function createNewNode() {
@@ -1722,16 +1857,15 @@
         ]
       };
       db.nodes.push(newNode);
-      editorState.selectedNodeId = newNode.id;
+      selectEditorNode(newNode.id, true);
       saveDatabase(`Criou ${newNode.code}`);
-      renderEditorView();
     }
 
     function renderEditorNodeForm() {
       const container = document.getElementById("editor-node-form-container");
       const node = db.nodes.find(n => n.id === editorState.selectedNodeId);
       if (!node) {
-        container.innerHTML = `<p class="text-sm text-slate-400">Selecione ou crie um passo ao lado.</p>`;
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione ou crie um passo.</p>`;
         return;
       }
 
@@ -1739,12 +1873,15 @@
         <div class="space-y-5">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
-              <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 block">Editando Passo da Chave</span>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 block">Editando Passo Atual</span>
               <h3 class="font-extrabold text-slate-900 text-lg">${node.code} — ${node.title}</h3>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
+              <button type="button" onclick="document.getElementById('editor-nodes-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="list" class="w-3.5 h-3.5"></i> Outros Passos ↓
+              </button>
               <button onclick="jumpToNodeFromExternal('${node.id}')" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
-                <i data-lucide="play" class="w-3.5 h-3.5"></i> Testar na Chave
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> Ver na Chave
               </button>
               <button onclick="deleteNode('${node.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
                 Excluir
@@ -1777,107 +1914,112 @@
               </button>
             </div>
 
-            ${node.options.map((opt) => `
-              <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 space-y-3.5">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">${opt.label}</span>
-                    <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-bold mono border border-slate-300 rounded-lg px-2 py-1 bg-white" title="Mudar rótulo (ex: 1a, 1b)">
+            ${toArray(node.options).map((opt) => {
+              const showPreview = optionHasAssociatedTerms(opt);
+              return `
+                <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 space-y-3.5">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="px-2.5 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">${opt.label}</span>
+                      <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-bold mono border border-slate-300 rounded-lg px-2 py-1 bg-white" title="Mudar rótulo (ex: 1a, 1b)">
+                    </div>
+                    <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
                   </div>
-                  <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
-                </div>
 
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Descrição Morfológica da Opção:</label>
-                  <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white focus:border-sky-500 focus:outline-none">${opt.text}</textarea>
-                  <div class="mt-1.5 p-2.5 rounded-xl bg-white border border-sky-100 text-xs text-slate-600">
-                    <span class="text-[10px] font-extrabold uppercase text-sky-700 block mb-0.5">Prévia Interativa (Lupas automáticas):</span>
-                    <div id="preview-${opt.id}">${parseInteractiveText(opt.text)}</div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Descrição Morfológica da Opção:</label>
+                    <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white focus:border-sky-500 focus:outline-none">${opt.text}</textarea>
+                    
+                    <!-- Prévia Interativa CONDICIONAL: Só fica visível quando houver estrutura/termo associado -->
+                    <div id="preview-wrap-${opt.id}" class="${showPreview ? 'block' : 'hidden'} mt-1.5 p-2.5 rounded-xl bg-sky-50/70 border border-sky-200 text-xs text-slate-700">
+                      <span class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">Lupas ativas nesta alternativa:</span>
+                      <div id="preview-${opt.id}">${parseInteractiveText(opt.text)}</div>
+                    </div>
                   </div>
-                </div>
 
-                <!-- Fixar botões de estrutura extras -->
-                <div class="bg-white p-3 rounded-xl border border-slate-200">
-                  <div class="flex items-center justify-between mb-2">
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-400">Vincular estrutura (Lupa) a esta opção:</label>
-                    <button type="button" onclick="quickCreateTermFromNode('${node.id}', '${opt.id}')" class="text-[11px] font-bold text-sky-600 hover:underline">+ Nova Estrutura</button>
+                  <!-- Fixar botões de estrutura extras -->
+                  <div class="bg-white p-3 rounded-xl border border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="block text-[11px] font-extrabold uppercase text-slate-400">Vincular estrutura (Lupa) a esta opção:</label>
+                      <button type="button" onclick="quickCreateTermFromNode('${node.id}', '${opt.id}')" class="text-[11px] font-bold text-sky-600 hover:underline">+ Nova Estrutura</button>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                      ${db.terms.map(t => {
+                        const isChecked = toArray(opt.attachedTerms).includes(t.id);
+                        return `
+                          <button type="button" onclick="toggleOptionAttachedTerm('${node.id}', '${opt.id}', '${t.id}')" class="text-xs px-2.5 py-1 rounded-full font-semibold border transition flex items-center gap-1 ${isChecked ? 'bg-sky-600 text-white border-sky-700' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
+                            <i data-lucide="${isChecked ? 'check' : 'plus'}" class="w-3 h-3"></i> ${t.name}
+                          </button>
+                        `;
+                      }).join('')}
+                    </div>
                   </div>
-                  <div class="flex flex-wrap gap-1.5">
-                    ${db.terms.map(t => {
-                      const isChecked = (opt.attachedTerms || []).includes(t.id);
-                      return `
-                        <button type="button" onclick="toggleOptionAttachedTerm('${node.id}', '${opt.id}', '${t.id}')" class="text-xs px-2.5 py-1 rounded-full font-semibold border transition flex items-center gap-1 ${isChecked ? 'bg-sky-600 text-white border-sky-700' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
-                          <i data-lucide="${isChecked ? 'check' : 'plus'}" class="w-3 h-3"></i> ${t.name}
-                        </button>
-                      `;
-                    }).join('')}
-                  </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <!-- Conexão de Destino -->
-                  <div class="bg-white p-3.5 rounded-xl border border-sky-200 space-y-2">
-                    <label class="block text-[11px] font-extrabold uppercase text-sky-900">Conexão: Ao clicar aqui, levar para:</label>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                      <select onchange="updateOptionTargetType('${node.id}', '${opt.id}', this.value)" class="text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-slate-50 font-bold">
-                        <option value="node" ${opt.targetType === 'node' ? 'selected' : ''}>Outro Passo</option>
-                        <option value="taxon" ${opt.targetType === 'taxon' ? 'selected' : ''}>Grupo Final (Táxon)</option>
-                      </select>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Conexão de Destino -->
+                    <div class="bg-white p-3.5 rounded-xl border border-sky-200 space-y-2">
+                      <label class="block text-[11px] font-extrabold uppercase text-sky-900">Conexão: Ao clicar aqui, levar para:</label>
+                      <div class="flex flex-col sm:flex-row gap-2">
+                        <select onchange="updateOptionTargetType('${node.id}', '${opt.id}', this.value)" class="text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-slate-50 font-bold">
+                          <option value="node" ${opt.targetType === 'node' ? 'selected' : ''}>Outro Passo</option>
+                          <option value="taxon" ${opt.targetType === 'taxon' ? 'selected' : ''}>Grupo Final (Táxon)</option>
+                        </select>
 
-                      <select onchange="updateOptionField('${node.id}', '${opt.id}', 'targetId', this.value); renderEditorNodesList(); renderEditorNodeForm(); lucide.createIcons();" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white font-semibold">
-                        <option value="">-- Selecione o destino --</option>
-                        ${opt.targetType === 'node'
-                          ? db.nodes.filter(n => n.id !== node.id).map(n => `<option value="${n.id}" ${opt.targetId === n.id ? 'selected' : ''}>${n.code}: ${n.title}</option>`).join('')
-                          : db.taxa.map(t => `<option value="${t.id}" ${opt.targetId === t.id ? 'selected' : ''}>${t.name} (${t.order || t.rank})</option>`).join('')
-                        }
-                      </select>
+                        <select onchange="updateOptionField('${node.id}', '${opt.id}', 'targetId', this.value); renderEditorNodesList(); renderEditorNodeForm(); lucide.createIcons();" class="flex-1 text-xs border border-slate-300 rounded-lg px-2.5 py-2 bg-white font-semibold">
+                          <option value="">-- Selecione o destino --</option>
+                          ${opt.targetType === 'node'
+                            ? db.nodes.filter(n => n.id !== node.id).map(n => `<option value="${n.id}" ${opt.targetId === n.id ? 'selected' : ''}>${n.code}: ${n.title}</option>`).join('')
+                            : db.taxa.map(t => `<option value="${t.id}" ${opt.targetId === t.id ? 'selected' : ''}>${t.name} (${t.order || t.rank})</option>`).join('')
+                          }
+                        </select>
+                      </div>
+
+                      <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        ${opt.targetType === 'node' ? `
+                          <button type="button" onclick="createAndLinkSubNode('${node.id}', '${opt.id}')" class="text-[11px] text-sky-700 hover:underline font-bold flex items-center gap-1">
+                            <i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i> + Criar próximo passo conectado
+                          </button>
+                        ` : `
+                          <button type="button" onclick="createAndLinkTaxon('${node.id}', '${opt.id}')" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
+                            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Criar novo grupo conectado
+                          </button>
+                        `}
+
+                        ${opt.targetId ? `
+                          <button type="button" onclick="editSpecificItem('${opt.targetType}', '${opt.targetId}')" class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-lg font-bold">
+                            Ir p/ destino →
+                          </button>
+                        ` : ''}
+                      </div>
                     </div>
 
-                    <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                      ${opt.targetType === 'node' ? `
-                        <button type="button" onclick="createAndLinkSubNode('${node.id}', '${opt.id}')" class="text-[11px] text-sky-700 hover:underline font-bold flex items-center gap-1">
-                          <i data-lucide="git-branch-plus" class="w-3.5 h-3.5"></i> + Criar próximo passo conectado
+                    <!-- Imagem da Opção -->
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+                      <label class="block text-[11px] font-extrabold uppercase text-slate-500">Foto desta Opção</label>
+                      <div class="flex flex-wrap gap-1.5">
+                        <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white">
+                          <i data-lucide="camera" class="w-3.5 h-3.5"></i> Câmera
+                          <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
+                        </label>
+                        <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white">
+                          <i data-lucide="upload" class="w-3.5 h-3.5"></i> Galeria
+                          <input type="file" accept="image/*" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
+                        </label>
+                        <button type="button" onclick="pickOptionImageFromLibrary('${node.id}', '${opt.id}')" class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+                          <i data-lucide="images" class="w-3.5 h-3.5"></i> Biblioteca
                         </button>
-                      ` : `
-                        <button type="button" onclick="createAndLinkTaxon('${node.id}', '${opt.id}')" class="text-[11px] text-emerald-700 hover:underline font-bold flex items-center gap-1">
-                          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> + Criar novo grupo conectado
-                        </button>
-                      `}
-
-                      ${opt.targetId ? `
-                        <button type="button" onclick="editSpecificItem('${opt.targetType}', '${opt.targetId}')" class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-lg font-bold">
-                          Ir p/ destino →
-                        </button>
+                      </div>
+                      ${opt.image ? `
+                        <div class="flex items-center gap-3 pt-1">
+                          <img src="${opt.image}" onclick="openImageLightbox('${opt.image}')" class="w-20 h-14 object-cover rounded-lg border zoomable-img">
+                          <button type="button" onclick="updateOptionField('${node.id}', '${opt.id}', 'image', ''); renderEditorNodeForm(); lucide.createIcons();" class="text-xs text-rose-600 font-bold hover:underline">Desvincular foto</button>
+                        </div>
                       ` : ''}
                     </div>
                   </div>
-
-                  <!-- Imagem da Opção: Câmera Direta + Galeria + Biblioteca Reutilizável -->
-                  <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2.5">
-                    <label class="block text-[11px] font-extrabold uppercase text-slate-500">Foto desta Opção</label>
-                    <div class="flex flex-wrap gap-1.5">
-                      <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white">
-                        <i data-lucide="camera" class="w-3.5 h-3.5"></i> Câmera
-                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
-                      </label>
-                      <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white">
-                        <i data-lucide="upload" class="w-3.5 h-3.5"></i> Galeria
-                        <input type="file" accept="image/*" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
-                      </label>
-                      <button type="button" onclick="pickOptionImageFromLibrary('${node.id}', '${opt.id}')" class="media-btn bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200">
-                        <i data-lucide="images" class="w-3.5 h-3.5"></i> Biblioteca
-                      </button>
-                    </div>
-                    ${opt.image ? `
-                      <div class="flex items-center gap-3 pt-1">
-                        <img src="${opt.image}" onclick="openImageLightbox('${opt.image}')" class="w-20 h-14 object-cover rounded-lg border zoomable-img">
-                        <button type="button" onclick="updateOptionField('${node.id}', '${opt.id}', 'image', ''); renderEditorNodeForm(); lucide.createIcons();" class="text-xs text-rose-600 font-bold hover:underline">Desvincular foto</button>
-                      </div>
-                    ` : ''}
-                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
       `;
@@ -1900,7 +2042,7 @@
       const node = db.nodes.find(n => n.id === nodeId);
       const opt = node?.options.find(o => o.id === optId);
       if (opt) {
-        opt.attachedTerms = opt.attachedTerms || [];
+        opt.attachedTerms = toArray(opt.attachedTerms);
         opt.attachedTerms.push(newTerm.id);
       }
       saveDatabase(`Criou estrutura ${newTerm.name}`);
@@ -1922,7 +2064,7 @@
       if (!node) return;
       const opt = node.options.find(o => o.id === optId);
       if (!opt) return;
-      opt.attachedTerms = opt.attachedTerms || [];
+      opt.attachedTerms = toArray(opt.attachedTerms);
       if (opt.attachedTerms.includes(termId)) {
         opt.attachedTerms = opt.attachedTerms.filter(id => id !== termId);
       } else {
@@ -1961,8 +2103,14 @@
       if (!opt) return;
       opt[field] = value;
       if (field === 'text') {
+        const wrap = document.getElementById(`preview-wrap-${optId}`);
         const prev = document.getElementById(`preview-${optId}`);
-        if (prev) {
+        const hasTerms = optionHasAssociatedTerms(opt);
+        if (wrap) {
+          wrap.classList.toggle("hidden", !hasTerms);
+          wrap.classList.toggle("block", hasTerms);
+        }
+        if (prev && hasTerms) {
           prev.innerHTML = parseInteractiveText(value);
           lucide.createIcons();
         }
@@ -2028,9 +2176,8 @@
       };
       db.nodes.push(newNode);
       updateOptionField(parentNodeId, optId, 'targetId', newNode.id);
-      editorState.selectedNodeId = newNode.id;
+      selectEditorNode(newNode.id, true);
       saveDatabase(`Criou e conectou ${newNode.code}`);
-      renderEditorView();
     }
 
     function createAndLinkTaxon(parentNodeId, optId) {
@@ -2076,9 +2223,9 @@
 
       listEl.innerHTML = filtered.map(t => {
         const isSelected = t.id === editorState.selectedTermId;
-        const imgCount = (t.images || []).length;
+        const imgCount = toArray(t.images).length;
         return `
-          <div onclick="selectEditorTerm('${t.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+          <div onclick="selectEditorTerm('${t.id}', true)" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
             <div class="flex items-center justify-between">
               <p class="text-xs font-extrabold text-slate-800">${t.name}</p>
               <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white text-slate-500 border">${imgCount} foto(s)</span>
@@ -2089,11 +2236,14 @@
       }).join('');
     }
 
-    function selectEditorTerm(id) {
+    function selectEditorTerm(id, scrollOnMobile = false) {
       editorState.selectedTermId = id;
       renderEditorTermsList();
       renderEditorTermForm();
       lucide.createIcons();
+      if (scrollOnMobile && window.innerWidth < 1024) {
+        document.getElementById("editor-term-form-container")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function createNewTerm() {
@@ -2107,27 +2257,29 @@
         relatedTaxa: []
       };
       db.terms.push(newTerm);
-      editorState.selectedTermId = newTerm.id;
+      selectEditorTerm(newTerm.id, true);
       saveDatabase("Cadastrou nova estrutura no glossário");
-      renderEditorView();
     }
 
     function renderEditorTermForm() {
       const container = document.getElementById("editor-term-form-container");
       const term = db.terms.find(t => t.id === editorState.selectedTermId);
       if (!term) {
-        container.innerHTML = `<p class="text-sm text-slate-400">Selecione uma estrutura à esquerda.</p>`;
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione uma estrutura.</p>`;
         return;
       }
 
       container.innerHTML = `
         <div class="space-y-5">
-          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
-              <h3 class="font-extrabold text-slate-900 text-lg">Estrutura: ${term.name}</h3>
-              <p class="text-xs text-emerald-700 font-semibold">✓ Reconhecimento automático de lupa ativo</p>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 block">Editando Estrutura Atual</span>
+              <h3 class="font-extrabold text-slate-900 text-lg">${term.name}</h3>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 flex-wrap">
+              <button type="button" onclick="document.getElementById('editor-terms-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="list" class="w-3.5 h-3.5"></i> Outras Estruturas ↓
+              </button>
               <button onclick="openTermModal('${term.id}')" class="text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold">Testar Modal</button>
               <button onclick="deleteTerm('${term.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">Excluir</button>
             </div>
@@ -2140,7 +2292,7 @@
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-600 mb-1">Sinônimos / Plural / Singular (separados por vírgula)</label>
-              <input type="text" value="${(term.synonyms || []).join(', ')}" oninput="updateTermSynonyms('${term.id}', this.value)" placeholder="Ex: brânquia abdominal, lamelas" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
+              <input type="text" value="${toArray(term.synonyms).join(', ')}" oninput="updateTermSynonyms('${term.id}', this.value)" placeholder="Ex: brânquia abdominal, lamelas" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">
             </div>
           </div>
 
@@ -2155,15 +2307,15 @@
             
             <div class="flex flex-wrap gap-2">
               <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white shadow-xs">
-                <i data-lucide="camera" class="w-4 h-4"></i> Tirar Foto (Câmera)
+                <i data-lucide="camera" class="w-4 h-4"></i> Câmera
                 <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadTermImageFile(event, '${term.id}')">
               </label>
               <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white shadow-xs">
-                <i data-lucide="upload" class="w-4 h-4"></i> Galeria / Arquivo
+                <i data-lucide="upload" class="w-4 h-4"></i> Galeria
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTermImageFile(event, '${term.id}')">
               </label>
-              <button type="button" onclick="pickTermImageFromLibrary('${term.id}')" class="media-btn bg-white hover:bg-sky-100 text-sky-800 border border-sky-300">
-                <i data-lucide="images" class="w-4 h-4"></i> Escolher da Biblioteca
+              <button type="button" onclick="pickTermImageFromLibrary('${term.id}')" class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+                <i data-lucide="images" class="w-4 h-4"></i> Biblioteca
               </button>
             </div>
 
@@ -2172,9 +2324,9 @@
               <button type="button" onclick="addTermImageByUrl('${term.id}')" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
             </div>
 
-            ${(term.images && term.images.length > 0) ? `
+            ${toArray(term.images).length > 0 ? `
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                ${term.images.map((img, i) => `
+                ${toArray(term.images).map((img, i) => `
                   <div class="relative group rounded-xl overflow-hidden border border-slate-200 bg-white shadow-xs">
                     <img src="${img}" onclick="openImageLightbox('${img}')" class="w-full h-28 object-cover zoomable-img">
                     <button type="button" onclick="removeTermImage('${term.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 hover:bg-rose-700 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold shadow">
@@ -2191,7 +2343,7 @@
             <label class="block text-xs font-extrabold uppercase text-slate-500 mb-2.5">Em quais grupos esta estrutura é comum?</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
               ${db.taxa.map(tx => {
-                const checked = (term.relatedTaxa || []).includes(tx.id);
+                const checked = toArray(term.relatedTaxa).includes(tx.id);
                 return `
                   <label class="flex items-center gap-2 text-xs bg-white p-2.5 rounded-xl border ${checked ? 'border-sky-500 bg-sky-50/40' : 'border-slate-200'} cursor-pointer">
                     <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleTermTaxon('${term.id}', '${tx.id}', this.checked)" class="rounded text-sky-600 w-4 h-4">
@@ -2209,7 +2361,7 @@
       openMediaLibraryModal((selectedUrl) => {
         const term = db.terms.find(t => t.id === termId);
         if (!term) return;
-        term.images = term.images || [];
+        term.images = toArray(term.images);
         if (!term.images.includes(selectedUrl)) term.images.push(selectedUrl);
         saveDatabase(`Vinculou foto em ${term.name}`);
         renderEditorTermsList();
@@ -2223,7 +2375,7 @@
       if (files.length === 0) return;
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
-      term.images = term.images || [];
+      term.images = toArray(term.images);
 
       let processed = 0;
       files.forEach(file => {
@@ -2259,7 +2411,7 @@
     function toggleTermTaxon(termId, taxonId, isChecked) {
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
-      term.relatedTaxa = term.relatedTaxa || [];
+      term.relatedTaxa = toArray(term.relatedTaxa);
       if (isChecked && !term.relatedTaxa.includes(taxonId)) {
         term.relatedTaxa.push(taxonId);
       } else if (!isChecked) {
@@ -2276,7 +2428,7 @@
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
       const url = input.value.trim();
-      term.images = term.images || [];
+      term.images = toArray(term.images);
       term.images.push(url);
       registerImageInLibrary(url, `Estrutura: ${term.name}`);
       saveDatabase(`Adicionou imagem em ${term.name}`);
@@ -2288,6 +2440,7 @@
     function removeTermImage(termId, idx) {
       const term = db.terms.find(t => t.id === termId);
       if (!term) return;
+      term.images = toArray(term.images);
       term.images.splice(idx, 1);
       saveDatabase(`Removeu imagem de ${term.name}`);
       renderEditorTermsList();
@@ -2312,9 +2465,9 @@
 
       listEl.innerHTML = filtered.map(tx => {
         const isSelected = tx.id === editorState.selectedTaxonId;
-        const imgCount = (tx.images || []).length;
+        const imgCount = toArray(tx.images).length;
         return `
-          <div onclick="selectEditorTaxon('${tx.id}')" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
+          <div onclick="selectEditorTaxon('${tx.id}', true)" class="p-3 rounded-xl border transition cursor-pointer ${isSelected ? 'bg-sky-50 border-sky-600' : 'bg-slate-50 hover:bg-slate-100 border-slate-200'}">
             <div class="flex items-center justify-between">
               <span class="text-xs font-extrabold italic text-slate-800">${tx.name}</span>
               <span class="text-[10px] font-bold bg-white px-2 py-0.5 rounded border text-slate-600">${imgCount} foto(s)</span>
@@ -2325,11 +2478,14 @@
       }).join('');
     }
 
-    function selectEditorTaxon(id) {
+    function selectEditorTaxon(id, scrollOnMobile = false) {
       editorState.selectedTaxonId = id;
       renderEditorTaxaList();
       renderEditorTaxonForm();
       lucide.createIcons();
+      if (scrollOnMobile && window.innerWidth < 1024) {
+        document.getElementById("editor-taxon-form-container")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function createNewTaxon() {
@@ -2346,27 +2502,29 @@
         images: []
       };
       db.taxa.push(newTx);
-      editorState.selectedTaxonId = newTx.id;
+      selectEditorTaxon(newTx.id, true);
       saveDatabase("Cadastrou novo grupo taxonômico");
-      renderEditorView();
     }
 
     function renderEditorTaxonForm() {
       const container = document.getElementById("editor-taxon-form-container");
       const tx = db.taxa.find(t => t.id === editorState.selectedTaxonId);
       if (!tx) {
-        container.innerHTML = `<p class="text-sm text-slate-400">Selecione um grupo ao lado.</p>`;
+        container.innerHTML = `<p class="text-sm text-slate-400">Selecione um grupo.</p>`;
         return;
       }
 
       container.innerHTML = `
         <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 block">Editando Grupo Atual</span>
               <h3 class="font-extrabold italic text-slate-900 text-lg">${tx.name}</h3>
-              <p class="text-xs text-slate-500">Vincule Ordem, Família e fotos diagnósticas.</p>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 flex-wrap">
+              <button type="button" onclick="document.getElementById('editor-taxa-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                <i data-lucide="list" class="w-3.5 h-3.5"></i> Outros Grupos ↓
+              </button>
               <button onclick="viewTaxonInKey('${tx.id}')" class="text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-xl font-bold">Ver Ficha</button>
               <button onclick="deleteTaxon('${tx.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
                 Excluir
@@ -2420,24 +2578,24 @@
             <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo</label>
             <div class="flex flex-wrap gap-2">
               <label class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
-                <i data-lucide="camera" class="w-4 h-4"></i> Tirar Foto (Câmera)
+                <i data-lucide="camera" class="w-4 h-4"></i> Câmera
                 <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
               </label>
               <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white shadow-xs">
-                <i data-lucide="upload" class="w-4 h-4"></i> Galeria / Arquivo
+                <i data-lucide="upload" class="w-4 h-4"></i> Galeria
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
               </label>
-              <button type="button" onclick="pickTaxonImageFromLibrary('${tx.id}')" class="media-btn bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300">
-                <i data-lucide="images" class="w-4 h-4"></i> Escolher da Biblioteca
+              <button type="button" onclick="pickTaxonImageFromLibrary('${tx.id}')" class="media-btn bg-sky-600 hover:bg-sky-700 text-white shadow-xs">
+                <i data-lucide="images" class="w-4 h-4"></i> Biblioteca
               </button>
             </div>
             <div class="flex gap-2 pt-1">
               <input type="text" id="new-taxon-img-url" placeholder="Ou cole URL da imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
               <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="bg-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
             </div>
-            ${(tx.images && tx.images.length > 0) ? `
+            ${toArray(tx.images).length > 0 ? `
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                ${tx.images.map((img, i) => `
+                ${toArray(tx.images).map((img, i) => `
                   <div class="relative rounded-xl overflow-hidden border bg-white">
                     <img src="${img}" onclick="openImageLightbox('${img}')" class="w-full h-28 object-cover zoomable-img">
                     <button type="button" onclick="removeTaxonImage('${tx.id}', ${i})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold">Remover</button>
@@ -2454,7 +2612,7 @@
       openMediaLibraryModal((selectedUrl) => {
         const tx = db.taxa.find(t => t.id === taxonId);
         if (!tx) return;
-        tx.images = tx.images || [];
+        tx.images = toArray(tx.images);
         if (!tx.images.includes(selectedUrl)) tx.images.push(selectedUrl);
         saveDatabase(`Vinculou foto em ${tx.name}`);
         renderEditorTaxaList();
@@ -2468,7 +2626,7 @@
       if (files.length === 0) return;
       const tx = db.taxa.find(t => t.id === taxonId);
       if (!tx) return;
-      tx.images = tx.images || [];
+      tx.images = toArray(tx.images);
 
       let processed = 0;
       files.forEach(file => {
@@ -2500,7 +2658,7 @@
       const tx = db.taxa.find(t => t.id === taxonId);
       if (!tx) return;
       const url = input.value.trim();
-      tx.images = tx.images || [];
+      tx.images = toArray(tx.images);
       tx.images.push(url);
       registerImageInLibrary(url, `Táxon: ${tx.name}`);
       saveDatabase(`Adicionou foto em ${tx.name}`);
@@ -2512,6 +2670,7 @@
     function removeTaxonImage(taxonId, idx) {
       const tx = db.taxa.find(t => t.id === taxonId);
       if (!tx) return;
+      tx.images = toArray(tx.images);
       tx.images.splice(idx, 1);
       saveDatabase(`Removeu foto de ${tx.name}`);
       renderEditorTaxaList();
@@ -2575,13 +2734,13 @@
       switchMainTab('editor');
       if (type === 'node') {
         switchEditorSubTab('nodes');
-        selectEditorNode(id);
+        selectEditorNode(id, true);
       } else if (type === 'term') {
         switchEditorSubTab('terms');
-        selectEditorTerm(id);
+        selectEditorTerm(id, true);
       } else if (type === 'taxon') {
         switchEditorSubTab('taxa');
-        selectEditorTaxon(id);
+        selectEditorTaxon(id, true);
       }
     }
 
@@ -2610,8 +2769,8 @@
       if (!container) return;
       try {
         const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
-        const backups = await res.json();
-        if (!Array.isArray(backups) || backups.length === 0) {
+        const backups = toArray(await res.json());
+        if (backups.length === 0) {
           container.innerHTML = `<div class="p-3 bg-slate-50 rounded-xl border text-xs text-slate-400 text-center">Nenhum ponto de restauração anterior ainda.</div>`;
           return;
         }
@@ -2642,14 +2801,14 @@
     async function restoreBackupVersion(index) {
       try {
         const res = await fetch(FIREBASE_BACKUPS_ENDPOINT);
-        const backups = await res.json();
+        const backups = toArray(await res.json());
         const target = backups?.[index];
         if (!target || !target.data) return;
 
         if (!confirm(`Restaurar a chave para a versão v${target.revision} (salva por ${target.author})?`)) return;
 
         ensureAuthorIdentified();
-        db = JSON.parse(JSON.stringify(target.data));
+        db = normalizeDatabase(JSON.parse(JSON.stringify(target.data)));
         await syncWithCloudSafe(`Restaurou backup v${target.revision}`, true);
         resetKey();
         renderAll();
@@ -2696,8 +2855,7 @@
           const parsed = JSON.parse(e.target.result);
           if (parsed.nodes && parsed.terms && parsed.taxa) {
             ensureAuthorIdentified();
-            db = parsed;
-            db.mediaLibrary = db.mediaLibrary || [];
+            db = normalizeDatabase(parsed);
             syncWithCloudSafe("Importou arquivo JSON completo", true);
             resetKey();
             renderAll();
@@ -2747,13 +2905,6 @@
         closeMediaLibraryModal();
         closeCloudModal();
         closeImageLightbox();
-      }
-    });
-
-    // Se o usuário fechar a aba e houver alterações pendentes, envia na hora
-    window.addEventListener("beforeunload", () => {
-      if (hasPendingCloudChanges) {
-        syncWithCloudSafe("Salvamento ao fechar aba", false);
       }
     });
 
