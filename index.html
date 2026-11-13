@@ -11,59 +11,59 @@
 <body class="min-h-screen flex flex-col pb-24 md:pb-8">
 
   <!-- ==================== CABEÇALHO SUPERIOR (LHF BRANDING) ==================== -->
-  <header class="lhf-header-gradient text-white shadow-lg sticky top-0 z-30 border-b border-sky-400/20">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2">
+  <header class="lhf-header-gradient text-white shadow-xl sticky top-0 z-30 border-b border-sky-300/20">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 relative z-10">
       
       <!-- Logo LHF + Status -->
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white p-1 shadow-md flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300">
+        <div class="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white p-1 shadow-lg flex items-center justify-center shrink-0 overflow-hidden border-2 border-sky-300/80 transition hover:scale-105">
           <img src="image_0df51a.png" alt="Logo LHF" class="w-full h-full object-contain" onerror="this.style.display='none'; document.getElementById('lhf-svg-fallback').style.display='block';">
           <svg id="lhf-svg-fallback" style="display:none;" viewBox="0 0 100 100" class="w-10 h-10">
             <path d="M15,50 A35,35 0 0,1 65,18 C50,35 35,55 25,82 A35,35 0 0,1 15,50 Z" fill="#0066b2"/>
             <path d="M55,25 C45,45 35,60 22,85" stroke="#38bdf8" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M85,50 A35,35 0 0,1 35,82 C55,65 68,45 78,20 A35,35 0 0,1 85,50 Z" fill="#16a34a"/>
+            <path d="M85,50 A35,35 0 0,1 35,82 C55,65 68,45 78,20 A35,35 0 0,1 85,50 Z" fill="#229954"/>
           </svg>
         </div>
         <div>
           <div class="flex items-center gap-1.5 flex-wrap">
-            <span class="text-[10px] font-extrabold uppercase tracking-widest bg-sky-500/30 text-sky-100 px-2 py-0.5 rounded-full border border-sky-300/30">LHF • ESALQ/USP</span>
-            <button onclick="openCloudModal()" id="header-sync-pill" class="cursor-pointer text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 border border-emerald-400/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition" title="Ver status de sincronização e backups">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest bg-sky-400/25 text-sky-100 px-2.5 py-0.5 rounded-full border border-sky-300/30">LHF • ESALQ/USP</span>
+            <button onclick="openCloudModal()" id="header-sync-pill" class="cursor-pointer text-[10px] font-bold bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-50 border border-emerald-300/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition" title="Ver status de sincronização e backups">
               <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span id="sync-status-text">Sincronizado</span>
             </button>
-            <button onclick="flushPendingSyncNow()" id="btn-save-now-header" class="hidden text-[10px] font-extrabold bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-0.5 rounded-full items-center gap-1 shadow-xs transition">
+            <button onclick="flushPendingSyncNow()" id="btn-save-now-header" class="hidden btn-lhf btn-sun text-[10px] font-extrabold px-2.5 py-0.5 rounded-full items-center gap-1">
               <i data-lucide="cloud-upload" class="w-3 h-3"></i> Salvar Agora
             </button>
           </div>
-          <h1 class="font-extrabold text-base sm:text-lg leading-tight tracking-tight mt-0.5">
-            MacroKey <span class="font-normal text-sky-200 text-xs sm:text-sm hidden sm:inline">| Chave Interativa & Glossário</span>
+          <h1 class="font-display font-extrabold text-base sm:text-xl leading-tight tracking-tight mt-0.5">
+            MacroKey <span class="font-normal text-sky-200/90 text-xs sm:text-sm hidden sm:inline">| Hidrologia Florestal & Taxonomia</span>
           </h1>
         </div>
       </div>
 
       <!-- Navegação Desktop -->
-      <nav class="hidden md:flex items-center bg-slate-900/40 backdrop-blur-md p-1 rounded-xl border border-white/15">
-        <button onclick="switchMainTab('key')" id="tab-btn-key" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-sky-900 shadow-sm">
-          <i data-lucide="git-fork" class="w-4 h-4"></i> Chave Interativa
+      <nav class="hidden md:flex items-center glass-nav p-1.5 rounded-2xl">
+        <button onclick="switchMainTab('key')" id="tab-btn-key" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all bg-white text-sky-950 shadow-md">
+          <i data-lucide="git-fork" class="w-4 h-4 text-sky-600"></i> Chave Interativa
         </button>
-        <button onclick="switchMainTab('glossary')" id="tab-btn-glossary" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
+        <button onclick="switchMainTab('glossary')" id="tab-btn-glossary" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all text-sky-100 hover:text-white hover:bg-white/10">
           <i data-lucide="microscope" class="w-4 h-4"></i> Estruturas (<span id="nav-count-terms">0</span>)
         </button>
-        <button onclick="switchMainTab('taxa')" id="tab-btn-taxa" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-sky-100 hover:text-white">
+        <button onclick="switchMainTab('taxa')" id="tab-btn-taxa" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all text-sky-100 hover:text-white hover:bg-white/10">
           <i data-lucide="bug" class="w-4 h-4"></i> Grupos (<span id="nav-count-taxa">0</span>)
         </button>
-        <button onclick="switchMainTab('editor')" id="tab-btn-editor" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-amber-300 hover:text-amber-200">
-          <i data-lucide="sliders" class="w-4 h-4"></i> Construir Chave
+        <button onclick="switchMainTab('editor')" id="tab-btn-editor" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-300 hover:text-amber-200 hover:bg-white/10">
+          <i data-lucide="Sparkles" class="w-4 h-4"></i> Construir Chave
         </button>
       </nav>
 
       <!-- Ações Rápidas: Galeria & Perfil -->
-      <div class="flex items-center gap-1.5">
-        <button onclick="openMediaLibraryModal(null)" title="Abrir Biblioteca de Fotos do Laboratório" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
-          <i data-lucide="images" class="w-4 h-4 text-sky-300"></i>
+      <div class="flex items-center gap-2">
+        <button onclick="openMediaLibraryModal(null)" title="Abrir Biblioteca de Fotos do Laboratório" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 p-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold">
+          <i data-lucide="images" class="w-4 h-4 text-sky-200"></i>
           <span class="hidden lg:inline">Biblioteca</span>
         </button>
-        <button onclick="openCloudModal()" title="Perfil, Sincronização e Backups" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-2.5 py-1.5 rounded-xl text-xs font-bold transition">
+        <button onclick="openCloudModal()" title="Perfil, Sincronização e Backups" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 px-3 py-1.5 rounded-xl text-xs font-bold">
           <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
           <div class="text-left hidden sm:block">
             <span class="block text-[9px] uppercase tracking-wider text-sky-200 leading-none">Equipe LHF</span>
@@ -75,17 +75,17 @@
   </header>
 
   <!-- ==================== NAVEGAÇÃO INFERIOR PARA CELULAR ==================== -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-slate-200 shadow-2xl z-40 grid grid-cols-4 py-1.5 px-2">
-    <button onclick="switchMainTab('key')" id="mob-tab-key" class="flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 bg-sky-50 font-extrabold text-[11px]">
-      <i data-lucide="git-fork" class="w-5 h-5 mb-0.5"></i> Chave
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-sky-200/80 shadow-2xl z-40 grid grid-cols-4 py-1.5 px-2">
+    <button onclick="switchMainTab('key')" id="mob-tab-key" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-sky-800 bg-sky-100/80 font-extrabold text-[11px]">
+      <i data-lucide="git-fork" class="w-5 h-5 mb-0.5 text-sky-600"></i> Chave
     </button>
-    <button onclick="switchMainTab('glossary')" id="mob-tab-glossary" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+    <button onclick="switchMainTab('glossary')" id="mob-tab-glossary" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-semibold text-[11px]">
       <i data-lucide="microscope" class="w-5 h-5 mb-0.5"></i> Estruturas
     </button>
-    <button onclick="switchMainTab('taxa')" id="mob-tab-taxa" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+    <button onclick="switchMainTab('taxa')" id="mob-tab-taxa" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-semibold text-[11px]">
       <i data-lucide="bug" class="w-5 h-5 mb-0.5"></i> Grupos
     </button>
-    <button onclick="switchMainTab('editor')" id="mob-tab-editor" class="flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]">
+    <button onclick="switchMainTab('editor')" id="mob-tab-editor" class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-semibold text-[11px]">
       <i data-lucide="sliders" class="w-5 h-5 mb-0.5"></i> Construir
     </button>
   </nav>
@@ -96,10 +96,10 @@
     <!-- ==================== ABA 1: CHAVE INTERATIVA ==================== -->
     <section id="view-key" class="space-y-5 fade-slide-in">
       <!-- Barra de Trilha Limpa (Apenas Início e Voltar Passo) -->
-      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-sky-100 flex items-center justify-between gap-3 flex-wrap">
+      <div class="bg-white/95 p-3.5 sm:p-4 rounded-2xl shadow-sm border border-sky-200/70 flex items-center justify-between gap-3 flex-wrap">
         <div class="flex items-center gap-1.5 flex-wrap text-xs" id="key-breadcrumb"></div>
-        <button onclick="stepBackKey()" id="btn-key-back" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 disabled:pointer-events-none transition shrink-0">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar Passo
+        <button onclick="stepBackKey()" id="btn-key-back" class="btn-lhf btn-soft px-4 py-2 text-xs disabled:opacity-40 disabled:pointer-events-none shrink-0">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-sky-700"></i> Voltar Passo
         </button>
       </div>
 
@@ -109,23 +109,29 @@
 
         <!-- Barra Lateral: Busca Rápida de Estruturas + Histórico -->
         <div class="lg:col-span-4 space-y-5">
-          <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
-            <div class="flex items-center justify-between mb-2.5">
-              <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 flex items-center gap-1.5">
-                <i data-lucide="search" class="w-4 h-4 text-sky-600"></i> Dicionário de Estruturas
+          <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-sky-200/70">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-900 flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center">
+                  <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                </span>
+                Dicionário de Estruturas
               </h3>
-              <button onclick="openEditorForNew('term')" class="text-[11px] font-bold text-sky-600 hover:underline">+ Criar</button>
+              <button onclick="openEditorForNew('term')" class="text-xs font-extrabold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition">+ Criar</button>
             </div>
             <div class="relative mb-3">
-              <input type="text" id="quick-term-search" oninput="renderQuickTermSearch()" placeholder="Buscar brânquia, garra, concha..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500 focus:bg-white transition">
-              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+              <input type="text" id="quick-term-search" oninput="renderQuickTermSearch()" placeholder="Buscar brânquia, garra, concha..." class="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
             </div>
-            <div id="quick-term-results" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
+            <div id="quick-term-results" class="space-y-1.5 max-h-60 overflow-y-auto pr-1"></div>
           </div>
 
-          <div class="bg-white p-4 rounded-2xl shadow-sm border border-sky-100">
-            <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-800 mb-3 flex items-center gap-1.5">
-              <i data-lucide="footprints" class="w-4 h-4 text-emerald-600"></i> Caminho Percorrido
+          <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-sky-200/70">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-sky-900 mb-3 flex items-center gap-1.5">
+              <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <i data-lucide="footprints" class="w-3.5 h-3.5"></i>
+              </span>
+              Caminho Percorrido
             </h3>
             <div id="key-history-list" class="space-y-2.5 text-xs text-slate-600"></div>
           </div>
@@ -135,22 +141,25 @@
 
     <!-- ==================== ABA 2: GLOSSÁRIO ANATÔMICO ==================== -->
     <section id="view-glossary" class="hidden space-y-5 fade-slide-in">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
-            <i data-lucide="microscope" class="w-6 h-6 text-sky-600"></i> Biblioteca de Estruturas Anatômicas
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Qualquer termo listado aqui vira automaticamente um botão de lupa nos passos da chave.</p>
+      <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-sky-200/70 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-700 text-white flex items-center justify-center shadow-md shrink-0">
+            <i data-lucide="microscope" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Biblioteca de Estruturas Anatômicas</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Qualquer termo listado aqui vira automaticamente um botão interativo de lupa nos passos da chave.</p>
+          </div>
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div class="relative flex-1 sm:w-60">
-            <input type="text" id="glossary-search-input" oninput="renderGlossaryView()" placeholder="Buscar estrutura..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="glossary-search-input" oninput="renderGlossaryView()" placeholder="Buscar estrutura..." class="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
           </div>
-          <select id="glossary-taxon-filter" onchange="renderGlossaryView()" class="py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
+          <select id="glossary-taxon-filter" onchange="renderGlossaryView()" class="py-2.5 px-3 text-sm bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-700">
             <option value="">Todos os Grupos</option>
           </select>
-          <button onclick="openEditorForNew('term')" class="flex items-center justify-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition">
+          <button onclick="openEditorForNew('term')" class="btn-lhf btn-hydro px-4 py-2.5 text-sm">
             <i data-lucide="plus" class="w-4 h-4"></i> Nova Estrutura
           </button>
         </div>
@@ -161,19 +170,22 @@
 
     <!-- ==================== ABA 3: GRUPOS TAXONÔMICOS ==================== -->
     <section id="view-taxa" class="hidden space-y-5 fade-slide-in">
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
-            <i data-lucide="bug" class="w-6 h-6 text-emerald-600"></i> Catálogo de Macroinvertebrados (Táxons)
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Ordens, famílias e gêneros registrados na chave do LHF.</p>
+      <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-sky-200/70 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center shadow-md shrink-0">
+            <i data-lucide="bug" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Catálogo de Macroinvertebrados (Táxons)</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Ordens, famílias e gêneros registrados na chave de identificação do LHF.</p>
+          </div>
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
           <div class="relative flex-1 sm:w-64">
-            <input type="text" id="taxa-search-input" oninput="renderTaxaView()" placeholder="Filtrar ordem, família..." class="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="taxa-search-input" oninput="renderTaxaView()" placeholder="Filtrar ordem, família..." class="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
           </div>
-          <button onclick="openEditorForNew('taxon')" class="flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition">
+          <button onclick="openEditorForNew('taxon')" class="btn-lhf btn-forest px-4 py-2.5 text-sm">
             <i data-lucide="plus" class="w-4 h-4"></i> Novo Grupo
           </button>
         </div>
@@ -186,65 +198,63 @@
     <section id="view-editor" class="hidden space-y-5 fade-slide-in">
       
       <!-- Barra de Controle do Construtor -->
-      <div class="bg-gradient-to-r from-sky-950 via-sky-900 to-teal-900 text-white rounded-2xl p-4 sm:p-5 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div class="flex items-center gap-3.5">
-          <div class="bg-sky-500/20 p-2.5 rounded-xl border border-sky-400/30 shrink-0">
-            <i data-lucide="wrench" class="w-6 h-6 text-sky-300"></i>
+      <div class="lhf-header-gradient text-white rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 overflow-hidden">
+        <div class="flex items-center gap-3.5 relative z-10">
+          <div class="bg-white/15 p-3 rounded-2xl border border-white/25 shrink-0">
+            <i data-lucide="compass" class="w-6 h-6 text-sky-200"></i>
           </div>
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <h2 class="font-extrabold text-base sm:text-lg">Estúdio de Construção LHF</h2>
-              <span class="text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">Auto-Sync a cada 5 min</span>
+              <span class="text-[11px] bg-emerald-400/25 text-emerald-100 border border-emerald-300/30 px-2.5 py-0.5 rounded-full font-bold">Auto-Sync 5 min</span>
             </div>
-            <p class="text-xs text-sky-200 mt-0.5">
-              Suas edições salvam na hora no aparelho e aguardam <strong>5 minutos completos</strong> antes de enviar para a nuvem (ou toque em <strong>Salvar na Nuvem Agora</strong>).
+            <p class="text-xs text-sky-100/90 mt-0.5">
+              Suas edições salvam na hora no aparelho e aguardam <strong>5 minutos completos</strong> antes de enviar para a nuvem.
             </p>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-          <button onclick="openMediaLibraryModal(null)" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition">
-            <i data-lucide="images" class="w-3.5 h-3.5 text-sky-300"></i> Biblioteca de Fotos
+        <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end relative z-10">
+          <button onclick="openMediaLibraryModal(null)" class="btn-lhf bg-white/15 hover:bg-white/25 text-white border border-white/25 text-xs px-3.5 py-2.5">
+            <i data-lucide="images" class="w-4 h-4 text-sky-200"></i> Biblioteca de Fotos
           </button>
-          <button onclick="flushPendingSyncNow()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-extrabold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Salvar na Nuvem Agora
+          <button onclick="flushPendingSyncNow()" class="btn-lhf btn-sun text-xs font-extrabold px-4 py-2.5">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Salvar na Nuvem Agora
           </button>
         </div>
       </div>
 
       <!-- Seletor de Sub-Abas do Construtor -->
-      <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-xs">
-        <button onclick="switchEditorSubTab('nodes')" id="ed-tab-nodes" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 bg-sky-600 text-white shadow-xs">
+      <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border border-sky-200/80 shadow-xs">
+        <button onclick="switchEditorSubTab('nodes')" id="ed-tab-nodes" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center justify-center gap-2 btn-hydro">
           <i data-lucide="git-branch" class="w-4 h-4"></i> <span>1. Passos (<span id="ed-count-nodes">0</span>)</span>
         </button>
-        <button onclick="switchEditorSubTab('terms')" id="ed-tab-terms" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+        <button onclick="switchEditorSubTab('terms')" id="ed-tab-terms" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-sky-50">
           <i data-lucide="microscope" class="w-4 h-4"></i> <span>2. Estruturas (<span id="ed-count-terms">0</span>)</span>
         </button>
-        <button onclick="switchEditorSubTab('taxa')" id="ed-tab-taxa" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100">
+        <button onclick="switchEditorSubTab('taxa')" id="ed-tab-taxa" class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-sky-50">
           <i data-lucide="bug" class="w-4 h-4"></i> <span>3. Grupos (<span id="ed-count-taxa">0</span>)</span>
         </button>
       </div>
 
       <!-- SUB-ABA 4.1: EDITOR DE PASSOS (No mobile: Formulário em cima [order-1], Lista de demais passos embaixo [order-2]) -->
       <div id="editor-sub-nodes" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- Formulário do Passo Atual (1º no Mobile, Direita no Desktop) -->
-        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-node-form-container"></div>
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-node-form-container"></div>
 
-        <!-- Lista de Todos os Passos (Abaixo no Mobile, Esquerda no Desktop) -->
-        <div id="editor-nodes-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[520px] lg:max-h-[760px]">
+        <div id="editor-nodes-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 flex flex-col max-h-[520px] lg:max-h-[760px]">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-extrabold text-slate-800 text-sm">Demais Passos da Chave</h3>
-            <button onclick="createNewNode()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
+            <button onclick="createNewNode()" class="btn-lhf btn-hydro text-xs px-3 py-1.5">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Passo
             </button>
           </div>
 
           <div class="relative mb-2.5">
-            <input type="text" id="editor-node-search" oninput="renderEditorNodesList()" placeholder="Buscar outro passo..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
+            <input type="text" id="editor-node-search" oninput="renderEditorNodesList()" placeholder="Buscar outro passo..." class="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
           </div>
 
-          <div class="mb-3 bg-sky-50/60 p-2.5 rounded-xl border border-sky-100">
-            <label class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">1º Passo da Chave (Raiz Inicial)</label>
+          <div class="mb-3 bg-sky-50/70 p-2.5 rounded-xl border border-sky-200/70">
+            <label class="text-[10px] font-extrabold uppercase text-sky-900 block mb-1">1º Passo da Chave (Raiz Inicial)</label>
             <select id="editor-root-node-select" onchange="updateRootNode(this.value)" class="w-full text-xs bg-white border border-sky-200 rounded-lg p-1.5 font-bold text-sky-950"></select>
           </div>
           <div id="editor-nodes-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
@@ -253,18 +263,18 @@
 
       <!-- SUB-ABA 4.2: EDITOR DE ESTRUTURAS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
       <div id="editor-sub-terms" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-term-form-container"></div>
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-term-form-container"></div>
 
-        <div id="editor-terms-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
+        <div id="editor-terms-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-extrabold text-slate-800 text-sm">Demais Estruturas & Termos</h3>
-            <button onclick="createNewTerm()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+            <button onclick="createNewTerm()" class="btn-lhf btn-hydro text-xs px-3 py-1.5">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Estrutura
             </button>
           </div>
           <div class="relative mb-3">
-            <input type="text" id="editor-term-search" oninput="renderEditorTermsList()" placeholder="Filtrar estrutura..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
+            <input type="text" id="editor-term-search" oninput="renderEditorTermsList()" placeholder="Filtrar estrutura..." class="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
           </div>
           <div id="editor-terms-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
@@ -272,18 +282,18 @@
 
       <!-- SUB-ABA 4.3: EDITOR DE TÁXONS (No mobile: Formulário em cima [order-1], Lista embaixo [order-2]) -->
       <div id="editor-sub-taxa" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6" id="editor-taxon-form-container"></div>
+        <div class="order-1 lg:order-2 lg:col-span-8 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 sm:p-6" id="editor-taxon-form-container"></div>
 
-        <div id="editor-taxa-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
+        <div id="editor-taxa-sidebar" class="order-2 lg:order-1 lg:col-span-4 bg-white rounded-2xl border border-sky-200/80 shadow-xs p-4 flex flex-col max-h-[480px] lg:max-h-[720px]">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-extrabold text-slate-800 text-sm">Demais Grupos Taxonômicos</h3>
-            <button onclick="createNewTaxon()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+            <button onclick="createNewTaxon()" class="btn-lhf btn-forest text-xs px-3 py-1.5">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo Grupo
             </button>
           </div>
           <div class="relative mb-3">
-            <input type="text" id="editor-taxon-search" oninput="renderEditorTaxaList()" placeholder="Filtrar grupo..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-sky-500">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
+            <input type="text" id="editor-taxon-search" oninput="renderEditorTaxaList()" placeholder="Filtrar grupo..." class="w-full pl-8 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
           </div>
           <div id="editor-taxa-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
@@ -294,10 +304,10 @@
 
   <!-- ==================== MODAL 1: INSPETOR DE ESTRUTURA ANATÔMICA (LUPA) ==================== -->
   <div id="term-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-sky-100 overflow-hidden fade-slide-in">
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-sky-100 overflow-hidden fade-slide-in">
       <div class="lhf-header-gradient text-white px-5 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="bg-white/20 p-2 rounded-xl">
+        <div class="flex items-center gap-3 relative z-10">
+          <span class="bg-white/20 p-2.5 rounded-2xl border border-white/20">
             <i data-lucide="search" class="w-5 h-5 text-sky-200"></i>
           </span>
           <div>
@@ -305,81 +315,80 @@
             <h3 id="modal-term-title" class="text-lg font-extrabold"></h3>
           </div>
         </div>
-        <button onclick="closeTermModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl transition">
+        <button onclick="closeTermModal()" class="relative z-10 bg-white/15 hover:bg-white/25 text-white p-1.5 rounded-xl transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <div class="p-5 max-h-[80vh] overflow-y-auto space-y-5" id="modal-term-body"></div>
+      <div class="p-5 sm:p-6 max-h-[80vh] overflow-y-auto space-y-5" id="modal-term-body"></div>
     </div>
   </div>
 
   <!-- ==================== MODAL 2: BIBLIOTECA VISUAL DE IMAGENS (CORRIGIDA P/ MOBILE) ==================== -->
   <div id="media-library-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-xs z-50 hidden items-center justify-center p-2 sm:p-4">
-    <!-- Altura explícita h-[88vh] impede que o flexbox esmague as fotos no celular -->
-    <div class="bg-white rounded-2xl max-w-4xl w-full h-[88vh] max-h-[88vh] shadow-2xl border border-sky-100 overflow-hidden fade-slide-in flex flex-col">
+    <div class="bg-white rounded-3xl max-w-4xl w-full h-[88vh] max-h-[88vh] shadow-2xl border border-sky-100 overflow-hidden fade-slide-in flex flex-col">
       
       <!-- Topo Compacto -->
-      <div class="lhf-header-gradient text-white px-4 py-3 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-2.5">
+      <div class="lhf-header-gradient text-white px-4 sm:px-5 py-3.5 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5 relative z-10">
           <i data-lucide="images" class="w-5 h-5 text-sky-200 shrink-0"></i>
           <div>
             <h3 class="text-sm sm:text-base font-extrabold leading-tight" id="media-modal-title">Toque em uma Foto para Selecionar</h3>
             <p class="text-[11px] text-sky-200 leading-tight" id="media-modal-subtitle">Todas as fotos enviadas aparecem abaixo automaticamente</p>
           </div>
         </div>
-        <button type="button" onclick="closeMediaLibraryModal()" class="bg-white/15 hover:bg-white/25 text-white p-1.5 rounded-xl transition">
+        <button type="button" onclick="closeMediaLibraryModal()" class="relative z-10 bg-white/15 hover:bg-white/25 text-white p-1.5 rounded-xl transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
       <!-- Barra de Abas e Upload Rápido -->
       <div class="p-2.5 sm:p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
-        <div class="flex items-center gap-1 overflow-x-auto">
-          <button type="button" onclick="setMediaLibraryFilter('all')" id="ml-filter-all" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-sky-600 text-white shadow-xs shrink-0">
+        <div class="flex items-center gap-1.5 overflow-x-auto">
+          <button type="button" onclick="setMediaLibraryFilter('all')" id="ml-filter-all" class="px-3 py-1.5 rounded-xl text-xs font-extrabold btn-hydro shrink-0">
             Todas (<span id="ml-count-all">0</span>)
           </button>
-          <button type="button" onclick="setMediaLibraryFilter('term')" id="ml-filter-term" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+          <button type="button" onclick="setMediaLibraryFilter('term')" id="ml-filter-term" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
             Estruturas
           </button>
-          <button type="button" onclick="setMediaLibraryFilter('taxon')" id="ml-filter-taxon" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+          <button type="button" onclick="setMediaLibraryFilter('taxon')" id="ml-filter-taxon" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
             Grupos
           </button>
-          <button type="button" onclick="setMediaLibraryFilter('node')" id="ml-filter-node" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
+          <button type="button" onclick="setMediaLibraryFilter('node')" id="ml-filter-node" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0">
             Passos
           </button>
         </div>
 
         <div class="flex items-center gap-1.5">
-          <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white py-1.5 px-2.5 text-xs">
+          <label class="media-btn btn-hydro py-1.5 px-3 text-xs">
             <i data-lucide="camera" class="w-3.5 h-3.5"></i> Câmera
             <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadNewToMediaLibrary(event)">
           </label>
-          <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white py-1.5 px-2.5 text-xs">
+          <label class="media-btn btn-forest py-1.5 px-3 text-xs">
             <i data-lucide="upload" class="w-3.5 h-3.5"></i> Galeria
             <input type="file" accept="image/*" multiple class="hidden" onchange="uploadNewToMediaLibrary(event)">
           </label>
         </div>
       </div>
 
-      <!-- Container de Rolagem Dedicado (Separado da Grid para nunca travar no Android/iOS) -->
+      <!-- Container de Rolagem Dedicado -->
       <div class="flex-1 min-h-0 overflow-y-auto p-3 sm:p-4 bg-slate-100/70">
-        <div id="media-library-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+        <div id="media-library-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5"></div>
       </div>
     </div>
   </div>
 
   <!-- ==================== MODAL 3: CENTRAL DA EQUIPE & HISTÓRICO DE VERSÕES ==================== -->
   <div id="cloud-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden fade-slide-in">
+    <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden fade-slide-in">
       <div class="lhf-header-gradient text-white px-5 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2.5 relative z-10">
           <i data-lucide="shield-check" class="w-5 h-5 text-emerald-300"></i>
           <div>
             <h3 class="font-extrabold text-base">Central da Equipe LHF & Backups</h3>
             <p class="text-[11px] text-sky-200">Sincronização automática a cada 5 minutos</p>
           </div>
         </div>
-        <button onclick="closeCloudModal()" class="bg-white/10 hover:bg-white/20 text-white p-1.5 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeCloudModal()" class="relative z-10 bg-white/15 hover:bg-white/25 text-white p-1.5 rounded-xl"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
       <div class="p-5 space-y-5 max-h-[82vh] overflow-y-auto">
@@ -387,24 +396,24 @@
         <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200">
           <label class="block text-xs font-extrabold uppercase text-sky-900 mb-1.5">Seu Nome / Apelido no Laboratório</label>
           <div class="flex gap-2">
-            <input type="text" id="author-name-input" placeholder="Ex: Cadu, Pedro, Maria Clara..." class="flex-1 text-sm bg-white border border-sky-300 rounded-xl px-3 py-2 font-bold text-slate-800 focus:outline-none focus:border-sky-600">
-            <button onclick="saveAuthorName()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0 transition">
+            <input type="text" id="author-name-input" placeholder="Ex: Cadu, Pedro, Maria Clara..." class="flex-1 text-sm bg-white border border-sky-300 rounded-xl px-3 py-2 font-bold text-slate-800">
+            <button onclick="saveAuthorName()" class="btn-lhf btn-hydro px-4 py-2 text-xs shrink-0">
               Salvar Nome
             </button>
           </div>
         </div>
 
         <!-- 2. Status da Versão Atual -->
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs">
           <div>
             <span class="text-slate-400 font-bold uppercase text-[10px] block">Versão consolidada na nuvem</span>
             <span id="cloud-last-meta" class="font-bold text-slate-800">Verificando...</span>
           </div>
           <div class="flex gap-2">
-            <button onclick="pullFromCloud(true)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+            <button onclick="pullFromCloud(true)" class="btn-lhf btn-soft px-3 py-1.5 text-xs">
               <i data-lucide="cloud-download" class="w-3.5 h-3.5 text-sky-600"></i> Baixar da Nuvem
             </button>
-            <button onclick="forcePushWithBackup('Ponto de backup manual')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
+            <button onclick="forcePushWithBackup('Ponto de backup manual')" class="btn-lhf btn-forest px-3.5 py-1.5 text-xs">
               <i data-lucide="bookmark-plus" class="w-3.5 h-3.5"></i> Salvar Backup Agora
             </button>
           </div>
@@ -427,10 +436,10 @@
         <div class="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
           <span class="text-xs font-bold text-slate-500">Arquivo físico de segurança:</span>
           <div class="flex items-center gap-2">
-            <button onclick="exportDatabase()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
+            <button onclick="exportDatabase()" class="btn-lhf btn-soft px-3 py-1.5 text-xs">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> Exportar .JSON
             </button>
-            <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+            <label class="btn-lhf btn-soft px-3 py-1.5 text-xs cursor-pointer">
               <i data-lucide="upload" class="w-3.5 h-3.5"></i> Importar .JSON
               <input type="file" accept=".json" class="hidden" onchange="importDatabase(event)">
             </label>
@@ -445,7 +454,7 @@
     <button onclick="closeImageLightbox()" class="absolute top-4 right-4 bg-white/15 hover:bg-white/25 text-white p-2.5 rounded-full">
       <i data-lucide="x" class="w-6 h-6"></i>
     </button>
-    <img id="lightbox-img" src="" alt="Ampliada" class="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl border border-white/15">
+    <img id="lightbox-img" src="" alt="Ampliada" class="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl border border-white/15">
   </div>
 
   <!-- Indicador de Upload Flutuante -->
@@ -460,8 +469,8 @@
   </div>
 
   <!-- Notificação Flutuante (Toast) -->
-  <div id="toast" class="fixed bottom-16 md:bottom-6 right-4 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50 border border-sky-500/30">
-    <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-400"></i>
+  <div id="toast" class="fixed bottom-16 md:bottom-6 right-4 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50 border border-sky-400/30">
+    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
     <span id="toast-msg">Salvo com sucesso!</span>
   </div>
 
@@ -557,7 +566,6 @@
       ]
     };
 
-    // Converte qualquer Objeto esparso do Firebase de volta para Array puro e indexa todas as imagens existentes
     function toArray(val) {
       if (!val) return [];
       if (Array.isArray(val)) return val.filter(Boolean);
@@ -658,7 +666,6 @@
       return normalizeDatabase(JSON.parse(JSON.stringify(DEFAULT_DB)));
     }
 
-    // Salva IMEDIATAMENTE no aparelho, mas agenda o upload na nuvem para daqui a exatos 5 MINUTOS
     function saveDatabase(actionLabel = "Edição na chave") {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
@@ -674,7 +681,6 @@
           btnSaveNow.classList.add("inline-flex");
         }
 
-        // Se ainda não há um timer de 5 minutos rodando, inicia a contagem de 5 minutos!
         if (!syncTimerId) {
           nextSyncTimestamp = Date.now() + AUTO_SYNC_DELAY_MS;
           syncTimerId = setTimeout(() => {
@@ -996,7 +1002,6 @@
       }
     }
 
-    // Varre absolutamente todas as imagens salvas em qualquer lugar do banco para exibir na Biblioteca sem precisar pesquisar
     function getAllCatalogedImages() {
       const map = new Map();
 
@@ -1041,9 +1046,9 @@
         const btn = document.getElementById(`ml-filter-${c}`);
         if (!btn) return;
         if (c === cat) {
-          btn.className = "px-2.5 py-1 rounded-lg text-xs font-extrabold bg-sky-600 text-white shadow-xs shrink-0";
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-extrabold btn-hydro shrink-0";
         } else {
-          btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0";
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 shrink-0";
         }
       });
       renderMediaLibraryGrid();
@@ -1102,21 +1107,20 @@
 
       const isPickerMode = typeof mediaPickerCallback === "function";
 
-      // Renderiza cada foto usando <button type="button"> nativo para resposta imediata ao toque no celular
       grid.innerHTML = filtered.map((item, idx) => `
-        <div class="bg-white rounded-2xl border-2 ${isPickerMode ? 'border-emerald-400 hover:border-emerald-600' : 'border-slate-200'} overflow-hidden shadow-sm flex flex-col justify-between relative">
+        <div class="catalog-card overflow-hidden flex flex-col justify-between relative ${isPickerMode ? 'ring-2 ring-emerald-400/70' : ''}">
           <button 
             type="button"
             onclick="handleLibraryItemTap(${idx})"
             class="w-full text-left focus:outline-none active:opacity-80 transition block relative"
           >
             <img src="${item.url}" class="w-full h-36 sm:h-40 object-cover block" alt="${item.label}">
-            <span class="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md">
+            <span class="absolute top-2 left-2 bg-slate-900/80 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-lg">
               ${item.badge}
             </span>
-            <div class="p-2 bg-white border-t border-slate-100">
+            <div class="p-2.5 bg-white border-t border-slate-100">
               <p class="text-xs font-extrabold text-slate-800 truncate">${item.label}</p>
-              <span class="mt-1 w-full py-1.5 px-2 rounded-lg text-[11px] font-extrabold flex items-center justify-center gap-1 ${isPickerMode ? 'bg-emerald-600 text-white' : 'bg-sky-50 text-sky-700'}">
+              <span class="mt-1.5 w-full py-1.5 px-2 rounded-xl text-[11px] font-extrabold flex items-center justify-center gap-1 ${isPickerMode ? 'btn-forest' : 'bg-sky-50 text-sky-700'}">
                 ${isPickerMode ? '✓ Usar esta Foto' : 'Ampliar Foto'}
               </span>
             </div>
@@ -1124,7 +1128,6 @@
         </div>
       `).join('');
 
-      // Guarda a lista filtrada atual em memória para evitar problemas com caracteres especiais em URLs no onclick
       window._currentLibraryFilteredList = filtered;
       lucide.createIcons();
     }
@@ -1212,7 +1215,6 @@
       return phraseMap;
     }
 
-    // Verifica se o texto da opção possui algum termo do glossário ou estrutura vinculada
     function optionHasAssociatedTerms(opt) {
       if (!opt) return false;
       if (toArray(opt.attachedTerms).length > 0) return true;
@@ -1269,7 +1271,7 @@
     }
 
     // ============================================================================
-    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA (SEM BOTÃO REINICIAR DUPLICADO)
+    // 6. RENDERIZAÇÃO DA CHAVE INTERATIVA
     // ============================================================================
     function renderKeyView() {
       const stage = document.getElementById("key-active-stage");
@@ -1279,14 +1281,13 @@
 
       backBtn.disabled = keyState.history.length === 0;
 
-      // Botão único "Início" destacado e limpo
-      let bcHtml = `<button onclick="resetKey()" class="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-extrabold flex items-center gap-1.5 transition">
-        <i data-lucide="home" class="w-3.5 h-3.5 text-sky-600"></i> Início
+      let bcHtml = `<button onclick="resetKey()" class="btn-lhf btn-hydro px-3.5 py-1.5 text-xs">
+        <i data-lucide="home" class="w-3.5 h-3.5"></i> Início
       </button>`;
 
       keyState.history.forEach((h, idx) => {
         bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          <button onclick="jumpToHistoryIndex(${idx})" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-800 font-bold transition">
+          <button onclick="jumpToHistoryIndex(${idx})" class="px-2.5 py-1 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 font-bold transition">
             ${h.optionLabel}
           </button>`;
       });
@@ -1294,12 +1295,12 @@
       if (keyState.currentTaxonId) {
         const tx = db.taxa.find(t => t.id === keyState.currentTaxonId);
         bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-          <span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white font-bold">${tx ? tx.name : 'Resultado'}</span>`;
+          <span class="px-3 py-1 rounded-full btn-forest text-xs font-bold">${tx ? tx.name : 'Resultado'}</span>`;
       } else if (keyState.currentNodeId) {
         const nd = db.nodes.find(n => n.id === keyState.currentNodeId);
         if (nd) {
           bcHtml += `<i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
-            <span class="font-extrabold text-slate-900 px-1">${nd.code}</span>`;
+            <span class="font-extrabold text-sky-950 bg-sky-100/80 px-2.5 py-1 rounded-lg">${nd.code}</span>`;
         }
       }
       breadcrumb.innerHTML = bcHtml;
@@ -1308,10 +1309,10 @@
         historyList.innerHTML = `<p class="text-slate-400 italic">Toque em uma das opções para iniciar a identificação.</p>`;
       } else {
         historyList.innerHTML = keyState.history.map((h, i) => `
-          <div class="border-l-2 border-sky-500 pl-3 py-1 bg-slate-50/70 rounded-r-lg">
+          <div class="border-l-3 border-sky-500 pl-3 py-1.5 bg-sky-50/50 rounded-r-xl">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-sky-900">${h.nodeCode} → ${h.optionLabel}</span>
-              <button onclick="jumpToHistoryIndex(${i})" class="text-[11px] font-semibold text-sky-600 hover:underline">Voltar aqui</button>
+              <span class="font-extrabold text-sky-950">${h.nodeCode} → ${h.optionLabel}</span>
+              <button onclick="jumpToHistoryIndex(${i})" class="text-[11px] font-bold text-sky-600 hover:underline">Voltar aqui</button>
             </div>
             <p class="text-slate-500 line-clamp-2 mt-0.5">${h.optionText.replace(/\[\[|\]\]/g, '')}</p>
           </div>
@@ -1327,44 +1328,44 @@
         }
         const relatedTerms = db.terms.filter(term => toArray(term.relatedTaxa).includes(taxon.id));
         stage.innerHTML = `
-          <div class="bg-white rounded-2xl shadow-md border-2 border-emerald-500 overflow-hidden fade-slide-in">
-            <div class="bg-gradient-to-r from-emerald-700 to-teal-600 text-white px-5 py-4 flex items-center justify-between flex-wrap gap-3">
-              <div class="flex items-center gap-3">
-                <div class="bg-white/20 p-2.5 rounded-xl">
+          <div class="bg-white rounded-3xl shadow-lg border-2 border-emerald-500/80 overflow-hidden fade-slide-in">
+            <div class="bg-gradient-to-r from-emerald-800 via-emerald-600 to-teal-600 text-white px-5 sm:px-6 py-5 flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3.5">
+                <div class="bg-white/20 p-3 rounded-2xl border border-white/25">
                   <i data-lucide="award" class="w-7 h-7"></i>
                 </div>
                 <div>
-                  <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-100 block">Identificação Concluída • ${taxon.rank || 'Família'}</span>
-                  <h2 class="text-2xl font-extrabold italic">${taxon.name}</h2>
+                  <span class="text-[11px] uppercase tracking-wider font-extrabold text-emerald-100 block">Identificação Concluída • ${taxon.rank || 'Família'}</span>
+                  <h2 class="text-2xl sm:text-3xl font-extrabold italic">${taxon.name}</h2>
                 </div>
               </div>
-              <button onclick="editSpecificItem('taxon', '${taxon.id}')" class="bg-white/15 hover:bg-white/25 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition">
+              <button onclick="editSpecificItem('taxon', '${taxon.id}')" class="btn-lhf bg-white/20 hover:bg-white/30 text-white border border-white/25 text-xs px-3.5 py-2">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar Grupo
               </button>
             </div>
 
             <div class="p-5 sm:p-6 space-y-5">
               <div class="flex flex-wrap gap-2">
-                <span class="px-3 py-1 bg-sky-50 text-sky-800 border border-sky-200 rounded-full text-xs font-bold">Ordem: ${taxon.order || 'Não informada'}</span>
-                <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold">Família: ${taxon.family || taxon.name}</span>
-                ${taxon.commonName ? `<span class="px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-semibold">${taxon.commonName}</span>` : ''}
+                <span class="px-3.5 py-1 bg-sky-50 text-sky-900 border border-sky-200 rounded-full text-xs font-extrabold">Ordem: ${taxon.order || 'Não informada'}</span>
+                <span class="px-3.5 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-full text-xs font-extrabold">Família: ${taxon.family || taxon.name}</span>
+                ${taxon.commonName ? `<span class="px-3.5 py-1 bg-amber-50 text-amber-900 border border-amber-200 rounded-full text-xs font-bold">${taxon.commonName}</span>` : ''}
               </div>
 
               ${taxon.images && taxon.images.length > 0 ? `
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   ${taxon.images.map(img => `
-                    <img src="${img}" onclick="openImageLightbox('${img}')" alt="${taxon.name}" class="w-full h-56 object-cover rounded-xl border border-slate-200 shadow-xs zoomable-img">
+                    <img src="${img}" onclick="openImageLightbox('${img}')" alt="${taxon.name}" class="w-full h-56 object-cover rounded-2xl border border-slate-200 shadow-sm zoomable-img">
                   `).join('')}
                 </div>
               ` : ''}
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Diagnose Morfológica</h4>
+                <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-100">
+                  <h4 class="text-xs font-extrabold uppercase text-sky-900 mb-1.5">Diagnose Morfológica</h4>
                   <div class="text-sm text-slate-700 leading-relaxed">${parseInteractiveText(taxon.description)}</div>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <h4 class="text-xs font-extrabold uppercase text-slate-400 mb-1.5">Hábitat & Ecologia</h4>
+                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                  <h4 class="text-xs font-extrabold uppercase text-emerald-900 mb-1.5">Hábitat & Ecologia</h4>
                   <p class="text-sm text-slate-700 leading-relaxed">${taxon.habitat || 'Sem notas ecológicas.'}</p>
                 </div>
               </div>
@@ -1393,35 +1394,35 @@
       if (!node) {
         stage.innerHTML = `<div class="bg-white p-8 rounded-2xl border text-center">
           <p class="text-slate-500 mb-3">Nenhum passo inicial selecionado.</p>
-          <button onclick="switchMainTab('editor')" class="bg-sky-600 text-white px-4 py-2 rounded-xl text-sm font-bold">Abrir Construtor</button>
+          <button onclick="switchMainTab('editor')" class="btn-lhf btn-hydro px-4 py-2 text-sm">Abrir Construtor</button>
         </div>`;
         return;
       }
 
       stage.innerHTML = `
-        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-sky-100 fade-slide-in">
+        <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-sky-200/80 fade-slide-in">
           <div class="flex items-start justify-between gap-3 mb-2">
             <div>
-              <span class="inline-block px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-extrabold text-xs mono mb-1">${node.code}</span>
-              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">${node.title}</h2>
+              <span class="inline-block px-3 py-0.5 rounded-lg bg-gradient-to-r from-sky-100 to-emerald-100 text-sky-900 border border-sky-200 font-extrabold text-xs mono mb-1.5">${node.code}</span>
+              <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900">${node.title}</h2>
             </div>
-            <button onclick="editSpecificItem('node', '${node.id}')" class="text-xs bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 shrink-0 transition">
-              <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Editar este Passo
+            <button onclick="editSpecificItem('node', '${node.id}')" class="btn-lhf btn-soft px-3.5 py-2 text-xs shrink-0">
+              <i data-lucide="sliders" class="w-3.5 h-3.5 text-sky-700"></i> Editar Passo
             </button>
           </div>
-          ${node.notes ? `<p class="text-xs sm:text-sm text-sky-900 bg-sky-50/80 border border-sky-200/70 px-3 py-2 rounded-xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
+          ${node.notes ? `<p class="text-xs sm:text-sm text-sky-950 bg-sky-50/90 border border-sky-200/80 px-3.5 py-2.5 rounded-2xl flex items-center gap-2 mb-4"><i data-lucide="eye" class="w-4 h-4 text-sky-600 shrink-0"></i> <span>${node.notes}</span></p>` : ''}
 
-          <div class="space-y-3.5 mt-4">
+          <div class="space-y-4 mt-4">
             ${toArray(node.options).map(opt => {
               let destBadge = "";
               if (!opt.targetId) {
-                destBadge = `<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-600"></i> Conectar destino</span>`;
+                destBadge = `<span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-600"></i> Conectar destino</span>`;
               } else if (opt.targetType === 'node') {
                 const targetNode = db.nodes.find(n => n.id === opt.targetId);
-                destBadge = `<span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 flex items-center gap-1">Segue p/ ${targetNode ? targetNode.code : '...'} <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></span>`;
+                destBadge = `<span class="text-xs font-extrabold text-sky-800 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 flex items-center gap-1">Segue p/ ${targetNode ? targetNode.code : '...'} <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-sky-600"></i></span>`;
               } else if (opt.targetType === 'taxon') {
                 const targetTaxon = db.taxa.find(t => t.id === opt.targetId);
-                destBadge = `<span class="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
+                destBadge = `<span class="text-xs font-extrabold text-emerald-900 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i> ${targetTaxon ? targetTaxon.name : 'Táxon'}</span>`;
               }
 
               const extraTerms = toArray(opt.attachedTerms)
@@ -1429,22 +1430,22 @@
                 .filter(Boolean);
 
               return `
-                <div onclick="selectKeyOption('${node.id}', '${opt.id}')" class="decision-card p-4 sm:p-5 cursor-pointer flex flex-col md:flex-row gap-4 justify-between items-start">
-                  <div class="space-y-2.5 flex-1 w-full">
+                <div onclick="selectKeyOption('${node.id}', '${opt.id}')" class="decision-card p-5 sm:p-6 cursor-pointer flex flex-col md:flex-row gap-4 justify-between items-start">
+                  <div class="space-y-3 flex-1 w-full">
                     <div class="flex items-center justify-between gap-2">
-                      <span class="inline-flex items-center px-3 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">
-                        Opção ${opt.label}
+                      <span class="option-badge mono">
+                        Alternativa ${opt.label}
                       </span>
                       <div>${destBadge}</div>
                     </div>
 
-                    <div class="text-slate-800 text-sm sm:text-base leading-relaxed pt-1">
+                    <div class="text-slate-800 text-sm sm:text-base leading-relaxed pt-1 font-medium">
                       ${parseInteractiveText(opt.text)}
                     </div>
 
                     ${extraTerms.length > 0 ? `
-                      <div class="pt-2 flex flex-wrap items-center gap-1.5 border-t border-slate-100">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 mr-1">Inspecionar estrutura:</span>
+                      <div class="pt-2.5 flex flex-wrap items-center gap-1.5 border-t border-slate-100">
+                        <span class="text-[10px] font-extrabold uppercase text-slate-400 mr-1">Inspecionar estrutura:</span>
                         ${extraTerms.map(t => `
                           <button type="button" onclick="event.stopPropagation(); openTermModal('${t.id}')" class="term-chip text-xs">
                             <i data-lucide="search" class="w-3 h-3"></i> ${t.name}
@@ -1455,10 +1456,10 @@
                   </div>
 
                   ${opt.image ? `
-                    <div class="relative shrink-0 w-full md:w-44" onclick="event.stopPropagation(); openImageLightbox('${opt.image}')">
-                      <img src="${opt.image}" alt="Opção ${opt.label}" class="w-full h-40 md:h-32 object-cover rounded-xl border border-slate-200 zoomable-img">
-                      <span class="absolute bottom-1.5 right-1.5 bg-slate-900/75 text-white p-1 rounded-lg">
-                        <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+                    <div class="relative shrink-0 w-full md:w-48" onclick="event.stopPropagation(); openImageLightbox('${opt.image}')">
+                      <img src="${opt.image}" alt="Opção ${opt.label}" class="w-full h-44 md:h-36 object-cover rounded-2xl border border-sky-100 shadow-xs zoomable-img">
+                      <span class="absolute bottom-2 right-2 bg-slate-900/75 text-white p-1.5 rounded-xl">
+                        <i data-lucide="zoom-in" class="w-4 h-4"></i>
                       </span>
                     </div>
                   ` : ''}
@@ -1549,12 +1550,12 @@
       }
 
       container.innerHTML = filtered.map(t => `
-        <button onclick="openTermModal('${t.id}')" class="w-full text-left p-2 rounded-xl hover:bg-sky-50 border border-transparent hover:border-sky-200 transition flex items-center justify-between group">
+        <button onclick="openTermModal('${t.id}')" class="w-full text-left p-2.5 rounded-xl hover:bg-sky-50 border border-transparent hover:border-sky-200 transition flex items-center justify-between group">
           <div class="pr-2">
-            <span class="text-xs font-bold text-slate-800 group-hover:text-sky-800 block">${t.name}</span>
+            <span class="text-xs font-extrabold text-slate-800 group-hover:text-sky-800 block">${t.name}</span>
             <span class="text-[11px] text-slate-400 line-clamp-1">${t.description}</span>
           </div>
-          <span class="bg-sky-100 text-sky-700 p-1.5 rounded-lg shrink-0">
+          <span class="bg-sky-100 text-sky-700 p-1.5 rounded-xl shrink-0 group-hover:bg-sky-600 group-hover:text-white transition">
             <i data-lucide="search" class="w-3.5 h-3.5"></i>
           </span>
         </button>
@@ -1583,12 +1584,12 @@
 
       bodyEl.innerHTML = `
         ${term.synonyms && term.synonyms.length ? `
-          <div class="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">
+          <div class="text-xs text-slate-600 bg-slate-100 px-3.5 py-2 rounded-xl">
             <strong>Variações reconhecidas automaticamente:</strong> ${[term.name, ...term.synonyms].join(', ')}
           </div>
         ` : ''}
 
-        <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-100 text-sm text-slate-800 leading-relaxed">
+        <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-100 text-sm text-slate-800 leading-relaxed">
           ${term.description || 'Sem descrição cadastrada.'}
         </div>
 
@@ -1597,25 +1598,25 @@
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Exemplos Morfológicos (Toque na foto para ampliar)</h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               ${term.images.map(img => `
-                <img src="${img}" onclick="openImageLightbox('${img}')" alt="${term.name}" class="w-full h-52 object-cover rounded-xl border border-slate-200 shadow-xs zoomable-img">
+                <img src="${img}" onclick="openImageLightbox('${img}')" alt="${term.name}" class="w-full h-52 object-cover rounded-2xl border border-slate-200 shadow-xs zoomable-img">
               `).join('')}
             </div>
           </div>
         ` : `
-          <div class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-4 text-center text-xs text-slate-400">
+          <div class="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-4 text-center text-xs text-slate-400">
             Nenhuma foto cadastrada ainda para esta estrutura.
           </div>
         `}
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="border border-slate-200 rounded-xl p-3.5">
+          <div class="border border-slate-200 rounded-2xl p-3.5">
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
               <i data-lucide="bug" class="w-3.5 h-3.5 text-emerald-600"></i> Grupos onde é comum
             </h4>
             ${linkedTaxa.length > 0 ? `
               <div class="flex flex-wrap gap-1.5">
                 ${linkedTaxa.map(tx => `
-                  <button onclick="closeTermModal(); viewTaxonInKey('${tx.id}')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-xs font-bold transition">
+                  <button onclick="closeTermModal(); viewTaxonInKey('${tx.id}')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition">
                     ${tx.name} <span class="font-normal text-emerald-600">(${tx.order || tx.rank})</span>
                   </button>
                 `).join('')}
@@ -1623,14 +1624,14 @@
             ` : `<p class="text-xs text-slate-400 italic">Nenhum grupo vinculado.</p>`}
           </div>
 
-          <div class="border border-slate-200 rounded-xl p-3.5">
+          <div class="border border-slate-200 rounded-2xl p-3.5">
             <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
               <i data-lucide="git-fork" class="w-3.5 h-3.5 text-sky-600"></i> Passos na chave com esta estrutura
             </h4>
             ${nodeUsages.length > 0 ? `
               <div class="space-y-1">
                 ${nodeUsages.map(u => `
-                  <button onclick="jumpToNodeFromExternal('${u.node.id}')" class="w-full text-left text-xs px-2.5 py-1.5 rounded-lg hover:bg-sky-50 text-slate-700 flex items-center justify-between font-medium">
+                  <button onclick="jumpToNodeFromExternal('${u.node.id}')" class="w-full text-left text-xs px-2.5 py-1.5 rounded-xl hover:bg-sky-50 text-slate-700 flex items-center justify-between font-medium">
                     <span><strong>${u.node.code}</strong> (Opção ${u.option.label})</span>
                     <span class="text-sky-600 font-bold">Ir ao passo →</span>
                   </button>
@@ -1641,8 +1642,8 @@
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
-          <button onclick="closeTermModal()" class="text-xs font-bold text-slate-500 hover:text-slate-800">Fechar</button>
-          <button onclick="closeTermModal(); editSpecificItem('term', '${term.id}')" class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs">
+          <button onclick="closeTermModal()" class="btn-lhf btn-soft px-4 py-1.5 text-xs">Fechar</button>
+          <button onclick="closeTermModal(); editSpecificItem('term', '${term.id}')" class="btn-lhf btn-hydro px-4 py-2 text-xs">
             <i data-lucide="camera" class="w-3.5 h-3.5"></i> Adicionar Foto / Editar
           </button>
         </div>
@@ -1695,20 +1696,20 @@
         const linkedTaxa = toArray(term.relatedTaxa).map(id => db.taxa.find(t => t.id === id)).filter(Boolean);
         const thumb = term.images && term.images[0] ? term.images[0] : null;
         return `
-          <div onclick="openTermModal('${term.id}')" class="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-400 transition cursor-pointer flex flex-col overflow-hidden">
+          <div onclick="openTermModal('${term.id}')" class="catalog-card cursor-pointer flex flex-col overflow-hidden">
             ${thumb ? `
               <img src="${thumb}" alt="${term.name}" class="w-full h-44 object-cover border-b border-slate-100">
             ` : `
-              <div class="w-full h-28 bg-sky-50/60 flex flex-col items-center justify-center text-sky-400 border-b border-sky-100">
-                <i data-lucide="camera" class="w-7 h-7 mb-1 opacity-60"></i>
-                <span class="text-[11px] font-semibold">Toque p/ ver ou adicionar foto</span>
+              <div class="w-full h-28 bg-gradient-to-br from-sky-50 to-emerald-50/60 flex flex-col items-center justify-center text-sky-500 border-b border-sky-100">
+                <i data-lucide="camera" class="w-7 h-7 mb-1 opacity-70"></i>
+                <span class="text-[11px] font-bold">Toque p/ ver ou adicionar foto</span>
               </div>
             `}
             <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
               <div>
                 <div class="flex items-start justify-between gap-2">
                   <h3 class="font-extrabold text-slate-900 text-base">${term.name}</h3>
-                  <span class="bg-sky-50 text-sky-600 p-1.5 rounded-lg shrink-0">
+                  <span class="bg-sky-50 text-sky-600 p-1.5 rounded-xl shrink-0">
                     <i data-lucide="search" class="w-4 h-4"></i>
                   </span>
                 </div>
@@ -1718,10 +1719,10 @@
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                 <div class="flex flex-wrap gap-1">
                   ${linkedTaxa.length ? linkedTaxa.map(tx => `
-                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md text-[11px] font-bold">${tx.name}</span>
+                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg text-[11px] font-bold">${tx.name}</span>
                   `).join('') : `<span class="text-[11px] text-slate-400 italic">Sem grupo fixo</span>`}
                 </div>
-                <button onclick="event.stopPropagation(); editSpecificItem('term', '${term.id}')" class="text-xs font-bold text-sky-600 hover:underline shrink-0">Editar</button>
+                <button onclick="event.stopPropagation(); editSpecificItem('term', '${term.id}')" class="text-xs font-extrabold text-sky-700 hover:underline shrink-0">Editar</button>
               </div>
             </div>
           </div>
@@ -1746,9 +1747,9 @@
         const thumb = tx.images && tx.images[0] ? tx.images[0] : null;
         const associatedTerms = db.terms.filter(term => toArray(term.relatedTaxa).includes(tx.id));
         return `
-          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 flex flex-col justify-between space-y-4">
+          <div class="catalog-card p-5 flex flex-col justify-between space-y-4">
             <div>
-              ${thumb ? `<img src="${thumb}" onclick="openImageLightbox('${thumb}')" class="w-full h-44 object-cover rounded-xl mb-3 border border-slate-100 zoomable-img">` : ''}
+              ${thumb ? `<img src="${thumb}" onclick="openImageLightbox('${thumb}')" class="w-full h-44 object-cover rounded-2xl mb-3 border border-slate-100 zoomable-img">` : ''}
               <div class="flex items-center justify-between">
                 <span class="text-[11px] font-extrabold uppercase tracking-wider text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full">${tx.order || 'Ordem'} • ${tx.rank || 'Família'}</span>
                 <button onclick="editSpecificItem('taxon', '${tx.id}')" class="text-slate-400 hover:text-sky-700 p-1">
@@ -1756,7 +1757,7 @@
                 </button>
               </div>
               <h3 class="text-lg font-extrabold italic text-slate-900 mt-1.5">${tx.name}</h3>
-              ${tx.commonName ? `<p class="text-xs text-emerald-700 font-semibold">${tx.commonName}</p>` : ''}
+              ${tx.commonName ? `<p class="text-xs text-emerald-700 font-bold">${tx.commonName}</p>` : ''}
               <div class="text-xs text-slate-600 leading-relaxed mt-2">${parseInteractiveText(tx.description)}</div>
               ${tx.habitat ? `<p class="text-[11px] text-slate-500 mt-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100"><strong>Hábitat:</strong> ${tx.habitat}</p>` : ''}
             </div>
@@ -1764,7 +1765,7 @@
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
               <div class="flex flex-wrap gap-1">
                 ${associatedTerms.map(t => `
-                  <button onclick="openTermModal('${t.id}')" class="text-[11px] font-semibold text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-md flex items-center gap-1">
+                  <button onclick="openTermModal('${t.id}')" class="text-[11px] font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-lg flex items-center gap-1">
                     <i data-lucide="search" class="w-2.5 h-2.5"></i> ${t.name}
                   </button>
                 `).join('')}
@@ -1877,11 +1878,11 @@
               <h3 class="font-extrabold text-slate-900 text-lg">${node.code} — ${node.title}</h3>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
-              <button type="button" onclick="document.getElementById('editor-nodes-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <button type="button" onclick="document.getElementById('editor-nodes-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden btn-lhf btn-soft text-xs px-2.5 py-1.5">
                 <i data-lucide="list" class="w-3.5 h-3.5"></i> Outros Passos ↓
               </button>
-              <button onclick="jumpToNodeFromExternal('${node.id}')" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
-                <i data-lucide="play" class="w-3.5 h-3.5"></i> Ver na Chave
+              <button onclick="jumpToNodeFromExternal('${node.id}')" class="btn-lhf btn-soft text-xs px-3 py-1.5">
+                <i data-lucide="play" class="w-3.5 h-3.5 text-sky-600"></i> Ver na Chave
               </button>
               <button onclick="deleteNode('${node.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
                 Excluir
@@ -1909,7 +1910,7 @@
           <div class="space-y-4 pt-2">
             <div class="flex items-center justify-between">
               <h4 class="text-xs font-extrabold uppercase tracking-wider text-sky-900">Alternativas deste Passo</h4>
-              <button onclick="addOptionToNode('${node.id}')" class="text-xs bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 shadow-xs">
+              <button onclick="addOptionToNode('${node.id}')" class="btn-lhf btn-hydro text-xs px-3.5 py-1.5">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova Alternativa
               </button>
             </div>
@@ -1917,10 +1918,10 @@
             ${toArray(node.options).map((opt) => {
               const showPreview = optionHasAssociatedTerms(opt);
               return `
-                <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50/70 space-y-3.5">
+                <div class="p-4 rounded-2xl border-2 border-sky-100 bg-sky-50/30 space-y-3.5">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <span class="px-2.5 py-1 rounded-lg bg-sky-900 text-white font-extrabold text-xs mono">${opt.label}</span>
+                      <span class="option-badge mono">${opt.label}</span>
                       <input type="text" value="${opt.label}" oninput="updateOptionField('${node.id}', '${opt.id}', 'label', this.value)" class="w-20 text-xs font-bold mono border border-slate-300 rounded-lg px-2 py-1 bg-white" title="Mudar rótulo (ex: 1a, 1b)">
                     </div>
                     <button onclick="removeOptionFromNode('${node.id}', '${opt.id}')" class="text-xs font-semibold text-rose-600 hover:underline">Remover opção</button>
@@ -1928,10 +1929,10 @@
 
                   <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Descrição Morfológica da Opção:</label>
-                    <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white focus:border-sky-500 focus:outline-none">${opt.text}</textarea>
+                    <textarea rows="2" oninput="updateOptionField('${node.id}', '${opt.id}', 'text', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5 bg-white">${opt.text}</textarea>
                     
-                    <!-- Prévia Interativa CONDICIONAL: Só fica visível quando houver estrutura/termo associado -->
-                    <div id="preview-wrap-${opt.id}" class="${showPreview ? 'block' : 'hidden'} mt-1.5 p-2.5 rounded-xl bg-sky-50/70 border border-sky-200 text-xs text-slate-700">
+                    <!-- Prévia Interativa CONDICIONAL: Oculta se não houver termos -->
+                    <div id="preview-wrap-${opt.id}" class="${showPreview ? 'block' : 'hidden'} mt-1.5 p-2.5 rounded-xl bg-sky-50/90 border border-sky-200 text-xs text-slate-700">
                       <span class="text-[10px] font-extrabold uppercase text-sky-800 block mb-1">Lupas ativas nesta alternativa:</span>
                       <div id="preview-${opt.id}">${parseInteractiveText(opt.text)}</div>
                     </div>
@@ -1947,7 +1948,7 @@
                       ${db.terms.map(t => {
                         const isChecked = toArray(opt.attachedTerms).includes(t.id);
                         return `
-                          <button type="button" onclick="toggleOptionAttachedTerm('${node.id}', '${opt.id}', '${t.id}')" class="text-xs px-2.5 py-1 rounded-full font-semibold border transition flex items-center gap-1 ${isChecked ? 'bg-sky-600 text-white border-sky-700' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
+                          <button type="button" onclick="toggleOptionAttachedTerm('${node.id}', '${opt.id}', '${t.id}')" class="text-xs px-2.5 py-1 rounded-full font-semibold border transition flex items-center gap-1 ${isChecked ? 'btn-hydro' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
                             <i data-lucide="${isChecked ? 'check' : 'plus'}" class="w-3 h-3"></i> ${t.name}
                           </button>
                         `;
@@ -1997,15 +1998,15 @@
                     <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2.5">
                       <label class="block text-[11px] font-extrabold uppercase text-slate-500">Foto desta Opção</label>
                       <div class="flex flex-wrap gap-1.5">
-                        <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white">
+                        <label class="media-btn btn-hydro">
                           <i data-lucide="camera" class="w-3.5 h-3.5"></i> Câmera
                           <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
                         </label>
-                        <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white">
+                        <label class="media-btn btn-soft">
                           <i data-lucide="upload" class="w-3.5 h-3.5"></i> Galeria
                           <input type="file" accept="image/*" class="hidden" onchange="uploadOptionImageFile(event, '${node.id}', '${opt.id}')">
                         </label>
-                        <button type="button" onclick="pickOptionImageFromLibrary('${node.id}', '${opt.id}')" class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+                        <button type="button" onclick="pickOptionImageFromLibrary('${node.id}', '${opt.id}')" class="media-btn btn-forest">
                           <i data-lucide="images" class="w-3.5 h-3.5"></i> Biblioteca
                         </button>
                       </div>
@@ -2277,10 +2278,10 @@
               <h3 class="font-extrabold text-slate-900 text-lg">${term.name}</h3>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <button type="button" onclick="document.getElementById('editor-terms-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <button type="button" onclick="document.getElementById('editor-terms-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden btn-lhf btn-soft text-xs px-2.5 py-1.5">
                 <i data-lucide="list" class="w-3.5 h-3.5"></i> Outras Estruturas ↓
               </button>
-              <button onclick="openTermModal('${term.id}')" class="text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold">Testar Modal</button>
+              <button onclick="openTermModal('${term.id}')" class="btn-lhf btn-soft text-xs px-3 py-1.5">Testar Modal</button>
               <button onclick="deleteTerm('${term.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">Excluir</button>
             </div>
           </div>
@@ -2301,27 +2302,27 @@
             <textarea rows="3" oninput="updateTermField('${term.id}', 'description', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${term.description}</textarea>
           </div>
 
-          <!-- FOTOS DA ESTRUTURA: CÂMERA + GALERIA + BIBLIOTECA DO APP -->
+          <!-- FOTOS DA ESTRUTURA -->
           <div class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200 space-y-3">
             <label class="block text-xs font-extrabold uppercase text-sky-900">Fotos e Exemplos desta Estrutura</label>
             
             <div class="flex flex-wrap gap-2">
-              <label class="media-btn bg-sky-600 hover:bg-sky-700 text-white shadow-xs">
+              <label class="media-btn btn-hydro">
                 <i data-lucide="camera" class="w-4 h-4"></i> Câmera
                 <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadTermImageFile(event, '${term.id}')">
               </label>
-              <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white shadow-xs">
+              <label class="media-btn btn-soft">
                 <i data-lucide="upload" class="w-4 h-4"></i> Galeria
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTermImageFile(event, '${term.id}')">
               </label>
-              <button type="button" onclick="pickTermImageFromLibrary('${term.id}')" class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+              <button type="button" onclick="pickTermImageFromLibrary('${term.id}')" class="media-btn btn-forest">
                 <i data-lucide="images" class="w-4 h-4"></i> Biblioteca
               </button>
             </div>
 
             <div class="flex gap-2 pt-1">
               <input type="text" id="new-term-img-url" placeholder="Ou cole um link https:// de imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
-              <button type="button" onclick="addTermImageByUrl('${term.id}')" class="bg-slate-700 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+              <button type="button" onclick="addTermImageByUrl('${term.id}')" class="btn-lhf btn-soft px-3.5 py-2 text-xs shrink-0">Colar Link</button>
             </div>
 
             ${toArray(term.images).length > 0 ? `
@@ -2522,10 +2523,10 @@
               <h3 class="font-extrabold italic text-slate-900 text-lg">${tx.name}</h3>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <button type="button" onclick="document.getElementById('editor-taxa-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden text-xs bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+              <button type="button" onclick="document.getElementById('editor-taxa-sidebar')?.scrollIntoView({behavior:'smooth'})" class="lg:hidden btn-lhf btn-soft text-xs px-2.5 py-1.5">
                 <i data-lucide="list" class="w-3.5 h-3.5"></i> Outros Grupos ↓
               </button>
-              <button onclick="viewTaxonInKey('${tx.id}')" class="text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-xl font-bold">Ver Ficha</button>
+              <button onclick="viewTaxonInKey('${tx.id}')" class="btn-lhf btn-soft text-xs px-3 py-1.5">Ver Ficha</button>
               <button onclick="deleteTaxon('${tx.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl font-bold">
                 Excluir
               </button>
@@ -2573,25 +2574,25 @@
             <textarea rows="2" oninput="updateTaxonField('${tx.id}', 'habitat', this.value)" class="w-full text-sm border border-slate-300 rounded-xl p-2.5">${tx.habitat || ''}</textarea>
           </div>
 
-          <!-- Fotos do Táxon: Câmera Direta + Galeria + Biblioteca -->
+          <!-- Fotos do Táxon -->
           <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 space-y-3">
             <label class="block text-xs font-extrabold uppercase text-emerald-950">Fotos do Espécime / Grupo</label>
             <div class="flex flex-wrap gap-2">
-              <label class="media-btn bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+              <label class="media-btn btn-forest">
                 <i data-lucide="camera" class="w-4 h-4"></i> Câmera
                 <input type="file" accept="image/*" capture="environment" class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
               </label>
-              <label class="media-btn bg-slate-800 hover:bg-slate-900 text-white shadow-xs">
+              <label class="media-btn btn-soft">
                 <i data-lucide="upload" class="w-4 h-4"></i> Galeria
                 <input type="file" accept="image/*" multiple class="hidden" onchange="uploadTaxonImageFile(event, '${tx.id}')">
               </label>
-              <button type="button" onclick="pickTaxonImageFromLibrary('${tx.id}')" class="media-btn bg-sky-600 hover:bg-sky-700 text-white shadow-xs">
+              <button type="button" onclick="pickTaxonImageFromLibrary('${tx.id}')" class="media-btn btn-hydro">
                 <i data-lucide="images" class="w-4 h-4"></i> Biblioteca
               </button>
             </div>
             <div class="flex gap-2 pt-1">
               <input type="text" id="new-taxon-img-url" placeholder="Ou cole URL da imagem..." class="flex-1 text-xs bg-white border border-slate-300 rounded-xl px-3 py-2">
-              <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="bg-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0">Colar Link</button>
+              <button type="button" onclick="addTaxonImageByUrl('${tx.id}')" class="btn-lhf btn-soft px-3.5 py-2 text-xs shrink-0">Colar Link</button>
             </div>
             ${toArray(tx.images).length > 0 ? `
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
@@ -2688,7 +2689,7 @@
     }
 
     // ============================================================================
-    // 9. NAVEGAÇÃO GERAL, ATALHOS E BACKUPS
+    // 9. NAVEGAÇÃO GERAL, EFEITO RIPPLE JS E BACKUPS
     // ============================================================================
     function switchMainTab(tabName) {
       ['key', 'glossary', 'taxa', 'editor'].forEach(t => {
@@ -2697,18 +2698,18 @@
         const btn = document.getElementById(`tab-btn-${t}`);
         if (btn) {
           if (t === tabName) {
-            btn.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-sky-900 shadow-sm";
+            btn.className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all bg-white text-sky-950 shadow-md";
           } else {
-            btn.className = `flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${t === 'editor' ? 'text-amber-300 hover:text-amber-200' : 'text-sky-100 hover:text-white'}`;
+            btn.className = `flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${t === 'editor' ? 'text-amber-300 hover:text-amber-200 hover:bg-white/10' : 'text-sky-100 hover:text-white hover:bg-white/10'}`;
           }
         }
 
         const mobBtn = document.getElementById(`mob-tab-${t}`);
         if (mobBtn) {
           if (t === tabName) {
-            mobBtn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-sky-700 bg-sky-50 font-extrabold text-[11px]";
+            mobBtn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl text-sky-800 bg-sky-100/80 font-extrabold text-[11px]";
           } else {
-            mobBtn.className = "flex flex-col items-center justify-center py-1 rounded-xl text-slate-500 font-medium text-[11px]";
+            mobBtn.className = "flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-semibold text-[11px]";
           }
         }
       });
@@ -2722,9 +2723,9 @@
         document.getElementById(`editor-sub-${s}`).classList.toggle('hidden', s !== sub);
         const btn = document.getElementById(`ed-tab-${s}`);
         if (s === sub) {
-          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 bg-sky-600 text-white shadow-xs";
+          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center justify-center gap-2 btn-hydro";
         } else {
-          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-slate-100";
+          btn.className = "py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 text-slate-600 hover:bg-sky-50";
         }
       });
       renderEditorView();
@@ -2787,7 +2788,7 @@
                 </div>
                 <p class="text-[11px] text-slate-500 mt-0.5">${b.action || 'Sessão salva'} (${b.stats || ''})</p>
               </div>
-              <button onclick="restoreBackupVersion(${idx})" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shrink-0 transition">
+              <button onclick="restoreBackupVersion(${idx})" class="btn-lhf btn-sun px-3 py-1 text-xs shrink-0">
                 Restaurar
               </button>
             </div>
@@ -2894,7 +2895,21 @@
       lucide.createIcons();
     }
 
-    // Atalho de teclado Ctrl+S / Cmd+S para salvar imediatamente na nuvem
+    // Efeito Ripple Interativo nos Botões LHF
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".btn-lhf, .media-btn");
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const wave = document.createElement("span");
+      const size = Math.max(rect.width, rect.height);
+      wave.style.width = wave.style.height = `${size}px`;
+      wave.style.left = `${e.clientX - rect.left - size / 2}px`;
+      wave.style.top = `${e.clientY - rect.top - size / 2}px`;
+      wave.className = "ripple-wave";
+      btn.appendChild(wave);
+      setTimeout(() => wave.remove(), 550);
+    });
+
     window.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
         e.preventDefault();
